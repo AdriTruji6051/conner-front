@@ -1,0 +1,32 @@
+
+<nav class="navbar bg-body-tertiary navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand legend" href="#">
+        <img src="./assets/img/logo.png" alt="Logo del negocio" class="img-fluid" />
+        Dulceria MyA
+      </a>
+
+      <!-- Abrir menu despegable DISPOSITIVOS PEQUEÑOS -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <!-- Cerarr menu despegable -->
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Dulceria MyA</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 nav-bar-options">
+            <li class="nav-item" *ngFor="let data of routes">
+                <button class="btn btn-outline-primary mx-3" [routerLink]="data.path">{{ data.text}}</button>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,14 @@
+.navbar{
+    height: 5rem !important; 
+}
+
+.legend {
+    text-decoration: none;
+    color: #490e2e;
+}
+
+.legend img{
+    width: auto;
+    height: 4rem;
+}
+
