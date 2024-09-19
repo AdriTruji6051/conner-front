@@ -7,12 +7,8 @@ import { environment } from 'src/app/environment/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private headers: HttpHeaders;
 
   constructor(private http: HttpClient) { 
-    this.headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.user.token}`
-    })
   }
 
   private apiURL = environment.apiUrl;
@@ -24,7 +20,7 @@ export class AuthService {
 
   login(data: any): Observable<string> {
     return this.http
-      .post<any>(this.apiURL + '/login', data, { observe: 'response' })
+      .post<any>(this.apiURL + '/api/login', data, { observe: 'response' })
       .pipe(
         tap((res) => {
           if (res.body && res.body.token) {
@@ -48,34 +44,6 @@ export class AuthService {
   isLoggedIn(): boolean{
     if (sessionStorage.getItem('user')) return true
     else return false;
-  }
-
-
-
-  getProduct_TOFIX(data: any): Observable<any>{
-    return this.http.
-    get<any>(this.apiURL + '/get/product/' + data, {
-      headers: this.headers
-    })
-    .pipe(
-      catchError((error : HttpErrorResponse) => {
-        console.log(error)
-        return throwError(()=> error)
-      })
-    )
-  }
-
-  getProduct(data: any): Observable<any>{
-    return this.http.
-    get<any>(this.apiURL + '/protegido', {
-      headers: this.headers
-    })
-    .pipe(
-      catchError((error : HttpErrorResponse) => {
-        console.log(error)
-        return throwError(()=> error)
-      })
-    )
   }
 
 }

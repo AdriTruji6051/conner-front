@@ -1,0 +1,12 @@
+<div class="p-2">
+  <h1 mat-dialog-title>Modal de Ejemplo</h1>
+  <div mat-dialog-content>
+    <h1>Resultados para: {{ data.product }}</h1>  <!-- Mostrar el mensaje recibido -->
+    <select>
+      <p *ngFor="let pr of data.product">{{pr.code}}</p>
+    </select>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="cerrarModal()">Cerrar</button>  <!-- Cerrar el modal y devolver datos -->
+  </div>
+</div>
