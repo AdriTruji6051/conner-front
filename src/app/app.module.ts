@@ -12,6 +12,7 @@ import { TicketsComponent } from './dashboard/tickets/tickets.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
+import { SelectProductComponent } from './dashboard/products/select-product/select-product.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { CommonModule } from '@angular/common';
     TicketsComponent,
   ],
   imports: [
+    SelectProductComponent,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

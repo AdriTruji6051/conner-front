@@ -96,16 +96,27 @@
                 <div class="col-xl-6 col-lg-6 col-12">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Buscar producto código o nombre</mat-label>
-                        <input matInput type="text" [(ngModel)]="placeholderValue" (keyup.enter)="searchProductForDelete()">
-                        <button *ngIf="placeholderValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchProductForDelete()">
+                        <input matInput type="text" [(ngModel)]="inputDeleteValue" (keyup.enter)="searchProductForDelete()">
+                        <button *ngIf="inputDeleteValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchProductForDelete()">
                             <mat-icon>search</mat-icon>
                         </button>
-                        </mat-form-field>
+                      </mat-form-field>
                 </div>
 
                 <div class="col-xl-6 col-lg-6 col-12 px-2">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" [tabIndex]="0">
+                          <p *ngIf="!productToDelete">{{ deletePlaceholder}}</p>
+                          <div *ngIf="productToDelete">
+                            <p>Código: {{productToDelete.code}}</p>
+                            <p>Descripción: {{productToDelete.description}}</p>
+                            <p>Costo: {{productToDelete.cost}}</p>
+                            <p>Precio de venta {{productToDelete.salePrice}}</p>
+                            <p>Precio de mayoreo: {{productToDelete.wholesalePrice}}</p>
+                            <p>Ganancia: {{productToDelete.profitMargin}}%</p>
+                            <p>Ultimo cambio: {{productToDelete.modifiedAt}}</p>
+                            <button class="btn btn-danger">Eliminar</button>
+                          </div>
 
                         </div>
                     </div>

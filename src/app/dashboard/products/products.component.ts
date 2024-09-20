@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
@@ -12,9 +12,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
 import { ProductsService } from 'src/app/services/productsService/products.service';
-import { FindedProductComponent } from './finded-product/finded-product.component';
-
-
+import { SelectProductComponent } from './select-product/select-product.component';
 
 @Component({
   selector: 'app-products',
@@ -25,6 +23,7 @@ import { FindedProductComponent } from './finded-product/finded-product.componen
 })
 
 export class ProductsComponent {
+  @ViewChild('searchProductDeletInput', { static: false }) searchDeleteInput!: ElementRef;
   constructor(
     private productsService : ProductsService,
     private modal : MatDialog
@@ -32,31 +31,51 @@ export class ProductsComponent {
 
   createPanelOpenState = false;
   deletePanelOpenState = false;
-  placeholderValue: string | null = null;
-  deleteFindedProducts: any | null = null;
+  inputDeleteValue: string | null = null;
 
-  product = [
-    {
-      code: '1234',
-      description: 'hello'
-    },
-    {
-      code: '123456',
-      description: 'amlo'
+  findedProducts = []; //Array that contains all the finded products
+
+  productToDelete: any = null; //Product to delete info
+  deletePlaceholder = 'Busca el producto para obtener su información!..';
+
+  searchProductForDelete(){
+    if(this.inputDeleteValue){
+      this.productsService.getProduct(this.inputDeleteValue).subscribe({
+        next: (data) => this.findedProducts = data,
+        error: () => this.productWasNotFound(),
+        complete: () => this.processDeleteFindedProducts()
+      });
     }
-  ]
-
-  searchProductForDelete(): void{
-    const modalRef = this.modal.open(FindedProductComponent,{
-      width: '500px',
-      height: '500px',
-      data: { product: this.placeholderValue}
-    });
-
-    modalRef.afterClosed().subscribe(result => {
-      console.log(result);
-    });
   }
 
-  
+  processDeleteFindedProducts(){
+    if(this.findedProducts.length === 1){
+      this.productToDelete = this.findedProducts[0]
+    }
+    else{
+      const modalRef = this.modal.open(SelectProductComponent,{
+        width: '70%',
+        height: '80%',
+        data: { products: this.findedProducts}
+      });
+
+      modalRef.afterClosed().subscribe(result => {
+        if(!result.code) this.productWasNotFound();
+        else this.productToDelete = result;
+        
+      });
+    }
+
+    this.inputDeleteValue = '';
+  }
+
+  productWasNotFound(){
+    this.productToDelete = null;
+    this.deletePlaceholder = 'No hay coincidencias con ese producto!..';
+  }
+
+  wait(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 }
