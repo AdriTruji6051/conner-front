@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, HostListener, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 
@@ -30,29 +30,40 @@ export class SelectProductComponent {
     @Inject(MAT_DIALOG_DATA) public data : {products : any[]}
   ){}
 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const key = event.key;
+    if(key === 'Enter') this.sendProdcut();
+    else if(key === 'ArrowDown') this.nextProduct();
+    else if(key === 'ArrowUp') this.previousProduct();
+  }
+
+
   displayedColumns: string[] = ['description', 'salePrice'];
 
   products: Products[] = this.data.products;
 
-  productRow = {
-    code: ''
-  }
+  productRow = this.products[0];
+  productRowIndex = 0;
 
-  closeModal(): void{
-    console.log('close')
+  sendProdcut(): void{
     this.dialogRef.close(this.productRow);
   }
 
+  closeModal(): void{
+    this.dialogRef.close(null);
+  }
+
   selectedProdcut(row: any) {
+    this.productRowIndex = this.products.findIndex(obj => row == obj);
     this.productRow = row;
   }
 
-  onKeyPress(event: KeyboardEvent): void{
-    const key = event.key
-    console.log(key);
-    if(key === 'Enter'){
-      console.log('Enter was checked!');
-      this.closeModal();
-    }
+  nextProduct(): void{
+    if(this.productRowIndex < this.products.length - 1) this.selectedProdcut(this.products[this.productRowIndex + 1]);
+  }
+
+  previousProduct(): void{
+    if(this.productRowIndex > 0) this.selectedProdcut(this.products[this.productRowIndex - 1]);
   }
 }

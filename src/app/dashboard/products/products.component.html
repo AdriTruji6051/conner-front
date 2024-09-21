@@ -5,7 +5,7 @@
                                 (closed)="createPanelOpenState = false" [expanded]="true">
             <mat-expansion-panel-header>
             <mat-panel-title>
-                Crear producto
+                Crear o actualizar producto
             </mat-panel-title>
             <mat-panel-description>
                 {{createPanelOpenState ? 'Agregando productos!' : 'Clickeame para agregar productos!'}}
@@ -14,15 +14,16 @@
             <div class="row">
                 <!-- Inicio CREATE Form -->
                <div class="col-xl-6 col-lg-6 col-12">
-                <form class="example-form">
+                <form class="product-form">
                     <mat-form-field class="example-full-width">
                       <mat-label>Código de producto</mat-label>
-                      <input matInput placeholder="Ex. azucar ó 3451218778129">
+                      <input type="text" matInput placeholder="Ex. azucar ó 3451218778129" [formControl]="codeFormControl">
+                      
                     </mat-form-field>
 
                     <mat-form-field class="example-full-width" style="margin-left: 0;">
                         <mat-label>Descripción</mat-label>
-                        <input matInput placeholder="Ex. Azúcar morena de kilo">
+                        <input type="text" matInput placeholder="Ex. Azúcar morena de kilo" [formControl]="descriptionFormControl">
                       </mat-form-field>
 
 
@@ -31,12 +32,12 @@
                             <td><mat-form-field class="small-input">
                               <mat-icon matPrefix>attach_money</mat-icon>
                               <mat-label>Costo</mat-label>
-                              <input matInput placeholder="12.50">
+                              <input type="number" matInput placeholder="12.50" [formControl]="costFormControl" (input)="calculatePrice()">
                             </mat-form-field></td>
                             <td><mat-form-field class="small-input">
                               <mat-icon matPrefix>percent</mat-icon>
                               <mat-label>Porcentaje</mat-label>
-                              <input matInput placeholder="20">
+                              <input type="number" matInput placeholder="20" [formControl]="profitFormControl" (input)="calculatePrice()">
                             </mat-form-field></td>
                           </tr></table>
                     </div>
@@ -46,20 +47,20 @@
                             <td><mat-form-field class="small-input">
                               <mat-icon matPrefix>price_check</mat-icon>
                               <mat-label>Venta</mat-label>
-                              <input matInput placeholder="15">
+                              <input type="number" matInput placeholder="15" [formControl]="salePriceFormControl" >
                             </mat-form-field></td>
                             <td><mat-form-field class="small-input">
                               <mat-icon matPrefix>money_off</mat-icon>
                               <mat-label>Mayoreo</mat-label>
-                              <input matInput placeholder="14.20">
+                              <input type="number" matInput placeholder="14.20" [formControl]="wholesaleFormControl">
                             </mat-form-field></td>
                           </tr></table>
                     </div>
 
                     <div class="container">
-                        <mat-radio-group aria-label="Select an option" class="centered">
-                            <mat-radio-button value="1">Venta a granel</mat-radio-button>
-                            <mat-radio-button value="2">Venta por paquete</mat-radio-button>
+                        <mat-radio-group aria-label="Select an option" class="centered" [formControl]="saleTypeFormControl">
+                            <mat-radio-button value="U">Venta por paquete</mat-radio-button>
+                            <mat-radio-button value="D">Venta a granel</mat-radio-button>
                           </mat-radio-group>
                     </div>
                       
@@ -72,7 +73,34 @@
                <div class="col-xl-6 col-lg-6 col-12 px-2">
                    <div class="card">
                        <div class="card-body">
-                       Seguimos trabajando aqui!...
+                        <p *ngIf="!isCodeAvaliable">Escriba el código del producto para crear o actualizar!..</p>
+
+                        <div *ngIf="isCodeAvaliable">
+                          <h2 class="h2">Código disponible!</h2>
+                          <button class="btn btn-primary" (click)="saveProduct()">Guardar producto</button>
+                        </div>
+
+                        <div *ngIf="productToUpdate != null">
+                          <h2 class="h2">Actualizar producto!</h2>
+                          <button class="btn btn-warning" (click)="saveProduct()">Actualizar producto</button>
+                        </div>
+
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-12 m-3 ">
+                              <p class="fs-4">ó</p>
+                            </div>
+                          </div>
+                        </div>
+                                             
+                        <p>Busque próducto para editar</p>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Buscar producto código o nombre</mat-label>
+                          <input matInput type="text" [(ngModel)]="inputUpdateValue" (keyup.enter)="searchProductForDelete()">
+                          <button *ngIf="inputUpdateValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchProductForDelete()">
+                              <mat-icon>search</mat-icon>
+                          </button>
+                        </mat-form-field>
                        </div>
                    </div>
                </div>

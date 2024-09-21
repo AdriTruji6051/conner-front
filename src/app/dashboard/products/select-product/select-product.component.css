@@ -4,8 +4,6 @@
 }
 
 .mat-mdc-row .mat-mdc-cell {
-    border-bottom: 1px solid transparent;
-    border-top: 1px solid transparent;
     cursor: pointer;
 }
 
@@ -15,10 +13,9 @@
 
 .demo-row-is-clicked {
     font-weight: bold;
-    background-color: pink;
+    background-color: var(--200-color);
 }
 
 .footer-cell{
     height: 5rem!important;
-    background-color: aqua !important;
 }

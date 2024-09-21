@@ -29,7 +29,7 @@ import { SelectProductComponent } from './dashboard/products/select-product/sele
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
