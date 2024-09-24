@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/authService/auth.service';
+import { ProductsService } from 'src/app/services/productsService/products.service';
+
 
 @Component({
   selector: 'app-tickets',
@@ -7,25 +9,33 @@ import { AuthService } from 'src/app/services/authService/auth.service';
   styleUrls: ['./tickets.component.css']
 })
 export class TicketsComponent {
-  constructor(private authService : AuthService){ }
+  constructor(
+    private authService : AuthService,
+    private ProductsService : ProductsService
+  ){ }
   
   test() {
     console.log(this.authService.user);
   }
 
   test2() {
-    this.authService.getProduct('HUE').subscribe({
-      next: (data) => console.log(data.response),
+    const data = {
+      "code": `PASTILLAJE`,
+      "description": 'TESTPASTILLAJE',
+      "saleType": 'U',
+      "cost": 777,
+      "salePrice": 777,
+      "department": 2,
+      "wholesalePrice": 777,
+      "priority": 0,
+      "inventory": 0,
+      "profitMargin": 20
+    }
+
+    this.ProductsService.updateProduct(data).subscribe({
+      next: (data) => console.log(data.message),
       error: (err) => console.log(err),
     });
   }
-
-  test3(){
-    this.authService.getProduct_TOFIX('mamwebo').subscribe({
-      next: (data) => console.log(data.response),
-      error: (err) => console.error(err)
-    })
-  }
-
   
 }

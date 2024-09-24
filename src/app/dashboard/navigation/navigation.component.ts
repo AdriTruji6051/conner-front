@@ -7,5 +7,5 @@ import { routesData } from './routes-data';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent {
-  routes = routesData
+  routes = routesData;
 }

@@ -1,139 +1,173 @@
-<div class="card m-5">
-    <div class="card-header" data-bs-toggle="collapse" data-bs-target="#create-product" aria-expanded="true" aria-controls="create-product">
-        <h5 class="mb-0">
-            Agregar o actualizar producto <i class="fa-solid fa-angles-down mx-2"></i>
-        </h5>
+<div id="main-container">
+    <div>
+      <mat-accordion>
+        <mat-expansion-panel (opened)="createPanelOpenState = true"
+                                (closed)="createPanelOpenState = false" [expanded]="true">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Crear o actualizar producto
+            </mat-panel-title>
+            <mat-panel-description>
+                {{createPanelOpenState ? 'Agregando productos!' : 'Clickeame para agregar productos!'}}
+            </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <!-- Inicio CREATE Form -->
+               <div class="col-xl-6 col-lg-6 col-12">
+                <form class="product-form">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Código de producto</mat-label>
+                    <input type="text" matInput placeholder="Ex. azucar ó 3451218778129" [formControl]="codeFormControl">
+                    <mat-error *ngIf="codeFormControl.hasError('required') || codeFormControl.hasError('pattern')">
+                      Código de producto no valido!
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width" style="margin-left: 0;">
+                      <mat-label>Descripción</mat-label>
+                      <input type="text" matInput placeholder="Ex. Azúcar morena de kilo" [formControl]="descriptionFormControl">
+                      <mat-error *ngIf="descriptionFormControl.hasError('required') || descriptionFormControl.hasError('pattern')">
+                        Descripción de producto no valida!
+                      </mat-error>
+                    </mat-form-field>
+
+
+                  <div class="container">
+                      <table class="example-full-width centered" cellspacing="0"><tr  class="align-inputs">
+                          <td><mat-form-field class="small-input">
+                            <mat-icon matPrefix>attach_money</mat-icon>
+                            <mat-label>Costo</mat-label>
+                            <input type="number" matInput placeholder="12.50" [formControl]="costFormControl" (input)="calculatePrice()">
+                            <mat-error *ngIf="costFormControl.hasError('required') || costFormControl.hasError('pattern')">
+                              Costo no valido!
+                            </mat-error>
+                          </mat-form-field></td>
+                          <td><mat-form-field class="small-input">
+                            <mat-icon matPrefix>percent</mat-icon>
+                            <mat-label>Porcentaje</mat-label>
+                            <input type="number" matInput placeholder="20" [formControl]="profitFormControl" (input)="calculatePrice()">
+                            <mat-error *ngIf="profitFormControl.hasError('required') || profitFormControl.hasError('pattern')">
+                              Porcentaje no valido!
+                            </mat-error>
+                          </mat-form-field></td>
+                        </tr></table>
+                  </div>
+
+                  <div class="container">
+                      <table class="example-full-width centered" cellspacing="0"><tr  class="align-inputs">
+                          <td><mat-form-field class="small-input">
+                            <mat-icon matPrefix>price_check</mat-icon>
+                            <mat-label>Venta</mat-label>
+                            <input type="number" matInput placeholder="15" [formControl]="salePriceFormControl" >
+                            <mat-error *ngIf="salePriceFormControl.hasError('required') || salePriceFormControl.hasError('pattern')">
+                              Precio de venta no valido!
+                            </mat-error>
+                          </mat-form-field></td>
+                          <td><mat-form-field class="small-input">
+                            <mat-icon matPrefix>money_off</mat-icon>
+                            <mat-label>Mayoreo</mat-label>
+                            <input type="number" matInput placeholder="14.20" [formControl]="wholesaleFormControl">
+                            <mat-error *ngIf="wholesaleFormControl.hasError('required') || wholesaleFormControl.hasError('pattern')">
+                              Precio de mayoreo no valido!
+                            </mat-error>
+                          </mat-form-field></td>
+                        </tr></table>
+                  </div>
+
+                  <div class="container">
+                      <mat-radio-group aria-label="Select an option" class="centered" [formControl]="saleTypeFormControl">
+                          <mat-radio-button value="U">Venta por paquete</mat-radio-button>
+                          <mat-radio-button value="D">Venta a granel</mat-radio-button>
+                        </mat-radio-group>
+                  </div>
+                    
+                </form>
+                  
+               </div>
+               <!-- Final CREATE Form -->
+       
+               <!-- Inicio CREATE Form utilidades-->
+               <div class="col-xl-6 col-lg-6 col-12 px-2">
+                   <div class="card">
+                       <div class="card-body">
+                        <p *ngIf="!isCodeAvaliable">Escriba el código del producto para crear o actualizar!..</p>
+
+                        <div *ngIf="isCodeAvaliable">
+                          <h2 class="h2">Código disponible!</h2>
+                          <button class="btn btn-primary" (click)="saveProduct()">Guardar producto</button>
+                        </div>
+
+                        <div *ngIf="productToUpdate != null">
+                          <h2 class="h2">Actualizar producto!</h2>
+                          <button class="btn btn-warning" (click)="saveProduct()">Actualizar producto</button>
+                        </div>
+
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-12 m-3 ">
+                              <p class="fs-4">ó</p>
+                            </div>
+                          </div>
+                        </div>
+                                             
+                        <p>Busque próducto para editar</p>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Buscar producto código o nombre</mat-label>
+                          <input matInput type="text" [(ngModel)]="inputUpdateValue" (keyup.enter)="searchProductForUpdate()">
+                          <button *ngIf="inputUpdateValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchProductForUpdate()">
+                              <mat-icon>search</mat-icon>
+                          </button>
+                        </mat-form-field>
+                       </div>
+                   </div>
+               </div>
+           </div>
+        </mat-expansion-panel>
+        </mat-accordion>
     </div>
+    <div class="mt-40">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="deletePanelOpenState = true"
+                                (closed)="deletePanelOpenState = false">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Eliminar producto
+            </mat-panel-title>
+            <mat-panel-description>
+                {{deletePanelOpenState ? 'Ingresa el codigo del producto a eliminar' : 'Clickeame para eliminar un producto!'}}
+            </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-12">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Buscar producto código o nombre</mat-label>
+                        <input matInput type="text" [(ngModel)]="inputDeleteValue" (keyup.enter)="searchProductForDelete()">
+                        <button *ngIf="inputDeleteValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchProductForDelete()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                      </mat-form-field>
+                </div>
 
-    <div id="create-product" class="collapse show row" >
-         <!-- Inicio CREATE Form -->
-        <div class="col-xl-6 col-lg-6 col-12 p-5" >
-            <h4>Agregar o actualizar un producto</h4>
-            <form id="insertProductForm" class="col-xl-10 col-lg-10 col-md-7 col-12">
-                <label for="codigo" class="form-label">Código</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-barcode"></i>
-                    </span>
-                    <input type="text" id="codigo" name="codigo" class="form-control form-control-sm" required tabindex="1">
-                </div>
-                   
-                <label for="descripcion" class="form-label">Descripción</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-font"></i>
-                    </span>
-                    <input type="text" id="descripcion" name="descripcion" class="form-control form-control-sm" required tabindex="2">
-                </div>
-            
-                <label for="pcosto" class="form-label">Precio Costo</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-dollar-sign"></i>
-                    </span>
-                    <input type="number" id="pcosto" name="pcosto" step="0.01" min="0" class="form-control form-control-sm" tabindex="3">
-                </div>
-            
-                <label for="pventa" class="form-label">Precio Venta</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-dollar-sign"></i>
-                    </span>
-                    <input type="number" id="pventa" name="pventa" step="0.01" min="0" class="form-control form-control-sm" required tabindex="4">
-                </div>
-            
-                <label for="mayoreo" class="form-label">Precio Mayoreo</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-tag"></i>
-                    </span>
-                    <input type="number" id="mayoreo" name="mayoreo" step="0.01" min="0" class="form-control form-control-sm" tabindex="5">
-                </div>
-            
-                <label for="porcentaje_ganancia" class="form-label">Porcentaje de Ganancia</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-percent"></i>
-                    </span>
-                    <input type="number" id="porcentaje_ganancia" name="porcentaje_ganancia" value="20" min="0" class="form-control form-control-sm" tabindex="6">
-                </div>
-                
-                <label for="dept" class="form-label">Departamento</label>
-                <div class="input-group input-group-sm mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">
-                        <i class="fa-solid fa-filter"></i>
-                    </span>
-                    <input type="number" id="dept" name="dept" min="0" class="form-control form-control-sm" tabindex="7">
-                </div>
-            
-                <div class="form-check form-switch">
-                    <input type="checkbox" id="tipoVenta" name="tipoVenta" class="form-check-input" role="switch" tabindex="8">
-                    <label for="tipoVenta" class="form-check-label">¿Es a granel?</label>
-                </div>
-            
-                <legend>Inventario</legend>
-            
-                <div class="form-check form-switch">
-                    <input type="checkbox" id="usaInventario" name="usaInventario" class="form-check-input" tabindex="9">
-                    <label for="usaInventario" class="form-label">¿Usa inventario?</label>
-                </div>
-            
-                <section id="inventario" hidden>
-                    <label for="dinventario" class="form-label">Actualmente en inventario</label>
-                    <input type="number" id="dinventario" name="dinventario" class="form-control form-control-sm mb-3" disabled>
-            
-                    <label for="dinvminimo" class="form-label">Minimo en inventario (avisar cuando haya menos de)</label>
-                    <input type="number" id="dinvminimo" name="dinvminimo" class="form-control form-control-sm mb-3" disabled>
-                </section>
-            
-                <input type="submit" value="Agregar Producto" class="btn btn-primary-color" tabindex="12">
-            </form>                
-        </div>
-        <!-- Final CREATE Form -->
+                <div class="col-xl-6 col-lg-6 col-12 px-2">
+                    <div class="card">
+                        <div class="card-body" [tabIndex]="0">
+                          <p *ngIf="!productToDelete">{{ deletePlaceholder}}</p>
+                          <div *ngIf="productToDelete">
+                            <p>Código: <b>{{productToDelete.code}}</b></p>
+                            <p>Descripción: <b>{{productToDelete.description}}</b></p>
+                            <p>Costo: <b>{{productToDelete.cost}}</b></p>
+                            <p>Precio de venta: <b>{{productToDelete.salePrice}}</b></p>
+                            <p>Precio de mayoreo: <b>{{productToDelete.wholesalePrice}}</b></p>
+                            <p>Ganancia: <b>{{productToDelete.profitMargin}}%</b></p>
+                            <p>Ultimo cambio: <b>{{productToDelete.modifiedAt}}</b></p>                            
+                            <button class="btn btn-danger" (click)="deleteProduct()">Eliminar</button>
+                          </div>
 
-        <!-- Inicio CREATE Form utilidades-->
-        <div class="col-xl-6 col-lg-6 col-12 p-5">
-            <div class="card">
-                <div class="card-body">
-                Seguimos trabajando aqui!...
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<!-- FINAL CARD CREATE -->
-
-<div class="card m-5">
-    <div class="card-header">
-        <h5 class="mb-0">
-            <button class="btn btn-outline-color" type="button" data-bs-toggle="collapse" data-bs-target="#delete-product" aria-expanded="true" aria-controls="delete-product">
-                Eliminar Producto ->
-            </button>
-        </h5>
-    </div>
-
-    <div id="delete-product" class="collapse row" >
-         <!-- Inicio CREATE Form -->
-        <div class="col-xl-6 col-lg-6 col-12 p-5" >
-            <h1>Eliminar producto</h1>
-            <form id="deleteProductForm">
-                <label for="delete-codigo">Código:</label>
-                <input type="text" id="delete-codigo" name="delete-codigo" required>
-        
-                <p id="vistaPrevia">Vista previa: </p>
-        
-                <input type="submit" value="Eliminar Producto">
-            </form>
-        </div>
-        <!-- Final CREATE Form -->
-
-        <!-- Inicio CREATE Form utilidades-->
-        <div class="col-xl-6 col-lg-6 col-12 p-5">
-            <div class="card">
-                <div class="card-body">
-                    Seguimos trabajando aqui!...
-                </div>
-            </div>
-        </div>
+        </mat-expansion-panel> 
+        </mat-accordion>
     </div>
 </div>

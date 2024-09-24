@@ -1,0 +1,51 @@
+.mat-mdc-form-field + .mat-mdc-form-field {
+    margin-left: 8px;
+  }
+
+#main-container{
+    padding: 40px;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+.example-full-width {
+    width: 100%;
+}
+
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+  }
+
+.container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.centered-div {
+    background-color: lightgreen;
+    padding: 20px;
+    text-align: center;
+}
+.small-input{
+    max-width: 250px;
+}
+.mt-40{
+    margin-top: 40px;
+}
+
+@media (max-width: 1200px){
+    .small-input{
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 576px){
+    .small-input{
+        max-width: 150px;
+    }
+}
