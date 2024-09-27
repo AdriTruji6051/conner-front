@@ -2,19 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, HostListener, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
+import { Product } from './products';
 
-interface Products{
-  code: string;
-  description: number;
-  saleType: string;
-  cost: number;
-  salePrice: number;
-  wholesalePrice: number;
-  priority: any;
-  inventory: any;
-  modifiedAt: string;
-  profitMargin: number;
-}
 
 @Component({
   selector: 'app-select-product',
@@ -41,7 +30,7 @@ export class SelectProductComponent {
 
   displayedColumns: string[] = ['description', 'salePrice'];
 
-  products: Products[] = this.data.products;
+  products: Product[] = this.data.products;
 
   productRow = this.products[0];
   productRowIndex = 0;

@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { BillComponent } from './dashboard/bill/bill.component';
 import { NavigationComponent } from './dashboard/navigation/navigation.component';
 import { TicketsComponent } from './dashboard/tickets/tickets.component';
 
@@ -19,7 +18,6 @@ import { SelectProductComponent } from './dashboard/products/select-product/sele
   declarations: [
     AppComponent,
     DashboardComponent,
-    BillComponent,
     NavigationComponent,
     TicketsComponent,
   ],

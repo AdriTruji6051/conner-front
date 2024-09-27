@@ -15,17 +15,17 @@
     --950-color: #2e0f66; */
 
     /* Blue colors */
-    --50-color: #fefffa;
-    --100-color: #dde9fc;
-    --200-color: #c3dafa;
-    --300-color: #84b6f4;
-    --400-color: #6aa3f0;
-    --500-color: #4781ea;
-    --600-color: #3264de;
-    --700-color: #2950cc;
-    --800-color: #2842a5;
-    --900-color: #253b83;
-    --950-color: #1b2650;
+    --50-color: #f2f7fd;
+    --100-color: #e3eefb;
+    --200-color: #c1dcf6;
+    --300-color: #8ac0ef;
+    --400-color: #4c9fe4;
+    --500-color: #3490dc;
+    --600-color: #1668b3;
+    --700-color: #135291;
+    --800-color: #144778;
+    --900-color: #163c64;
+    --950-color: #0f2742;
 
     /* Yellow colors */
     /* --50-color: #fefffa;
@@ -55,5 +55,68 @@
 
 }
 
-html, body { height: 100%; }
+html, body { height: 100%; margin: 0;padding: 0;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+svg{
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.pdv-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px 15px 20px;
+    background-color: var(--500-color);
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-weight: 400;
+}
+
+.pdv-btn:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--600-color);
+}
+
+.pdv-btn-fab {
+    padding: 15px 30px!important;
+    font-size: 22px!important;
+    border-radius: 12px!important;
+    font-weight: 500!important;
+    background-color: transparent!important;
+    color: var(--500-color);
+}
+
+.pdv-btn-fab:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15)!important;
+    background-color: var(--500-color)!important;
+    color: white;
+    transform: translateY(-2px);
+}
+
+
+/* TOFIX: Pa usar iconos :) */
+.hover-button svg {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    font-size: 16px;
+    border: 1px solid var(--500-color);
+    border-radius: 25px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 5px rgba(8, 14, 19, 0.5);
+}
