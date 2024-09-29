@@ -48,54 +48,54 @@ export class BillComponent {
   //Screen events
   private screenWidth = new BehaviorSubject<number>(window.innerWidth);
   screenWidth$ = this.screenWidth.asObservable();
-  isModalOpen = false;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9¡!¿?.,:;()@#$%^&*_~\[\]\{\} ]*$/;
-    document.getElementById('search-input')?.focus()
     const key = event.key;    
-    console.log(key)
-
-    switch (true) {
-      case this.isModalOpen:
-        event.preventDefault();
-        break;
-        
-      case key === 'ArrowDown' && !this.isModalOpen:
-        this.nextProduct();
-        break;
-        
-      case key === 'ArrowUp' && !this.isModalOpen:
-        this.previousProduct();
-        break;
-      
-      case key === '+':
-        event.preventDefault()
-        if(this.productRow) this.addProduct(this.productRow);
-        break;
-      
-      case key === '-':
-        event.preventDefault()
-        if(this.productRow) this.removeProduct(1);
-        break;
-
-      case key === 'Delete':
-        this.removeProduct();
-        break;
-      
-      case key === 'F11':
-        event.preventDefault();
-        this.wholesale();
-        break;
-        
-      case key.length === 1 && regex.test(key):
-        event.preventDefault();
-        this.inputSearch += key;
-        break;
-
-    }
     
+    if(this.modal.openDialogs.length === 0){
+      document.getElementById('search-input')?.focus()
+
+      switch (true) {
+        case key === 'ArrowDown':
+          this.nextProduct();
+          break;
+          
+        case key === 'ArrowUp':
+          this.previousProduct();
+          break;
+        
+        case key === '+':
+          event.preventDefault()
+          if(this.productRow) this.addProduct(this.productRow);
+          break;
+        
+        case key === '-':
+          event.preventDefault()
+          if(this.productRow) this.removeProduct(1);
+          break;
+  
+        case key === 'Delete':
+          this.removeProduct();
+          break;
+        
+        case key === 'F11':
+          event.preventDefault();
+          this.wholesale();
+          break;
+  
+        case event.ctrlKey && key.toLowerCase() === 'p':
+          event.preventDefault();
+          this.newCommonProduct();
+          break;
+          
+        case key.length === 1 && regex.test(key):
+          event.preventDefault();
+          this.inputSearch += key;
+          break;
+      }
+    }
   }
  
   constructor(
@@ -190,7 +190,6 @@ export class BillComponent {
     }
 
   openFindedModal(products: any): void{
-    this.isModalOpen = true;
     const modalRef = this.modal.open(SelectProductComponent,{
       width: '70%',
       height: '80%',
@@ -198,21 +197,19 @@ export class BillComponent {
     });
 
     modalRef.afterClosed().subscribe(product => {
-      this.isModalOpen = false;
+      console.log('xd')
       if(product) this.addProduct(product);
     });
   }
 
   // Common product sale
   newCommonProduct(): void{
-    this.isModalOpen = true;
     const modalRef = this.modal.open(CommonProductComponent,{
-      width: '70%',
-      height: '80%',
+      width: '500px',
+      height: '330px',
     });
 
     modalRef.afterClosed().subscribe(product => {
-      this.isModalOpen = false;
       if(product) this.addProduct(product);
     });
   }

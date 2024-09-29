@@ -68,7 +68,7 @@ svg{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 20px 15px 20px;
+    padding: 10px 20px 10px 20px;
     background-color: var(--500-color);
     color: white;
     border: none;
@@ -81,6 +81,10 @@ svg{
 .pdv-btn:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: var(--600-color);
+}
+
+.square-btn {
+    border-radius: 12px;
 }
 
 .pdv-btn-fab {

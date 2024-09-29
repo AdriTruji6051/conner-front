@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { SelectProductComponent } from './dashboard/products/select-product/select-product.component';
 import { CommonProductComponent } from './dashboard/bill/common-product/common-product.component';
+import { GranelSaleComponent } from './dashboard/bill/granel-sale/granel-sale.component';
 
 
 @NgModule({
@@ -22,6 +24,7 @@ import { CommonProductComponent } from './dashboard/bill/common-product/common-p
     NavigationComponent,
     TicketsComponent,
     CommonProductComponent,
+    GranelSaleComponent,
   ],
   imports: [
     SelectProductComponent,
@@ -30,6 +33,7 @@ import { CommonProductComponent } from './dashboard/bill/common-product/common-p
     HttpClientModule,
     BrowserAnimationsModule,
     CommonModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
