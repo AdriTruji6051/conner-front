@@ -120,3 +120,38 @@ svg{
 .search-input:focus {
     box-shadow: 0 0 5px rgba(8, 14, 19, 0.5);
 }
+
+/* Forms personalized inputs */
+
+.input-label {
+    flex: 0 0 120px;
+    font-size: 16px;
+    color: #333;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.styled-input {
+    flex: 1;
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 16px;
+    color: #333;
+    background-color: white;
+    border: 2px solid #3490dc;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
+
+.styled-input:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.styled-input:focus {
+    border-color: #2779bd;
+    box-shadow: 0 0 0 3px rgba(52, 144, 220, 0.25);
+}
+

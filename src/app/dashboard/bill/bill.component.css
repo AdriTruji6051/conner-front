@@ -42,7 +42,7 @@
 }
 
 .control-panel-utils{
-    div{
+    .util{
         margin-left: 20px;
     }
 }
@@ -66,4 +66,21 @@
     font-size: 40px;
 }
 
+/* Material table */
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
 
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+.selected-row{
+    font-weight: 500!important;
+    background-color: var(--100-color)!important;
+}
+
+.wholesale-row{
+    background-color: #FFF3CD;
+}
