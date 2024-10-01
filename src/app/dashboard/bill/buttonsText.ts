@@ -1,18 +1,22 @@
 export const btnTextDict = {
     delete: {
-      short: 'Eliminar',
-      long: 'Eliminar [Supr]'
+      small: '',
+      medium: 'Eliminar',
+      long: 'Eliminar - SUPR'
     },
     common: {
-      short: 'Venta común',
-      long: 'CTRL + P - Articulo común'
+      small: '',
+      medium: 'Venta común',
+      long: 'Articulo común - CTRL + P'
     },
     wholesale: {
-      short: 'Mayoreo',
-      long: 'Mayoreo [F11]'
+      small: '',
+      medium: 'Mayoreo',
+      long: 'Mayoreo - F11'
     },
     collect: {
-      short: 'Cobrar',
+      small: '',
+      medium: 'Cobrar',
       long: 'Cobrar - F12'
     }
   }

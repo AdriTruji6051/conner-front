@@ -19,6 +19,19 @@ export class ProductsService {
     })
   }
 
+  getProductNames(): Observable<any>{
+    return this.http
+    .get<any>(this.apiURL + '/api/get/all/products', {
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error(error)
+        return throwError(()=> error);
+      })
+    )
+  }
+
   getProduct(data: any): Observable<any>{
     return this.http
     .get<any>(this.apiURL + '/api/get/product/' + data, {

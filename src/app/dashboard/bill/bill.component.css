@@ -63,7 +63,12 @@
     height: 100%;
     width: 100%;
     border-radius: 12px!important;
-    font-size: 40px;
+    font-size: 35px;
+}
+
+.collect-icon{
+    height: 40px;
+    width: 40px;
 }
 
 /* Material table */
@@ -79,6 +84,7 @@
 .selected-row{
     font-weight: 500!important;
     background-color: var(--100-color)!important;
+    
 }
 
 .wholesale-row{

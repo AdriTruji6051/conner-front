@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 import { SelectProductComponent } from './dashboard/products/select-product/select-product.component';
 import { CommonProductComponent } from './dashboard/bill/common-product/common-product.component';
 import { GranelSaleComponent } from './dashboard/bill/granel-sale/granel-sale.component';
+import { SubmitBillComponent } from './dashboard/bill/submit-bill/submit-bill.component';
+import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.component';
 
 
 @NgModule({
@@ -25,6 +27,8 @@ import { GranelSaleComponent } from './dashboard/bill/granel-sale/granel-sale.co
     TicketsComponent,
     CommonProductComponent,
     GranelSaleComponent,
+    SubmitBillComponent,
+    NewTicketComponent,
   ],
   imports: [
     SelectProductComponent,

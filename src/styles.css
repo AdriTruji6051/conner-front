@@ -159,3 +159,35 @@ svg{
     box-shadow: 0 0 0 3px rgba(52, 144, 220, 0.25);
 }
 
+
+/* Select */
+.styled-select {
+    appearance: none;
+    -webkit-appearance: none;
+    font-size: 1rem;
+    width: 80px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid #3490dc;
+    border-radius: 8px;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.styled-select:hover {
+    border-color: #2779bd;
+    box-shadow: 0 2px 5px rgba(52, 144, 220, 0.2);
+}
+
+.styled-select:focus {
+    border-color: #2779bd;
+    box-shadow: 0 0 0 3px rgba(52, 144, 220, 0.25);
+}
+
+.styled-select option {
+    padding: 10px;
+}

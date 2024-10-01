@@ -5,19 +5,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   selector: 'app-granel-sale',
   template: `
   <div class="m-4 common-container">
-      <form (ngSubmit)="submitProduct()" #commonForm="ngForm">      
+      <form #commonForm="ngForm">      
           <div class="form-group number-inputs py-2">
               <div>
                   <label for="number1">Cantidad</label>
-                  <input type="number" id="1" [(ngModel)]="cantity" name="cantity" class="styled-input" min="0" pattern="^[0-9]+" value="1.00" (focus)="selectAllText($event)" autocomplete="off" required>
+                  <input type="number" id="1" [(ngModel)]="cantity" name="cantity" (input)="inputCantity()" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" value="1.00" (focus)="selectAllText($event)" autocomplete="off" required>
               </div>
               <div>
                   <label for="number2">Importe</label>
-                  <input type="number" id="2" [(ngModel)]="salePrice" name="salePrice" class="styled-input" min="0" pattern="^[0-9]+" value="0.00" (focus)="selectAllText($event)" autocomplete="off" required>
+                  <input type="number" id="2" [(ngModel)]="salePrice" name="salePrice" (input)="inputPrice()" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" value="0.00" (focus)="selectAllText($event)" autocomplete="off" required>
               </div>
           </div>
           <div>
-              <h3>Precio del producto: {{product.salePrice}}</h3>
+              <h2>Precio del producto: <b>{{product.salePrice}}</b></h2>
           </div>
 
           <div *ngIf="cantity < 0.01">
@@ -25,7 +25,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
           </div>
       
           <div class="button-panel">
-              <button type="submit" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || cantity < 0.01">Agregar</button>
+              <button type="button" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || cantity < 0.01" (click)="submitProduct()">Agregar</button>
               <button type="button" class="pdv-btn square-btn" (click)="dialogRef.close()">Cerrar</button>
           </div>
       </form>
@@ -55,41 +55,38 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   `]
 })
 export class GranelSaleComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<GranelSaleComponent>,
-    @Inject(MAT_DIALOG_DATA) public data : {product : any[]}
-  ){
-    this.product = this.data.product;
-  }
-
   actualInputId = 1;
+  product!: any;
+
+  cantity = 1.00;
+  salePrice = 0.00;
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
 
     if(event.key === 'Enter' && this.actualInputId != 3){
       this.actualInputId++;
       document.getElementById(this.actualInputId.toString())?.focus();
-    }
+    }else if(event.key === 'F5') event.preventDefault();
   }
-  
-  product!: any;
-  
 
-  description!: string;
-  cantity = 1.00;
-  salePrice = 0.00;
+  constructor(
+    public dialogRef: MatDialogRef<GranelSaleComponent>,
+    @Inject(MAT_DIALOG_DATA) public data : {product : any[]}
+  ){
+    this.product = this.data.product;
+    this.salePrice = this.product.salePrice;
+  }
 
   submitProduct(): void{
     const prod = {
-      code: `${Math.floor(Math.random() * 20)}-${this.description}`,
-      description: this.description,
-      saleType: 'U',
-      cost: null,
-      salePrice: this.salePrice,
-      wholesalePrice: null,
+      code: this.product.code,
+      description: this.product.description,
+      saleType: this.product.saleType,
+      cost: this.product.cost,
+      salePrice: this.product.salePrice,
+      wholesalePrice: this.product.wholesalePrice,
       cantity: this.cantity,
-      import: this.cantity * this.salePrice,
     }
 
     this.dialogRef.close(prod);
@@ -99,4 +96,14 @@ export class GranelSaleComponent {
     event.target.select();
     this.actualInputId = event.target.id;
   }
+
+  inputCantity(): void{
+    this.salePrice = parseFloat((this.cantity * this.product.salePrice).toFixed(2));
+  }
+
+  inputPrice(): void{
+    this.cantity = parseFloat((this.salePrice / this.product.salePrice).toFixed(3));
+  }
+
+
 }

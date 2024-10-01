@@ -8,6 +8,6 @@ export function roundNumber(numero: number): number {
     }else if (decimales <= 0.50) {
         return entero + 0.50;
     } else {
-        return Math.ceil(numero) + .00;
+        return Math.ceil(numero);
     }
 }
