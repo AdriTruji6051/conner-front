@@ -18,6 +18,7 @@ import { GranelSaleComponent } from './granel-sale/granel-sale.component';
 import { columnsLong, columnsMedium, columnsSmall, columnLabel } from './table-columns';
 import { SubmitBillComponent } from './submit-bill/submit-bill.component';
 import { NewTicketComponent } from './new-ticket/new-ticket.component';
+import { TicketService } from 'src/app/services/ticketService/ticket-service';
 
 @Component({
   selector: 'app-bill',
@@ -41,6 +42,7 @@ export class BillComponent{
   total = 0.00;
   salesRecord!: any;
   TicketIndex: number = 0;
+  avaliablePrinters!: string[];
 
   //Ticket table
   displayedColumns: string[] = columnsLong;
@@ -135,6 +137,7 @@ export class BillComponent{
  
   constructor(
     private productsService: ProductsService,
+    private ticketService: TicketService,
     private modal : MatDialog,
   ) {
     this.onResize();
@@ -149,6 +152,19 @@ export class BillComponent{
     ]
 
     this.activeTicket = this.salesRecord[this.TicketIndex];
+
+    this.ticketService.registerLocalPrinters().subscribe({
+      next: () => {
+        this.ticketService.getPrinters().subscribe({
+          next: (data) =>{
+            this.avaliablePrinters = data;
+            console.log(this.avaliablePrinters);
+          }
+        })
+      },
+      error: (err) => console.error(err)
+    })
+    
   }
 
 
@@ -293,8 +309,10 @@ export class BillComponent{
         data: { 
           ticket: {
             total: this.total,
-            products: productsRecord
-          }
+            products: productsRecord,
+            wholesale: this.activeTicket.products.wholesale
+          },
+          printers: this.avaliablePrinters
         }
       });
   

@@ -30,4 +30,31 @@ export class TicketService {
       })
     )
   }
+
+  registerLocalPrinters(): Observable<any>{
+    return this.http
+    .get<any>(this.apiURL + '/api/init/new/', {
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        console.error(error);
+        return throwError(()=> error);
+      })
+    )
+
+  }
+
+  getPrinters(): Observable<any>{
+    return this.http
+    .get<any>(this.apiURL + '/api/get/printers/', {
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        console.error(error);
+        return throwError(()=> error);
+      })
+    )
+  }
 }

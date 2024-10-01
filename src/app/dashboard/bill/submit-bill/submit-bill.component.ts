@@ -33,8 +33,10 @@ import Swal from 'sweetalert2';
         </div>
     
         <div class="button-panel">
-            <button type="button" class="pdv-btn square-btn" (click)="dialogRef.close()">Cerrar</button>
-            <button type="button" id="3" (click)="submitTicket(false)" class="pdv-btn square-btn" [disabled]="commonForm.invalid || paidWith < totalTicket">Registrar venta!</button>
+            <select class="styled-select"  [(ngModel)]="selectedPrinter" [ngModelOptions]="{standalone: true}" (ngModelChange)="changePrinter($event)"> 
+                <option *ngFor="let prin of printers; let i = index" [value]="i">{{prin}}</option>
+            </select>
+            <button type="button" id="4" (click)="submitTicket(false)" class="pdv-btn square-btn" [disabled]="commonForm.invalid || paidWith < totalTicket">Registrar venta!</button>
             <button type="button" id="3" (click)="submitTicket()" class="pdv-btn square-btn" [disabled]="commonForm.invalid || paidWith < totalTicket">Imprimir y registrar venta!</button>
         </div>
     </form>
@@ -70,13 +72,16 @@ export class SubmitBillComponent {
   totalTicket!: any;
   enableNotes: boolean = false;
   actualInputId = 2;
+  printers!: string[];
+  selectedPrinter = 0;
 
   constructor(
     public dialogRef: MatDialogRef<SubmitBillComponent>,
-    @Inject(MAT_DIALOG_DATA) public data : {ticket : any[]},
+    @Inject(MAT_DIALOG_DATA) public data : {ticket : any[], printers: string[]},
     private ticketService: TicketService,
   ){
-    this.ticket = this.data.ticket
+    this.ticket = this.data.ticket;
+    this.printers = this.data.printers;
     this.totalTicket = this.ticket.total;
     this.paidWith = this.ticket.total;
     document.getElementById(this.actualInputId.toString())?.focus();
@@ -91,6 +96,10 @@ export class SubmitBillComponent {
     }else if(event.key === 'F5') event.preventDefault();
   }
 
+  changePrinter(printerIndex: any): void{
+    this.selectedPrinter = printerIndex;
+  }
+
   submitTicket(willPrint: boolean = true): void{
     const sumbitData = {
       products: this.ticket.products,
@@ -98,7 +107,11 @@ export class SubmitBillComponent {
       paidWith: this.paidWith,
       notes: this.notes ? this.notes : '',
       willPrint: willPrint,
+      wholesale: this.ticket.wholesale,
+      printerName: this.printers ? this.printers[this.selectedPrinter] : null
     }
+
+    console.log(this.ticket)
 
     this.ticketService.createTicket(sumbitData).subscribe({
       next: () => this.dialogRef.close(true),
