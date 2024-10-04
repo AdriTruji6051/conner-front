@@ -6,7 +6,7 @@ export const btnTextDict = {
     },
     common: {
       small: '',
-      medium: 'Venta común',
+      medium: 'Común',
       long: 'Articulo común - CTRL + P'
     },
     wholesale: {

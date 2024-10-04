@@ -369,10 +369,18 @@ export class BillComponent{
     const products = this.getProducts();
     this.productRowIndex = products.findIndex((obj: any) => row == obj);
     this.productRow = row;
+    setTimeout(() => {
+      this.scrollIntoView(`row${row.code}`);
+    }, 250);
+    
   }
 
   scrollIntoView(code: any): void{
-    document.getElementById(code)?.scrollIntoView();
+    document.getElementById(code)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'nearest'
+    });
   }
 
   nextProduct(): void{

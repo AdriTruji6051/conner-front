@@ -90,3 +90,9 @@
 .wholesale-row{
     background-color: #FFF3CD;
 }
+
+.bold-text {
+    font-weight: 800!important;
+    font-size: medium;
+}
+  
