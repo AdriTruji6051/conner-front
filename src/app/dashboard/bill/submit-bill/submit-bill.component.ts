@@ -101,23 +101,21 @@ export class SubmitBillComponent {
   }
 
   submitTicket(willPrint: boolean = true): void{
-    const sumbitData = {
+    const sumbitData: any = {
       products: this.ticket.products,
       total: this.ticket.total,
       paidWith: this.paidWith,
       notes: this.notes ? this.notes : '',
       willPrint: willPrint,
       wholesale: this.ticket.wholesale,
-      printerName: this.printers ? this.printers[this.selectedPrinter] : null
+      printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
     }
-
-    console.log(this.ticket)
 
     this.ticketService.createTicket(sumbitData).subscribe({
       next: () => this.dialogRef.close(true),
       error: () => {
         Swal.fire({
-          icon: "warning",
+          icon: "error",
           title: "Error de servidor",
           text: "El ticket no se pudo guardar, verifique su conexión!",
         });

@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavigationComponent } from './dashboard/navigation/navigation.component';
-import { TicketsComponent } from './dashboard/tickets/tickets.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -24,7 +23,6 @@ import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.compo
     AppComponent,
     DashboardComponent,
     NavigationComponent,
-    TicketsComponent,
     CommonProductComponent,
     GranelSaleComponent,
     SubmitBillComponent,

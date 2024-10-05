@@ -57,4 +57,30 @@ export class TicketService {
       })
     )
   }
+
+  getTicketsByDay(day: string): Observable<any>{
+    return this.http
+    .get<any>(this.apiURL + '/api/get/tickets/day/' + day,{
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        console.error(error);
+        return throwError(()=> error);
+      })
+    )
+  }
+
+  printTicketById(data: any): Observable<any>{
+    return this.http
+    .post<any>(this.apiURL + '/api/print/ticket/id/', data, {
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        console.error(error);
+        return throwError(()=> error);
+      })
+    )
+  }
 }

@@ -1,0 +1,45 @@
+table {
+    box-shadow: none!important;
+}
+.main-container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.table-container{
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.button-panel {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+border-bottom: 1px solid transparent;
+border-top: 1px solid transparent;
+cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+
+.selected-row{
+    font-weight: 500!important;
+    background-color: var(--100-color)!important;   
+}
+
+.pdv-card{
+    height: 80vh;
+}
+
+.styled-select{
+    width: 150px;
+}
