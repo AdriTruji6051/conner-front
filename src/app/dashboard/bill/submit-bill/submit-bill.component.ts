@@ -108,6 +108,7 @@ export class SubmitBillComponent {
       notes: this.notes ? this.notes : '',
       willPrint: willPrint,
       wholesale: this.ticket.wholesale,
+      productsCount: this.ticket.productsCount,
       printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
     }
 

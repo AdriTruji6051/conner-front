@@ -40,6 +40,8 @@ export class BillComponent{
   //Active ticket
   activeTicket!: any;
   total = 0.00;
+  productsCount = 0;
+  apliedDiscount = 0;
   salesRecord!: any;
   TicketIndex: number = 0;
   avaliablePrinters!: string[];
@@ -90,6 +92,10 @@ export class BillComponent{
   
         case key === 'Delete':
           this.removeProduct();
+          break;
+
+        case key === 'F1':
+          event.preventDefault();
           break;
 
         case key === 'F5':
@@ -169,14 +175,20 @@ export class BillComponent{
 
 
   private onResize(){
-    if(window.innerWidth >= 1200){
+    if(window.innerWidth > 1600){
       this.deleteProdBtnText = this.btnTextDict.delete.long;
       this.commontArtBtnText = this.btnTextDict.common.long;
       this.wholesaleBtnText = this.btnTextDict.wholesale.long;
       this.collectBtnText = this.btnTextDict.collect.long;
       this.displayedColumns = columnsLong;
-
-    }else if(window.innerWidth <= 1200 && window.innerWidth >= 668){
+    }
+    else if(window.innerWidth <= 1600 && window.innerWidth > 1200){ 
+      this.deleteProdBtnText = this.btnTextDict.delete.medium;
+      this.commontArtBtnText = this.btnTextDict.common.medium;
+      this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
+      this.collectBtnText = this.btnTextDict.collect.medium;
+    }
+    else if(window.innerWidth <= 1200 && window.innerWidth >= 668){
       this.deleteProdBtnText = this.btnTextDict.delete.medium;
       this.commontArtBtnText = this.btnTextDict.common.medium;
       this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
@@ -198,25 +210,35 @@ export class BillComponent{
   }
 
   removeProduct(remove: number = 0): void{
-    Swal.fire({
-      title: "¿Desea eliminar el producto de la cuenta?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: "Eliminar!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.activeTicket.products.remove(this.productRow, remove);
+    if(remove > 0){
+      this.activeTicket.products.remove(this.productRow, remove);
         
-        if(this.productRowIndex === 0){
-          this.productRowIndex--;
-          this.nextProduct();
-        } 
-        else this.previousProduct();
-      }
-    });
+      if(this.productRowIndex === 0){
+        this.productRowIndex--;
+        this.nextProduct();
+      } 
+      else this.previousProduct();
+    }else{
+      Swal.fire({
+        title: "¿Desea eliminar el producto de la cuenta?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: "Eliminar!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.activeTicket.products.remove(this.productRow, remove);
+          
+          if(this.productRowIndex === 0){
+            this.productRowIndex--;
+            this.nextProduct();
+          } 
+          else this.previousProduct();
+        }
+      });
+    }
   }
 
   wholesale(): void{
@@ -227,7 +249,9 @@ export class BillComponent{
 
   getProducts(): any{
     const total = this.activeTicket.products.total();
+    this.productsCount = this.activeTicket.products.count();
     this.total = total;
+    this.apliedDiscount = this.activeTicket.products.discount;
     this.activeTicket.total = total;
     this.dataSource.data = this.activeTicket.products.get();
     return this.activeTicket.products.get();
@@ -310,7 +334,8 @@ export class BillComponent{
           ticket: {
             total: this.total,
             products: productsRecord,
-            wholesale: this.activeTicket.products.wholesale
+            wholesale: this.apliedDiscount,
+            productsCount: this.productsCount,
           },
           printers: this.avaliablePrinters
         }

@@ -47,16 +47,15 @@
     }
 }
 
+.container-bill, .total-sale{
+    height: 6.5rem;
+}
+
 .total-sale{
     box-shadow: 0px 0px 30px -1px rgba(0,0,0,0.34);
     -webkit-box-shadow: 0px 0px 30px -1px rgba(0,0,0,0.34);
     -moz-box-shadow: 0px 0px 30px -1px rgba(0,0,0,0.34);
     border-radius: 12px;
-    height: 6.5rem;
-}
-
-.collect-bill{
-    height: 6.5rem;
 }
 
 .collect-bill-btn{

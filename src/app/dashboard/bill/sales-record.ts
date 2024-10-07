@@ -14,18 +14,25 @@ export interface ProductTicket{
 export class saleProducts{
     private products: ProductTicket[];
     public wholesale: boolean;
+    public discount: number;
 
     constructor(){
         this.products = []
         this.wholesale = false;
+        this.discount = 0;
     }
 
     add(product: any, cantity: number = 1): any{
         for(let prod of this.products){
             if(prod.code === product.code){
                 prod.cantity += cantity;
-                if(this.wholesale) prod.import = prod.wholesalePrice ? roundNumber(prod.cantity * prod.wholesalePrice) : roundNumber(prod.cantity * prod.salePrice);
-                else prod.import = roundNumber(prod.cantity * prod.salePrice);
+                if(this.wholesale){
+                    prod.import = prod.wholesalePrice ? roundNumber(prod.cantity * prod.wholesalePrice) : roundNumber(prod.cantity * prod.salePrice);
+                    this.applyWholesale();
+                }
+                else{
+                    prod.import = roundNumber(prod.cantity * prod.salePrice);
+                }
                 return prod
             }
         }
@@ -42,6 +49,7 @@ export class saleProducts{
         }
 
         this.products.push(prod);
+        if(this.wholesale) this.applyWholesale();
         return prod
         
     }
@@ -67,20 +75,29 @@ export class saleProducts{
     }
 
     total(): number{
-        return this.products.reduce((acc, prod) => acc + prod.import, 0)
+        return this.products.reduce((acc, prod) => acc + prod.import, 0);
+    }
+
+    count() : number{
+        return this.products.reduce((acc, prod) => acc + Math.ceil(prod.cantity), 0);
     }
 
     applyWholesale(): void{
         this.wholesale = true;
+        this.discount = 0;
+
         for(let prod of this.products){
             prod.import = roundNumber(prod.wholesalePrice ? prod.cantity * prod.wholesalePrice : prod.cantity * prod.salePrice);
+            this.discount += Math.abs(prod.wholesalePrice ? prod.cantity * (prod.wholesalePrice  - prod.salePrice): 0);
         }
     }
 
     undoWholesale(): void{
         this.wholesale = false;
+        this.discount = 0; 
+
         for(let prod of this.products){
             prod.import = roundNumber(prod.cantity * prod.salePrice);
-        }
+        }   
     }
 }
