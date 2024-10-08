@@ -90,6 +90,9 @@ export class saleProducts{
             prod.import = roundNumber(prod.wholesalePrice ? prod.cantity * prod.wholesalePrice : prod.cantity * prod.salePrice);
             this.discount += Math.abs(prod.wholesalePrice ? prod.cantity * (prod.wholesalePrice  - prod.salePrice): 0);
         }
+
+        this.discount = Math.round(this.discount * 100) / 100
+
     }
 
     undoWholesale(): void{
