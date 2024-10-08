@@ -6,6 +6,8 @@ import { TicketService } from 'src/app/services/ticketService/ticket-service';
 import { columnsLong, columnsMedium, columnsSmall, columnLabel } from './table-columns';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ModifyTicketComponent } from './modify-ticket/modify-ticket.component';
 
 
 export interface PeriodicElement {
@@ -31,7 +33,7 @@ export interface ticket {
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.css'],
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSortModule,FormsModule]
+  imports: [CommonModule, MatTableModule, MatSortModule, FormsModule, MatDialogModule]
 })
 export class TicketsComponent implements AfterViewInit{
   displayedColumns!: any;
@@ -44,6 +46,7 @@ export class TicketsComponent implements AfterViewInit{
 
   constructor(
     private ticketService : TicketService,
+    private modal : MatDialog,
   ){
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
@@ -126,6 +129,20 @@ export class TicketsComponent implements AfterViewInit{
         icon: "warning",
         title: "No ha seleccionado ticket",
         text: "Aun no ha elegido un ticket, por favor, eliga uno!",
+      });
+    }
+  }
+
+  modifyTicket(): void{
+    if(this.ticketRow){
+      const modalRef = this.modal.open(ModifyTicketComponent,{
+        width: '80%',
+        height: '80%',
+        data: { ticket: this.ticketRow}
+      });
+  
+      modalRef.afterClosed().subscribe(product => {
+        if(product) console.log('xd')
       });
     }
   }

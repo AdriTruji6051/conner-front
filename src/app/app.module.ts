@@ -16,6 +16,7 @@ import { CommonProductComponent } from './dashboard/bill/common-product/common-p
 import { GranelSaleComponent } from './dashboard/bill/granel-sale/granel-sale.component';
 import { SubmitBillComponent } from './dashboard/bill/submit-bill/submit-bill.component';
 import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.component';
+import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-ticket.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.compo
     GranelSaleComponent,
     SubmitBillComponent,
     NewTicketComponent,
+    ModifyTicketComponent,
   ],
   imports: [
     SelectProductComponent,

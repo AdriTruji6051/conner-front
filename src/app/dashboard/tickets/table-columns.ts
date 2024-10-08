@@ -1,14 +1,15 @@
 export const columnsLong: string[] =[
     'ID',
+    'createdAt',
     'articleCount', 
     'notes', 
     'subTotal', 
-    'total', 
+    'total',
 ]
 
 export const columnsMedium: string[] =[
     'ID', 
-    'articleCount',
+    'createdAt',
     'subTotal',
     'total', 
 ]
@@ -16,7 +17,7 @@ export const columnsMedium: string[] =[
 export const columnsSmall: string[] =[
     'ID', 
     'subTotal', 
-    'total',
+    'createdAt',
 ]
 
 export const columnLabel: any = {
@@ -25,4 +26,5 @@ export const columnLabel: any = {
     notes: 'Notas de venta',
     subTotal: 'Total',
     total: 'Pago con',
+    createdAt: 'Hora',
 }

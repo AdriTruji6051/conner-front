@@ -39,7 +39,7 @@ export class saleProducts{
 
         const prod = {
             code: product.code,
-            description: product.description,
+            description: product.description.toUpperCase(),
             saleType: product.saleType,
             cost: product.cost,
             salePrice: Math.round(product.salePrice * 100) / 100,

@@ -46,6 +46,11 @@ export class BillComponent{
   TicketIndex: number = 0;
   avaliablePrinters!: string[];
 
+  //Previous ticket
+  previousSubTotal!: number;
+  previousProdCount!: number;
+  previousTotal!: number;
+
   //Ticket table
   displayedColumns: string[] = columnsLong;
   columnLabel: any = columnLabel;
