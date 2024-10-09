@@ -16,8 +16,8 @@ import { MatDialogRef } from '@angular/material/dialog';
         </div>
     
         <div class="button-panel">
-            <button type="button" class="pdv-btn square-btn" (click)="dialogRef.close()">Cerrar</button>
-            <button type="submit" id="4" class="pdv-btn square-btn" [disabled]="commonForm.invalid">Crear ticket</button>
+            <button type="button" class="pdv-btn outlined-btn square-btn" (click)="dialogRef.close()">Cerrar</button>
+            <button type="submit" id="4" class="pdv-btn  square-btn" [disabled]="commonForm.invalid">Crear ticket</button>
         </div>
     </form>
   </div>

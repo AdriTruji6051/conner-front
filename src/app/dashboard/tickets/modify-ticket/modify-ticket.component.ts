@@ -8,19 +8,20 @@ import Swal from 'sweetalert2';
   template: `
     <div class="m-3">
       <h4>{{ticket.createdAt}}</h4>
-      <h4>Notas {{ticket.notes}}</h4>
+      <h4 *ngIf="ticket.notes">Notas: {{ticket.notes}}</h4>
 
       <hr>
-      <section>
+      <section class="container-fluid">
         <div class="row" *ngFor="let prod of ticket.products">
-              <div class="col-8">{{prod.description}}</div>
-              <div class="col-4">
-                <input type="number" [(ngModel)]="prod.cantity">
+              <div class="col-8"><b>{{prod.description}}</b></div>
+                <div class="col-4">
+                  <input type="number" class="styled-input" [(ngModel)]="prod.cantity">
                 <div>
                   <small *ngIf="prod.cantity < 0">Ingrese una cantidad valida!.</small>
                 </div>       
               </div>
-            </div>
+              <hr class="my-3">
+         </div>
 
         <button type="button" id="3" class="pdv-btn square-btn" (click)="submitNewTicket()">Actualizar ticket</button>
       </section>

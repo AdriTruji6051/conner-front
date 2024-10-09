@@ -11,9 +11,10 @@
     <ng-container matColumnDef="salePrice">
         <th mat-header-cell *matHeaderCellDef> <h2 class="h2">Precio</h2> </th>
         <td mat-cell *matCellDef="let transaction"> {{transaction.salePrice | currency}} </td>
-    <td mat-footer-cell *matFooterCellDef> 
-        <button mat-button (click)="sendProdcut()" class="btn btn-primary mx-3">Agregar producto</button>
-        <button mat-button (click)="closeModal()" class="btn btn-warning mx-3">Cerrar buscador </button>  <!-- Cerrar el modal y devolver datos -->
+    <td mat-footer-cell *matFooterCellDef class="container row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-5" id="add"><button mat-button (click)="sendProdcut()" class="pdv-btn square-btn m-3">Agregar producto</button></div>
+        <div class="col-lg-5"><button mat-button (click)="closeModal()" class="pdv-btn outlined-btn square-btn m-3">Cerrar buscador </button> </div> 
     </td>
     </ng-container>
 

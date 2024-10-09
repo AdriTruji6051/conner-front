@@ -348,13 +348,22 @@ export class BillComponent{
   
       modalRef.afterClosed().subscribe(request => {
         if(request){
+          this.previousSubTotal = this.activeTicket.products.total();
+          this.previousProdCount = this.activeTicket.products.count();
           this.activeTicket = {
             ticketName: 'Ticket',
             total: 0.00,
             products: new saleProducts()
           }
-          console.log(this.activeTicket.products.get())
           this.getProducts();
+
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Venta registrada!",
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
       });
     }

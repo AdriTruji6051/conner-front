@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModifyTicketComponent } from './modify-ticket/modify-ticket.component';
+import { btnTextDict } from './buttonsText';
 
 
 export interface PeriodicElement {
@@ -38,11 +39,16 @@ export interface ticket {
 export class TicketsComponent implements AfterViewInit{
   displayedColumns!: any;
   columnLabel: any = columnLabel 
+  btnTextDict = btnTextDict;
   dataSource = new MatTableDataSource<ticket>();
   ticketRow!: any;
   date!: any;
   selectedPrinter: number = 0;
   printers!: string[];
+
+  //HTML layout
+  reprintText!: string;
+  editText!: string;
 
   constructor(
     private ticketService : TicketService,
@@ -72,12 +78,18 @@ export class TicketsComponent implements AfterViewInit{
   private onResize(){
     if(window.innerWidth >= 1200){
       this.displayedColumns = columnsLong;
+      this.editText = btnTextDict.edit.long;
+      this.reprintText = btnTextDict.reprint.long;
 
     }else if(window.innerWidth <= 1200 && window.innerWidth >= 668){
       this.displayedColumns = columnsMedium;
+      this.editText = btnTextDict.edit.medium;
+      this.reprintText = btnTextDict.reprint.medium;
     }
     else{
       this.displayedColumns = columnsSmall;
+      this.editText = btnTextDict.edit.small;
+      this.reprintText = btnTextDict.reprint.small;
     }
   }
 

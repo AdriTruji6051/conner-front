@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Inject } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import { Product } from './products';
@@ -13,7 +13,7 @@ import { Product } from './products';
   imports: [MatTableModule, CommonModule]
 })
 
-export class SelectProductComponent {
+export class SelectProductComponent{
   constructor(
     public dialogRef: MatDialogRef<SelectProductComponent>,
     @Inject(MAT_DIALOG_DATA) public data : {products : any[]}

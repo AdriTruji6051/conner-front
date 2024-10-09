@@ -59,8 +59,8 @@ html, body { height: 100%; margin: 0;padding: 0;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 svg{
-    width: 24px;
-    height: 24px;
+    height: calc(1em + 7px);
+    width: calc(1em + 7px);
     fill: currentColor;
 }
 
@@ -81,15 +81,23 @@ svg{
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     font-weight: 400;
+    
 }
 
 .pdv-btn:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: var(--600-color);
+    color: white;
 }
 
 .square-btn {
     border-radius: 12px;
+}
+
+.outlined-btn{
+    border: var(--500-color) 2px solid;
+    background-color: transparent;
+    color: var(--500-color);
 }
 
 .pdv-btn-fab {
@@ -282,4 +290,10 @@ svg{
 
 #currentMonth {
     font-weight: bold;
+}
+
+@media (max-width: 576px) {
+    .pdv-btn {
+        padding: 10px 10px 10px 10px;
+    }
 }

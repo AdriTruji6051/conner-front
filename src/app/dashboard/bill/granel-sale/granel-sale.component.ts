@@ -26,7 +26,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
       
           <div class="button-panel">
               <button type="button" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || cantity < 0.01" (click)="submitProduct()">Agregar</button>
-              <button type="button" class="pdv-btn square-btn" (click)="dialogRef.close()">Cerrar</button>
+              <button type="button" class="pdv-btn square-btn outlined-btn" (click)="dialogRef.close()">Cerrar</button>
           </div>
       </form>
   </div>
@@ -64,10 +64,21 @@ export class GranelSaleComponent {
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
 
-    if(event.key === 'Enter' && this.actualInputId != 3){
+    if(event.key === 'Enter' && this.actualInputId != 4){
       this.actualInputId++;
       document.getElementById(this.actualInputId.toString())?.focus();
-    }else if(event.key === 'F5') event.preventDefault();
+    }else if(event.key === 'F5') {
+      event.preventDefault();
+    }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4 ){
+      event.preventDefault();
+      this.actualInputId++;
+      document.getElementById(this.actualInputId.toString())?.focus();
+    }else if(event.key === 'ArrowUp' && this.actualInputId != 3 || event.key === 'ArrowLeft' && this.actualInputId != 1 ){
+      event.preventDefault();
+      this.actualInputId--;
+      document.getElementById(this.actualInputId.toString())?.focus();
+    }
+    
   }
 
   constructor(

@@ -2,7 +2,7 @@
     <!-- UTILITIES PANEL -->
     <div class="row p-2 m-2 utilities">
         <div class="col-lg-6">
-            <input type="text" id="search-input" class="search-input" [(ngModel)]="inputSearch" autocomplete="off" (keyup.enter)="searchProduct()" placeholder="Busca el producto o escribe su código" aria-label="Escribe el nombre del producto o escribe su código para buscar">
+            <input type="text" id="search-input" class="search-input" [(ngModel)]="inputSearch" autocomplete="off" (keyup.enter)="searchProduct()" placeholder="Busca por nombre ó código" aria-label="Escribe el nombre del producto o escribe su código para buscar">
             <svg class="svg-color svg-input-search" xmlns="http://www.w3.org/2000/svg" (click)="searchProduct()" viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
             </svg>
         </div>
@@ -56,8 +56,13 @@
                 <p class="fs-4 m-3">Productos: <b>{{productsCount}}</b></p>
                 <p class="fs-4 m-3" *ngIf="apliedDiscount">Descuento: <b>${{apliedDiscount}}</b></p>
             </div>
-            <div class="container-bill col-lg-3">
-                
+            <div class="container-bill col-lg-3 px-4">
+                <div *ngIf="previousSubTotal">
+                    <h3><b>Ticket previo</b></h3>
+                    <p class="fs-5 m-1">Total: <b>{{previousSubTotal}}</b></p>
+                    <!-- <p class="fs-5 m-1">Pagaron con: <b>{{previousTotal}}</b></p> -->
+                    <p class="fs-5 m-1">Productos: <b>{{previousProdCount}}</b></p>
+                </div>
             </div>
 
         </div>
