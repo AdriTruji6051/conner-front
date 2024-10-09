@@ -31,7 +31,7 @@ export class AuthService {
             sessionStorage.setItem('user', JSON.stringify(user));
           }
         }),
-        map((res) => 'success'), // Si llega aquí, el inicio de sesión fue exitoso.
+        map((res) => 'success'),
         catchError((error: any) => {
           if (error instanceof HttpResponse && error.status === 401) {
             return of('error');
