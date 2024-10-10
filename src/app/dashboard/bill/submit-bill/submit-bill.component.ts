@@ -103,7 +103,7 @@ export class SubmitBillComponent {
     if(event.key === 'Enter' && this.actualInputId != 4){
       this.actualInputId++;
       document.getElementById(this.actualInputId.toString())?.focus();
-    }else if(event.key === 'F5') {
+    }else if(event.key === 'F1' || event.key === 'F3' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10') {
       event.preventDefault();
     }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4 ){
       event.preventDefault();
@@ -121,7 +121,7 @@ export class SubmitBillComponent {
       this.registerSaleText = this.btnTextDict.submit.long;
       this.printSaleText = this.btnTextDict.print.long;
     }
-    else if(window.innerWidth <= 1200 && window.innerWidth >= 668){
+    else if(window.innerWidth <= 1600 && window.innerWidth >= 668){
       this.registerSaleText = this.btnTextDict.submit.medium;
       this.printSaleText = this.btnTextDict.print.medium;
     }

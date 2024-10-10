@@ -28,4 +28,5 @@ export const columnLabel: any = {
   wholesalePrice: 'Precio de mayoreo',
   cantity: 'Cantidad',
   import: 'Importe',
+  options: '',
 }

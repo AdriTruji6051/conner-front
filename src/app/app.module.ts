@@ -17,6 +17,7 @@ import { GranelSaleComponent } from './dashboard/bill/granel-sale/granel-sale.co
 import { SubmitBillComponent } from './dashboard/bill/submit-bill/submit-bill.component';
 import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.component';
 import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-ticket.component';
+import { ModifyPriceComponent } from './dashboard/bill/modify-price/modify-price.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-
     SubmitBillComponent,
     NewTicketComponent,
     ModifyTicketComponent,
+    ModifyPriceComponent,
   ],
   imports: [
     SelectProductComponent,

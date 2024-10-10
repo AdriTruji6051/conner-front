@@ -15,14 +15,14 @@
     fill: var(--500-color);
 }
 
-.svg-input-search{
-    cursor: pointer;
-    margin-left: -50px;
-    margin-top: -5px;
+.svg-color:hover{
+    fill: var(--700-color)!important;
 }
 
-.svg-input-search:hover{
-    fill: var(--700-color)!important;
+.svg-input-search{
+    cursor: pointer;
+    margin-left: -60px;
+    padding: 8px;
 }
 
 .table-container{
@@ -93,4 +93,5 @@
     font-weight: 800!important;
     font-size: medium;
 }
+
   

@@ -118,13 +118,12 @@ export class TicketsComponent implements AfterViewInit{
       this.ticketService.printTicketById(data).subscribe({
         next: (answ) => 
           {
-            console.log(answ);
             Swal.fire({
               position: "top-end",
               icon: "success",
               title: "Ticket reimpreso!",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500 
             });
           },
         error: (err) => {
@@ -147,15 +146,12 @@ export class TicketsComponent implements AfterViewInit{
 
   modifyTicket(): void{
     if(this.ticketRow){
-      const modalRef = this.modal.open(ModifyTicketComponent,{
+      this.modal.open(ModifyTicketComponent,{
         width: '80%',
         height: '80%',
         data: { ticket: this.ticketRow}
       });
-  
-      modalRef.afterClosed().subscribe(product => {
-        if(product) console.log('xd')
-      });
+
     }
   }
 }

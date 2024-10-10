@@ -74,6 +74,7 @@ export class ModifyTicketComponent {
       this.ticketOriginal.profit = Math.ceil(this.ticket.profit * 100) / 100;
       this.ticketOriginal.discount = this.ticket.discount;
       this.ticketOriginal.subTotal = this.ticket.subTotal;
+      this.ticketOriginal.total = this.ticket.total - this.ticket.subTotal < 0 ? this.ticket.subTotal: this.ticket.total;
       this.ticketOriginal.articleCount = this.ticket.articleCount;
       this.ticketOriginal.products = newProducts;
 

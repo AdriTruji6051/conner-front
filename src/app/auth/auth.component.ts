@@ -25,9 +25,7 @@ export class AuthComponent {
     }
 
     this.authService.login(datos).subscribe((res) =>{
-      console.log(res)
       if(res === 'success'){
-        console.log(this.authService.user);
         this.router.navigate(['/dashboard']);
       }else{
         alert('No permitido');

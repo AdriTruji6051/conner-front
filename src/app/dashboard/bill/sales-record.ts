@@ -15,6 +15,7 @@ export class saleProducts{
     private products: ProductTicket[];
     public wholesale: boolean;
     public discount: number;
+    public modifiedWholesaleProd: any = {};
 
     constructor(){
         this.products = []
@@ -52,6 +53,26 @@ export class saleProducts{
         if(this.wholesale) this.applyWholesale();
         return prod
         
+    }
+
+    update(product: any){
+        for(let prod of this.products){
+            if(prod.code === product.code){
+                prod.salePrice = product.salePrice;
+                prod.wholesalePrice = product.wholesalePrice;
+
+                if(this.wholesale){
+                    prod.import = prod.wholesalePrice ? roundNumber(prod.cantity * prod.wholesalePrice) : roundNumber(prod.cantity * prod.salePrice);
+                    this.applyWholesale();
+                }
+                else{
+                    prod.import = roundNumber(prod.cantity * prod.salePrice);
+                }
+
+                return prod
+            }
+        }
+        return null;
     }
 
     remove(product: any, cantity: number): any{

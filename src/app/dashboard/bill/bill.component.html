@@ -3,8 +3,10 @@
     <div class="row p-2 m-2 utilities">
         <div class="col-lg-6">
             <input type="text" id="search-input" class="search-input" [(ngModel)]="inputSearch" autocomplete="off" (keyup.enter)="searchProduct()" placeholder="Busca por nombre ó código" aria-label="Escribe el nombre del producto o escribe su código para buscar">
-            <svg class="svg-color svg-input-search" xmlns="http://www.w3.org/2000/svg" (click)="searchProduct()" viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
-            </svg>
+            <button class="pdv-btn-icon svg-input-search" (click)="searchProduct()">
+                <svg class="svg-color" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+            </button>
+            
         </div>
         <div class="d-flex flex-row justify-content-center gap-3 p-1 col-lg-6" style="height: 50px;">
             <select class="styled-select" [(ngModel)] = "TicketIndex" (ngModelChange)="changeTicket($event)">
@@ -17,7 +19,6 @@
         </div>
     </div>
     <!-- END UTILITES PANEL -->
-
     <!-- TABLE FOR BILL -->
     <div class="table-container m-1">
         <section class="example-container mat-elevation-z8" tabindex="0">
@@ -27,15 +28,35 @@
                 <th mat-header-cell *matHeaderCellDef> {{columnLabel[column]}}</th>
                 <td mat-cell *matCellDef="let product" [ngClass]="{'bold-text': column == 'salePrice' && activeTicket.products.wholesale != true || column == 'wholesalePrice' && activeTicket.products.wholesale == true}"> {{product[column]}} </td>
               </ng-container>
+
+              <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef>&nbsp;</th>
+                <td mat-cell *matCellDef="let product">
+                    <button class="pdv-btn-icon-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" [matMenuTriggerFor]="menu" viewBox="0 -960 960 960"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="addProduct(product)">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg> Añadir</span>
+                        </button>
+                        <button mat-menu-item (click)="removeProduct(1)">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M200-440v-80h560v80H200Z"/></svg> Eliminar</span>
+                        </button>
+                        <button mat-menu-item (click)="modifyProductPrice(product)">
+                            <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM513-160l286-286-353-354H160v286l353 354ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Zm220 160Z"/></svg> Modificar</span>
+                        </button>
+                    </mat-menu>
+                </td>
+              </ng-container>
               
-              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsWithOptions; sticky: true"></tr>
               <tr
                 [id]="'row' + row.code"
                 mat-row
                 (click)="selectProduct(row)"
                 [class.wholesale-row]="activeTicket?.products.wholesale"
                 [class.selected-row]="row.code == productRow?.code"
-                *matRowDef="let row; columns: displayedColumns;"
+                *matRowDef="let row; columns: displayedColumnsWithOptions;"
                 ></tr>
             </table>
           </section>

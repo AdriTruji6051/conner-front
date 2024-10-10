@@ -6,6 +6,7 @@ import {CommonModule, CurrencyPipe} from '@angular/common';
 import {MatTableModule, MatTableDataSource} from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { btnTextDict } from './buttonsText';
 import { saleProducts } from './sales-record';
@@ -19,13 +20,14 @@ import { columnsLong, columnsMedium, columnsSmall, columnLabel } from './table-c
 import { SubmitBillComponent } from './submit-bill/submit-bill.component';
 import { NewTicketComponent } from './new-ticket/new-ticket.component';
 import { TicketService } from 'src/app/services/ticketService/ticket-service';
+import { ModifyPriceComponent } from './modify-price/modify-price.component';
 
 @Component({
   selector: 'app-bill',
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css'],
   standalone: true,
-  imports: [MatTableModule, CurrencyPipe,MatDialogModule, CommonModule, FormsModule],
+  imports: [MatTableModule, CurrencyPipe,MatDialogModule, CommonModule, FormsModule, MatMenuModule],
 })
 
 export class BillComponent{
@@ -53,6 +55,8 @@ export class BillComponent{
 
   //Ticket table
   displayedColumns: string[] = columnsLong;
+  displayedColumnsWithOptions: string[] = [...columnsLong, 'options'];
+  
   columnLabel: any = columnLabel;
 
   //Products data
@@ -77,6 +81,10 @@ export class BillComponent{
       document.getElementById('search-input')?.focus()
 
       switch (true) {
+        case key === 'Enter':
+          this.searchProduct();
+          break;
+          
         case key === 'ArrowDown':
           this.nextProduct();
           break;
@@ -169,7 +177,6 @@ export class BillComponent{
         this.ticketService.getPrinters().subscribe({
           next: (data) =>{
             this.avaliablePrinters = data;
-            console.log(this.avaliablePrinters);
           }
         })
       },
@@ -186,6 +193,7 @@ export class BillComponent{
       this.wholesaleBtnText = this.btnTextDict.wholesale.long;
       this.collectBtnText = this.btnTextDict.collect.long;
       this.displayedColumns = columnsLong;
+      this.displayedColumnsWithOptions = [...columnsLong, 'options'];
     }
     else if(window.innerWidth <= 1600 && window.innerWidth > 1200){ 
       this.deleteProdBtnText = this.btnTextDict.delete.medium;
@@ -198,14 +206,14 @@ export class BillComponent{
       this.commontArtBtnText = this.btnTextDict.common.medium;
       this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
       this.collectBtnText = this.btnTextDict.collect.medium;
-      this.displayedColumns = columnsMedium;
+      this.displayedColumnsWithOptions = [...columnsMedium, 'options'];
     }
     else{
       this.deleteProdBtnText = this.btnTextDict.delete.small;
       this.commontArtBtnText = this.btnTextDict.common.small;
       this.wholesaleBtnText = this.btnTextDict.wholesale.small;
       this.collectBtnText = this.btnTextDict.collect.small;
-      this.displayedColumns = columnsSmall;
+      this.displayedColumnsWithOptions = [...columnsSmall, 'options'];
     }
   }
 
@@ -269,9 +277,11 @@ export class BillComponent{
         next: (data) => findedProducts = data,
         error: () => {
           Swal.fire({
-            icon: "warning",
-            title: "Intente nuevamente",
-            text: "No hay coincidencias con esa busqueda!",
+            position: "top-end",
+            icon: "error",
+            title: "No hay coincidencias con el producto!",
+            showConfirmButton: false,
+            timer: 900
           });
           this.inputSearch = '';
         },
@@ -389,6 +399,21 @@ export class BillComponent{
 
         this.changeTicket(this.TicketIndex);
       };
+    });
+  }
+
+  modifyProductPrice(product: any): void{
+    const modalRef = this.modal.open(ModifyPriceComponent,{
+      width: '500px',
+      height: '350px',
+      data: {
+        product: product
+      }
+    });
+
+    modalRef.afterClosed().subscribe(newProd => {
+      this.activeTicket.products.update(newProd);
+      this.getProducts();
     });
   }
 
