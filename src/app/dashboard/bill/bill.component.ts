@@ -81,10 +81,6 @@ export class BillComponent{
       document.getElementById('search-input')?.focus()
 
       switch (true) {
-        case key === 'Enter':
-          this.searchProduct();
-          break;
-          
         case key === 'ArrowDown':
           this.nextProduct();
           break;
@@ -224,13 +220,19 @@ export class BillComponent{
 
   removeProduct(remove: number = 0): void{
     if(remove > 0){
+      if(this.productRow.cantity - remove <= 0){
+        this.activeTicket.products.remove(this.productRow, remove);
+        if(this.productRowIndex === 0){
+          this.productRowIndex--;
+          this.nextProduct();
+        } 
+        else this.previousProduct();
+        return
+      }
+
       this.activeTicket.products.remove(this.productRow, remove);
-        
-      if(this.productRowIndex === 0){
-        this.productRowIndex--;
-        this.nextProduct();
-      } 
-      else this.previousProduct();
+      this.getProducts();
+      
     }else{
       Swal.fire({
         title: "¿Desea eliminar el producto de la cuenta?",
