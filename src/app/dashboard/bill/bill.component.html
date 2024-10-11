@@ -2,11 +2,26 @@
     <!-- UTILITIES PANEL -->
     <div class="row p-2 m-2 utilities">
         <div class="col-lg-6">
-            <input type="text" id="search-input" class="search-input" [(ngModel)]="inputSearch" autocomplete="off" (keyup.enter)="searchProduct()" placeholder="Busca por nombre ó código" aria-label="Escribe el nombre del producto o escribe su código para buscar">
+            <input
+                id="search-input"
+                type="text"
+                class="search-input" 
+                placeholder="Busca por nombre ó código"
+                [formControl]="inputSearch"
+                [matAutocomplete]="auto"
+                (keyup.enter)="searchProduct()"
+            >
+             <mat-autocomplete #auto="matAutocomplete"
+             >
+            <mat-option 
+                *ngFor="let product of filteredProducts | async" [value]="product.description"
+                >
+                {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
+                </mat-option>
+            </mat-autocomplete>
             <button class="pdv-btn-icon svg-input-search" (click)="searchProduct()">
                 <svg class="svg-color" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             </button>
-            
         </div>
         <div class="d-flex flex-row justify-content-center gap-3 p-1 col-lg-6" style="height: 50px;">
             <select class="styled-select" [(ngModel)] = "TicketIndex" (ngModelChange)="changeTicket($event)">

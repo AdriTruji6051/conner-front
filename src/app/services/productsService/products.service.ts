@@ -37,9 +37,9 @@ export class ProductsService {
     }
   }
 
-  getProductNames(): Observable<any>{
+  getProductNames(description: string): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + '/api/get/all/products', {
+    .get<any>(this.apiURL + `/api/get/products/description/by/description/${encodeURI(description)}`, {
       headers: this.headers
     })
     .pipe(
@@ -52,7 +52,7 @@ export class ProductsService {
 
   getProduct(data: any): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + '/api/get/product/' + data, {
+    .get<any>(this.apiURL + `/api/get/product/${encodeURI(data)}`, {
       headers: this.headers
     })
     .pipe(

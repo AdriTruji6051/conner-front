@@ -1,8 +1,9 @@
 import { Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
-import { BehaviorSubject} from 'rxjs';
+import { BehaviorSubject, map, Observable, startWith} from 'rxjs';
 
 
 import {CommonModule, CurrencyPipe} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatTableModule, MatTableDataSource} from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -13,7 +14,7 @@ import { saleProducts } from './sales-record';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import Swal from 'sweetalert2';
 import { SelectProductComponent } from '../products/select-product/select-product.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonProductComponent } from './common-product/common-product.component';
 import { GranelSaleComponent } from './granel-sale/granel-sale.component';
 import { columnsLong, columnsMedium, columnsSmall, columnLabel } from './table-columns';
@@ -27,7 +28,7 @@ import { ModifyPriceComponent } from './modify-price/modify-price.component';
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css'],
   standalone: true,
-  imports: [MatTableModule, CurrencyPipe,MatDialogModule, CommonModule, FormsModule, MatMenuModule],
+  imports: [MatTableModule, CurrencyPipe,MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule],
 })
 
 export class BillComponent{
@@ -37,7 +38,10 @@ export class BillComponent{
   wholesaleBtnText! :string;
   collectBtnText!: string;
 
-  inputSearch = '';
+  //Finded products
+  inputSearch = new FormControl('');
+  filteredProducts!: Observable<any[]>;
+  products!: any;
 
   //Active ticket
   activeTicket!: any;
@@ -65,6 +69,13 @@ export class BillComponent{
   productRowIndex = 0;
 
 
+  //Filter products events
+  private _filterProducts(value: string): any[] {
+    const filterValue = value.toLowerCase();
+
+    return this.products.filter((product: { description: string; }) => product.description.toLowerCase().includes(filterValue));
+  }
+
 
   //Screen events
   private screenWidth = new BehaviorSubject<number>(window.innerWidth);
@@ -78,9 +89,13 @@ export class BillComponent{
     const key = event.key;    
     
     if(this.modal.openDialogs.length === 0){
-      document.getElementById('search-input')?.focus()
-
+      console.log(key);
       switch (true) {
+        case key === 'Escape':
+          document.getElementById('search-input')?.blur();
+          document.getElementById('search-input')?.blur();
+          break;
+
         case key === 'ArrowDown':
           this.nextProduct();
           break;
@@ -124,6 +139,7 @@ export class BillComponent{
           break;
 
         case key === 'F10':
+          document.getElementById('search-input')?.focus();
           event.preventDefault();
           break;
         
@@ -144,7 +160,9 @@ export class BillComponent{
           
         case key.length === 1 && regex.test(key):
           event.preventDefault();
-          this.inputSearch += key;
+          document.getElementById('search-input')?.focus()
+          var value = this.inputSearch.value;
+          this.inputSearch.setValue(value += key);
           break;
       }
     }
@@ -155,6 +173,26 @@ export class BillComponent{
     private ticketService: TicketService,
     private modal : MatDialog,
   ) {
+
+
+    this.inputSearch.valueChanges.subscribe({
+      next: () =>{
+        const search = this.inputSearch.value
+        if(search){
+          this.productsService.getProductNames(search).subscribe({
+            next: (data) =>{
+              this.products = data;
+              this.filteredProducts = this.inputSearch.valueChanges.pipe(
+                startWith(''),
+                map(product => (product ? this._filterProducts(product) : this.products.slice())),
+              );
+            }
+          })
+        }
+          
+      },
+    });
+
 
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
@@ -275,8 +313,8 @@ export class BillComponent{
 
   searchProduct(){
     var findedProducts: any;
-    if(this.inputSearch){
-      this.productsService.getProduct(this.inputSearch).subscribe({
+    if(this.inputSearch.value){
+      this.productsService.getProduct(this.inputSearch.value).subscribe({
         next: (data) => findedProducts = data,
         error: () => {
           Swal.fire({
@@ -286,7 +324,8 @@ export class BillComponent{
             showConfirmButton: false,
             timer: 900
           });
-          this.inputSearch = '';
+          this.inputSearch.setValue('');
+          this.products = null;
         },
         complete: () => this.processFindedProduct(findedProducts)
       });
@@ -295,13 +334,13 @@ export class BillComponent{
 
   processFindedProduct(findedProducts: any){
       if(findedProducts.length === 1 && findedProducts[0].code){
-        if(findedProducts[0].code === this.inputSearch) findedProducts[0].saleType != 'D' ? this.addProduct(findedProducts[0]): this.grannelProduct(findedProducts[0]);
+        if(findedProducts[0].code === this.inputSearch.value) findedProducts[0].saleType != 'D' ? this.addProduct(findedProducts[0]): this.grannelProduct(findedProducts[0]);
         else this.openFindedModal(findedProducts);
       }else{
         this.openFindedModal(findedProducts);
       }
 
-      this.inputSearch = '';
+      this.inputSearch.setValue('');
     }
   
     //MODALS
