@@ -155,6 +155,7 @@ export class BillComponent{
     private ticketService: TicketService,
     private modal : MatDialog,
   ) {
+
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
 
@@ -362,11 +363,15 @@ export class BillComponent{
         if(request){
           this.previousSubTotal = this.activeTicket.products.total();
           this.previousProdCount = this.activeTicket.products.count();
-          this.activeTicket = {
+
+          this.salesRecord[this.TicketIndex] = {
             ticketName: 'Ticket',
             total: 0.00,
             products: new saleProducts()
-          }
+          };
+
+          this.activeTicket = this.salesRecord[this.TicketIndex];
+
           this.getProducts();
 
           Swal.fire({
