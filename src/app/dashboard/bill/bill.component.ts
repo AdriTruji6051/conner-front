@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
-import { BehaviorSubject, map, Observable, startWith} from 'rxjs';
+import { BehaviorSubject, debounceTime, map, Observable, of, startWith} from 'rxjs';
 
 
 import {CommonModule, CurrencyPipe} from '@angular/common';
@@ -76,7 +76,6 @@ export class BillComponent{
     return this.products.filter((product: { description: string; }) => product.description.toLowerCase().includes(filterValue));
   }
 
-
   //Screen events
   private screenWidth = new BehaviorSubject<number>(window.innerWidth);
   screenWidth$ = this.screenWidth.asObservable();
@@ -85,22 +84,16 @@ export class BillComponent{
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9¡!¿?.,:;()@#$%^&*_~\[\]\{\} ]*$/;
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9¡!¿?"-=,:;()@#$%^&*_~\[\]\{\} ]*$/;
     const key = event.key;    
     
     if(this.modal.openDialogs.length === 0){
-      console.log(key);
       switch (true) {
-        case key === 'Escape':
-          document.getElementById('search-input')?.blur();
-          document.getElementById('search-input')?.blur();
-          break;
-
-        case key === 'ArrowDown':
+        case key === 'ArrowDown' && document.activeElement != document.getElementById('search-input'):
           this.nextProduct();
           break;
           
-        case key === 'ArrowUp':
+        case key === 'ArrowUp' && document.activeElement != document.getElementById('search-input'):
           this.previousProduct();
           break;
         
@@ -140,6 +133,7 @@ export class BillComponent{
 
         case key === 'F10':
           document.getElementById('search-input')?.focus();
+          document.getElementById('search-input')?.click();
           event.preventDefault();
           break;
         
@@ -158,11 +152,14 @@ export class BillComponent{
           this.newCommonProduct();
           break;
           
-        case key.length === 1 && regex.test(key):
+        case key.length === 1:
           event.preventDefault();
           document.getElementById('search-input')?.focus()
-          var value = this.inputSearch.value;
-          this.inputSearch.setValue(value += key);
+          document.getElementById('search-input')?.click();
+          if(regex.test(key)){
+            var value = this.inputSearch.value;
+            this.inputSearch.setValue(value += key);
+          }
           break;
       }
     }
@@ -174,9 +171,9 @@ export class BillComponent{
     private modal : MatDialog,
   ) {
 
-
-    this.inputSearch.valueChanges.subscribe({
+    this.inputSearch.valueChanges.pipe(debounceTime(300)).subscribe({
       next: () =>{
+        console.log('Has changed', this.inputSearch.value)
         const search = this.inputSearch.value
         if(search){
           this.productsService.getProductNames(search).subscribe({
@@ -192,7 +189,6 @@ export class BillComponent{
           
       },
     });
-
 
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
@@ -250,6 +246,10 @@ export class BillComponent{
       this.collectBtnText = this.btnTextDict.collect.small;
       this.displayedColumnsWithOptions = [...columnsSmall, 'options'];
     }
+  }
+
+  blurInput(): void{
+    document.getElementById('search-input')?.blur();
   }
 
   addProduct(product: any, cantity?: any): void{
@@ -313,6 +313,7 @@ export class BillComponent{
 
   searchProduct(){
     var findedProducts: any;
+    this.filteredProducts = of([]);
     if(this.inputSearch.value){
       this.productsService.getProduct(this.inputSearch.value).subscribe({
         next: (data) => findedProducts = data,
@@ -330,6 +331,8 @@ export class BillComponent{
         complete: () => this.processFindedProduct(findedProducts)
       });
     }
+
+    this.blurInput();
   }
 
   processFindedProduct(findedProducts: any){

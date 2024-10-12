@@ -21,8 +21,8 @@
 
 .svg-input-search{
     cursor: pointer;
-    margin-left: -60px;
-    padding: 8px;
+    margin-left: -50px;
+    padding: 5px;
 }
 
 .table-container{
@@ -71,17 +71,24 @@
 }
 
 /* Material table */
+.mat-mdc-cell,.mdc-data-table__cell,.cdk-cell,.cdk-column-description,.mat-column-description, .ng-star-inserted {
+    padding: 5px!important;
+    height: auto!important;
+    font-weight: 500!important;
+}
+
 .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
-    cursor: pointer;
+    padding: 0!important;
+    border-color: var(--200-color);
   }
 
 .mat-mdc-row:hover .mat-mdc-cell {
-    border-color: currentColor;
+    border-color: var(--950-color);
 }
 .selected-row{
-    font-weight: 500!important;
+    font-weight: 700!important;
     background-color: var(--100-color)!important;   
 }
 
@@ -90,7 +97,7 @@
 }
 
 .bold-text {
-    font-weight: 800!important;
+    font-weight: 1000!important;
     font-size: medium;
 }
 

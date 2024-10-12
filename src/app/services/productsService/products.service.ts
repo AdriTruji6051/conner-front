@@ -29,9 +29,6 @@ export class ProductsService {
     if(err.status === 401){
       Swal.fire('Error', 'La sesión ha caducado, favor de iniciar sesión nuevamente!', 'error');
       this.router.navigate(['/auth']);
-    }else if(err.status === 500){
-      Swal.fire('Error', 'La sesión ha caducado, favor de iniciar sesión nuevamente!', 'error');
-      this.router.navigate(['/auth']);
     }else{
       console.error(err);
     }
@@ -39,8 +36,8 @@ export class ProductsService {
 
   getProductNames(description: string): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + `/api/get/products/description/by/description/${encodeURI(description)}`, {
-      headers: this.headers
+    .get<any>(this.apiURL + `/api/get/products/description/${encodeURIComponent(description)}`, {
+      headers: this.headers,
     })
     .pipe(
       catchError((error: HttpErrorResponse) => {
@@ -50,9 +47,9 @@ export class ProductsService {
     )
   }
 
-  getProduct(data: any): Observable<any>{
+  getProduct(description: any): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + `/api/get/product/${encodeURI(data)}`, {
+    .get<any>(this.apiURL + `/api/get/product/${encodeURIComponent(description)}`, {
       headers: this.headers
     })
     .pipe(

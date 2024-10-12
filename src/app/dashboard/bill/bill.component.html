@@ -9,17 +9,20 @@
                 placeholder="Busca por nombre ó código"
                 [formControl]="inputSearch"
                 [matAutocomplete]="auto"
-                (keyup.enter)="searchProduct()"
+                (keydown.enter)="searchProduct()"
+                (keydown.esc)="blurInput()"
             >
-             <mat-autocomplete #auto="matAutocomplete"
+             <mat-autocomplete 
+                #auto="matAutocomplete"
              >
-            <mat-option 
-                *ngFor="let product of filteredProducts | async" [value]="product.description"
-                >
-                {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
+                <mat-option
+                    *ngFor="let product of filteredProducts | async" [value]="product.code"
+                    (keydown.esc)="blurInput()"
+                    >
+                    {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
                 </mat-option>
             </mat-autocomplete>
-            <button class="pdv-btn-icon svg-input-search" (click)="searchProduct()">
+            <button class="pdv-btn-icon svg-input-search"  (click)="searchProduct()">
                 <svg class="svg-color" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             </button>
         </div>
@@ -28,7 +31,7 @@
                 <option *ngFor="let tickt of salesRecord; let i = index" [value]="i">{{tickt.ticketName}}</option>
                 <option value="CREATE-NEW-TICKET">Crear nuevo ticket</option>
             </select>
-            <button class="pdv-btn" (click)="wholesale()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
+            <button class="pdv-btn" id="search-btn" (click)="wholesale()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
             <button class="pdv-btn" (click)="removeProduct()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
             <button class="pdv-btn" (click)="newCommonProduct()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
         </div>
@@ -36,12 +39,12 @@
     <!-- END UTILITES PANEL -->
     <!-- TABLE FOR BILL -->
     <div class="table-container m-1">
-        <section class="example-container mat-elevation-z8" tabindex="0">
+        <section class="example-container" tabindex="0">
             <table mat-table [dataSource]="dataSource">
               <!-- Responsive column -->
               <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
                 <th mat-header-cell *matHeaderCellDef> {{columnLabel[column]}}</th>
-                <td mat-cell *matCellDef="let product" [ngClass]="{'bold-text': column == 'salePrice' && activeTicket.products.wholesale != true || column == 'wholesalePrice' && activeTicket.products.wholesale == true}"> {{product[column]}} </td>
+                <td mat-cell *matCellDef="let product" [ngClass]="{'bold-text': column == 'salePrice' && activeTicket.products.wholesale != true || column == 'wholesalePrice' && activeTicket.products.wholesale == true ||  column == 'import'}"> {{product[column]}} </td>
               </ng-container>
 
               <ng-container matColumnDef="options">

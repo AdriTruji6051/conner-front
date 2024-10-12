@@ -9,9 +9,9 @@ export const columnsLong: string[] =[
 
 export const columnsMedium: string[] =[
     'description', 
-    'cantity',
     'salePrice',
     'wholesalePrice', 
+    'cantity',
     'import',
 ]
 
