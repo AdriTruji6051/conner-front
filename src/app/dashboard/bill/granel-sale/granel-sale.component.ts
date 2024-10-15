@@ -67,7 +67,7 @@ export class GranelSaleComponent {
     if(event.key === 'Enter' && this.actualInputId != 4){
       this.actualInputId++;
       document.getElementById(this.actualInputId.toString())?.focus();
-    }else if(event.key === 'F1' || event.key === 'F3' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10') {
+    }else if(event.key === 'F1' || event.key === 'F3' || event.key === 'F4' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10' || event.key === 'F11' || event.key === 'F12'){
       event.preventDefault();
     }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4 ){
       event.preventDefault();

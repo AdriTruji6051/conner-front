@@ -11,6 +11,7 @@
                 [matAutocomplete]="auto"
                 (keydown.enter)="searchProduct()"
                 (keydown.esc)="blurInput()"
+                (blur)="resetInput()"
             >
              <mat-autocomplete 
                 #auto="matAutocomplete"
@@ -18,6 +19,7 @@
                 <mat-option
                     *ngFor="let product of filteredProducts | async" [value]="product.code"
                     (keydown.esc)="blurInput()"
+                    (click)="quickSearch(product.code)"
                     >
                     {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
                 </mat-option>
@@ -98,9 +100,8 @@
             <div class="container-bill col-lg-3 px-4">
                 <div *ngIf="previousSubTotal">
                     <h3><b>Ticket previo</b></h3>
-                    <p class="fs-5 m-1">Total: <b>{{previousSubTotal}}</b></p>
-                    <!-- <p class="fs-5 m-1">Pagaron con: <b>{{previousTotal}}</b></p> -->
-                    <p class="fs-5 m-1">Productos: <b>{{previousProdCount}}</b></p>
+                    <p class="m-1">Total: <b>{{previousSubTotal}}</b> Cambio: <b>{{previousTotal - previousSubTotal}}</b></p>
+                    <p class="m-1">Productos: <b>{{previousProdCount}}</b></p>
                 </div>
             </div>
 

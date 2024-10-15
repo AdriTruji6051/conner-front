@@ -54,7 +54,7 @@ export class NewTicketComponent {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if(event.key === 'F1' || event.key === 'F3' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10'){
+    if(event.key === 'F1' || event.key === 'F3' || event.key === 'F4' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10' || event.key === 'F11' || event.key === 'F12'){
       event.preventDefault();
     }
   }

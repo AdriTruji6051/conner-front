@@ -40,6 +40,7 @@ export class BillComponent{
 
   //Finded products
   inputSearch = new FormControl('');
+  inputCode!: string;
   filteredProducts!: Observable<any[]>;
   products!: any;
 
@@ -111,7 +112,7 @@ export class BillComponent{
           this.removeProduct();
           break;
 
-        case key === 'F1':
+        case key === 'F1' || key === 'F3' || key === 'F4' || key === 'F7':
           event.preventDefault();
           break;
 
@@ -252,6 +253,11 @@ export class BillComponent{
     document.getElementById('search-input')?.blur();
   }
 
+  resetInput(): void{
+    this.inputSearch.setValue('');
+    this.products = null;
+  }
+
   addProduct(product: any, cantity?: any): void{
     const appendedProduct = cantity ? this.activeTicket.products.add(product,cantity) : this.activeTicket.products.add(product);
     this.selectProduct(appendedProduct);
@@ -311,10 +317,16 @@ export class BillComponent{
     return this.activeTicket.products.get();
   }
 
+  quickSearch(prodCode: any): void{
+    this.inputSearch.setValue(prodCode);
+    this.searchProduct();
+  }
+
   searchProduct(){
     var findedProducts: any;
     this.filteredProducts = of([]);
     if(this.inputSearch.value){
+      this.inputCode = this.inputSearch.value;
       this.productsService.getProduct(this.inputSearch.value).subscribe({
         next: (data) => findedProducts = data,
         error: () => {
@@ -325,8 +337,6 @@ export class BillComponent{
             showConfirmButton: false,
             timer: 900
           });
-          this.inputSearch.setValue('');
-          this.products = null;
         },
         complete: () => this.processFindedProduct(findedProducts)
       });
@@ -337,13 +347,13 @@ export class BillComponent{
 
   processFindedProduct(findedProducts: any){
       if(findedProducts.length === 1 && findedProducts[0].code){
-        if(findedProducts[0].code === this.inputSearch.value) findedProducts[0].saleType != 'D' ? this.addProduct(findedProducts[0]): this.grannelProduct(findedProducts[0]);
+        if(findedProducts[0].code === this.inputCode) findedProducts[0].saleType != 'D' ? this.addProduct(findedProducts[0]): this.grannelProduct(findedProducts[0]);
         else this.openFindedModal(findedProducts);
       }else{
         this.openFindedModal(findedProducts);
       }
 
-      this.inputSearch.setValue('');
+      this.blurInput();
     }
   
     //MODALS
@@ -403,6 +413,7 @@ export class BillComponent{
   
       modalRef.afterClosed().subscribe(request => {
         if(request){
+          this.previousTotal = request;
           this.previousSubTotal = this.activeTicket.products.total();
           this.previousProdCount = this.activeTicket.products.count();
 
