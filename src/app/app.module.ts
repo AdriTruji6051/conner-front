@@ -18,6 +18,10 @@ import { SubmitBillComponent } from './dashboard/bill/submit-bill/submit-bill.co
 import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.component';
 import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-ticket.component';
 import { ModifyPriceComponent } from './dashboard/bill/modify-price/modify-price.component';
+import { AddProductComponent } from './dashboard/products/add-product/add-product.component';
+import { DeleteProductComponent } from './dashboard/products/delete-product/delete-product.component';
+import { UpdateProductComponent } from './dashboard/products/update-product/update-product.component';
+import { ProductsLabelComponent } from './dashboard/products/products-label/products-label.component';
 
 
 @NgModule({
@@ -31,6 +35,10 @@ import { ModifyPriceComponent } from './dashboard/bill/modify-price/modify-price
     NewTicketComponent,
     ModifyTicketComponent,
     ModifyPriceComponent,
+    AddProductComponent,
+    DeleteProductComponent,
+    UpdateProductComponent,
+    ProductsLabelComponent,
   ],
   imports: [
     SelectProductComponent,

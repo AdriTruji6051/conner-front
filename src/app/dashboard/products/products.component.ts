@@ -22,6 +22,10 @@ import {NgIf} from '@angular/common';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import { SelectProductComponent } from './select-product/select-product.component';
 import Swal from 'sweetalert2';
+import { DeleteProductComponent } from './delete-product/delete-product.component';
+import { AddProductComponent } from './add-product/add-product.component';
+import { UpdateProductComponent } from './update-product/update-product.component';
+import { ProductsLabelComponent } from './products-label/products-label.component';
 
 
 export function priceValidator(costPrice: number): boolean {
@@ -81,6 +85,45 @@ export class ProductsComponent implements OnInit{
       this.checkCodeIsAvaliable();
     })
   }
+
+
+  //New modals structure ->
+  createModal(): void{
+    this.modal.open(AddProductComponent,{
+      width: '100%',
+      minWidth: '320px',
+      maxWidth: '600px',
+      height: '90vh',
+    })
+  }
+
+  updateModal(): void{
+    this.modal.open(UpdateProductComponent,{
+      width: '100%',
+      minWidth: '320px',
+      maxWidth: '600px',
+      height: '90vh',
+    })
+  }
+
+  deleteModal():void{
+    this.modal.open(DeleteProductComponent,{
+      width: '100%',
+      minWidth: '320px',
+      maxWidth: '600px',
+      height: '90vh',
+    })
+  }
+
+  labelsModal(): void{
+    this.modal.open(ProductsLabelComponent,{
+      width: '100%',
+      minWidth: '320px',
+      maxWidth: '600px',
+      height: '90vh',
+    })
+  }
+  //END - >New modals structure
 
   //VALIDATORS and HELPERS
   ispPoductDataValid(): boolean{

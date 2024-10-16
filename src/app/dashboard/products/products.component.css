@@ -1,3 +1,62 @@
+/* New buttons and interface styles */
+.button-cont{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 10px;
+}
+
+.button-crud{
+    width: 100%;
+    max-width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    font-size: 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-crud:hover{
+    transform: scale(1.02);
+}
+
+.button-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.action-button {
+    height: 10vh;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aliceblue;
+}
+
+.action-button:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* End new buttons and interface styles */
+
+
+
+
 .mat-mdc-form-field + .mat-mdc-form-field {
     margin-left: 8px;
   }
