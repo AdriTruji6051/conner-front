@@ -1,0 +1,26 @@
+<div class="main-container p-2">
+    <h2>Busqueda de productos</h2>
+    <p>Teclee el código o nombre del producto.</p>
+    <input
+        id="search-input"
+        type="text"
+        class="search-input" 
+        placeholder="Busqueda de producto"
+        [formControl]="inputSearch"
+        [matAutocomplete]="auto"
+        (keydown.enter)="searchProduct()"
+        (keydown.esc)="blurInput()"
+        (blur)="resetInput()"
+    >
+     <mat-autocomplete 
+        #auto="matAutocomplete"
+     >
+        <mat-option
+            *ngFor="let product of filteredProducts | async" [value]="product.code"
+            (keydown.esc)="blurInput()"
+            (click)="quickSearch(product.code)"
+            >
+            {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
+        </mat-option>
+    </mat-autocomplete>
+</div>

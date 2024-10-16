@@ -112,4 +112,32 @@ export class ProductsService {
     );
   }
 
+  getParentProd(code : any){
+    return this.http
+    .get(this.apiURL + '/api/get/siblings/product/id/' + code,{
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(() => error);
+      })
+    )
+  }
+
+  getDepartments(){
+    return this.http
+    .get(this.apiURL + '/api/get/all/departments/',{
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(() => error);
+      })
+    )
+  }
+
+ 
+
 }

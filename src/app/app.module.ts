@@ -18,10 +18,11 @@ import { SubmitBillComponent } from './dashboard/bill/submit-bill/submit-bill.co
 import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.component';
 import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-ticket.component';
 import { ModifyPriceComponent } from './dashboard/bill/modify-price/modify-price.component';
-import { AddProductComponent } from './dashboard/products/add-product/add-product.component';
 import { DeleteProductComponent } from './dashboard/products/delete-product/delete-product.component';
 import { UpdateProductComponent } from './dashboard/products/update-product/update-product.component';
 import { ProductsLabelComponent } from './dashboard/products/products-label/products-label.component';
+import { ToastComponent } from './toast/toast.component';
+import { ProductBrowserComponent } from "./dashboard/products/product-browser/product-browser.component";
 
 
 @NgModule({
@@ -35,10 +36,10 @@ import { ProductsLabelComponent } from './dashboard/products/products-label/prod
     NewTicketComponent,
     ModifyTicketComponent,
     ModifyPriceComponent,
-    AddProductComponent,
     DeleteProductComponent,
     UpdateProductComponent,
     ProductsLabelComponent,
+    ToastComponent,
   ],
   imports: [
     SelectProductComponent,
@@ -48,7 +49,8 @@ import { ProductsLabelComponent } from './dashboard/products/products-label/prod
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,
-  ],
+    ProductBrowserComponent
+],
   providers: [],
   bootstrap: [AppComponent]
 })
