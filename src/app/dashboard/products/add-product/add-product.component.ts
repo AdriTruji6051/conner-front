@@ -83,14 +83,11 @@ export class AddProductComponent {
 
   parentProduct!: any;
   department: number = 0;
-  familyCode!: number;
+  familyCode!: number | null;
 
   //Forms options based at DB
   childs!: any[];
   departments: any;
-
-  cantity = 1.00;
-
 
   submitProduct(): void{
     const data = {
@@ -133,6 +130,23 @@ export class AddProductComponent {
   selectAllText(event: any): void{
     event.target.select();
     this.actualInputId = event.target.id;
+  }
+
+  resetValues(): void{
+    this.codeUnvaliable = false;
+    this.code.setValue('');
+    this.description = '';
+    this.saleType = 'U';
+    this.cost = 0;
+    this.profitMargin = 20;
+    this.salePrice = 0;
+    this.wholesalePrice = 0;
+    this.priority = 0;
+    this.inventory = 0;
+    this.parentProduct  = null;
+    this.department = 0;
+    this.familyCode = null;
+    this.childs = [];
   }
 
   calculatePrice(): void{

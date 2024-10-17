@@ -1,0 +1,125 @@
+
+
+
+<div class="p-4">
+    <h2>Actualizar producto</h2>
+    <div class="py-1 row">
+      <div class="col-lg-6">
+        <h3>Producto padre</h3>
+        <p>¿Qué es el producto padre? <button class="pdv-btn-icon" type="button" (click)="familyInfo()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></button></p>
+        <button class="pdv-btn square-btn" type="button" (click)="searchParentProduct()">Asignar producto padre</button>
+      </div>
+      <div class="col-lg-6" *ngIf="parentProduct">
+        <h3><b>{{parentProduct.description}}</b></h3>
+        <p>Código: <b>{{parentProduct.code}}</b></p>
+        <p>Precio: <b>{{parentProduct.salePrice}}</b></p>
+        <p>Costo: <b>{{parentProduct.cost}}</b></p>
+      </div>
+    </div>
+    <div class="py-1 row">
+      <mat-chip-set>
+          <mat-chip
+          *ngFor="let prod of childs">
+          {{prod.description}}
+          </mat-chip>
+      </mat-chip-set>
+    </div>
+  
+    <hr>
+    <form #commonForm="ngForm">
+        <div class="form-group py-1" >
+            <label for="1">Código:</label>
+            <input type="text" id="1" [formControl]="code" name="code" class="styled-input" placeholder="Ex. HUEVOS-3031456"  (focus)="selectAllText($event)" autocomplete="off" minlength="3" required>
+            <small *ngIf="validateCode()">No se permiten los caracteres '.' 0 '/'</small>
+            <small *ngIf="codeUnvaliable">El código introducido ya esta en uso!</small>
+        </div>
+  
+        <div class="form-group py-1" >
+            <label for="2">Descripción:</label>
+            <input type="text" id="2" [(ngModel)]="description" name="description" class="styled-input" placeholder="Ex. Kilo de huevos" (focus)="selectAllText($event)" autocomplete="off" minlength="3" required>
+        </div>
+    
+        <div class="form-group number-inputs py-1">
+            <div>
+                <label for="3">Costo del producto:</label>
+                <input type="number" id="3" [(ngModel)]="cost" name="cost" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (ngModelChange)="calculatePrice()" (focus)="selectAllText($event)" autocomplete="off">
+                <small *ngIf="!validateNumber(profitMargin)">El formato no es valido!.</small>
+            </div>
+            <div>
+                <label for="4">Ganancia (%):</label>
+                <input type="number" id="4" [(ngModel)]="profitMargin" name="profitMargin" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (ngModelChange)="calculatePrice()" (focus)="selectAllText($event)" autocomplete="off" required>
+                <small *ngIf="!validateNumber(profitMargin)">El formato no es valido!.</small>
+            </div>
+        </div>
+        <div class="form-group number-inputs py-1">
+            <div>
+              <label for="5">Precio de venta:</label>
+              <input type="number" id="5" [(ngModel)]="salePrice" name="salePrice" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" value="1.00" (focus)="selectAllText($event)" autocomplete="off" required>
+              <small *ngIf="salePrice < cost">El precio de venta es mas bajo que el costo!.</small>
+              <small *ngIf="!validateNumber(salePrice)">El formato no es valido!.</small>
+            </div>
+            <div>
+              <label for="6">Precio de mayoreo:</label>
+              <input type="number" id="6" [(ngModel)]="wholesalePrice" name="wholesalePrice" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" value="0.00" (focus)="selectAllText($event)" autocomplete="off" required>
+              <small *ngIf="wholesalePrice < cost && wholesalePrice > 0">El precio de mayoreo es mas bajo que el costo!.</small>
+              <small style="color: orangered;" *ngIf="wholesalePrice > salePrice">El precio de mayoreo es mas alto que el precio de venta!.</small>
+              <small *ngIf="!validateNumber(profitMargin)">El formato no es valido!.</small>
+            </div>
+        </div>
+  
+        <div class="toggle-container py-1">
+        <span class="toggle-side-label">Tipo de venta:</span>
+        <div class="toggle-group">
+            <div class="toggle-option">
+                <input type="radio" id="7" name="saleType" [(ngModel)]="saleType" class="toggle-input" value="U">
+                <label for="7" class="toggle-label">Unidad (pz)</label>
+            </div>
+            <div class="toggle-option">
+                <input type="radio" id="8" name="saleType" [(ngModel)]="saleType" class="toggle-input" value="D">
+                <label for="8" class="toggle-label">Granel (kg)</label>
+            </div>
+        </div>
+    </div>
+  
+        <hr>
+        <div class="py-1">
+            <div>
+                <label for="9">En inventario: <small style="color: grey;">Deja en cero si no quieres usar inventario</small></label>
+                <input type="number" id="9" style="max-width: 200px;" [(ngModel)]="inventory" name="inventory" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (focus)="selectAllText($event)" autocomplete="off">
+            </div>
+        </div>
+  
+        <hr>
+        <div class="form-grup py-1">
+          <div>
+            <label for="10">Departamento:</label>
+            <select id="10" class="styled-select" style="padding: 5px; width: 200px;" [(ngModel)]="department" name="department">
+              <option *ngFor="let dept of departments" [value]="dept.code">{{dept.description}}</option>
+            </select>
+          </div>
+          <!-- <div>
+            <label for="11">Familia:</label>
+            <select id="11" class="styled-select" [(ngModel)]="familyCode" name="familyCode">
+                <option *ngFor="let dept of departments; let i = index" [value]="i">{{dept.description}}</option>
+            </select>
+          </div> -->
+        </div>
+  
+        <div *ngIf="commonForm.invalid">
+          <hr>
+          <small>Introduzca datos validos!.</small>
+        </div>
+    
+        <div class="button-panel">
+            <button type="button" class="pdv-btn outlined-btn square-btn" (click)="dialogRef.close()">Cerrar</button>
+            <button type="button" class="pdv-btn outlined-btn square-btn" (click)="resetValues()">Reiniciar</button>
+            <button 
+              type="button"
+              [ngClass]="{'disabled-btn': commonForm.invalid || validateCode() || codeUnvaliable}"
+              id="11" 
+              class="pdv-btn square-btn" 
+              [disabled]="commonForm.invalid || validateCode() || codeUnvaliable" (click)="submitProduct()"
+              >Agregar producto</button>
+        </div>
+    </form>
+  </div>

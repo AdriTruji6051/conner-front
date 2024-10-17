@@ -95,9 +95,9 @@ svg{
 }
 
 .outlined-btn{
-    border: var(--500-color) 2px solid;
+    border: var(--600-color) 2px solid;
     background-color: transparent;
-    color: var(--500-color);
+    color: var(--600-color);
 }
 
 .disabled-btn {

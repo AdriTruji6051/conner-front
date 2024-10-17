@@ -19,7 +19,6 @@ import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.compo
 import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-ticket.component';
 import { ModifyPriceComponent } from './dashboard/bill/modify-price/modify-price.component';
 import { DeleteProductComponent } from './dashboard/products/delete-product/delete-product.component';
-import { UpdateProductComponent } from './dashboard/products/update-product/update-product.component';
 import { ProductsLabelComponent } from './dashboard/products/products-label/products-label.component';
 import { ToastComponent } from './toast/toast.component';
 import { ProductBrowserComponent } from "./dashboard/products/product-browser/product-browser.component";
@@ -37,7 +36,6 @@ import { ProductBrowserComponent } from "./dashboard/products/product-browser/pr
     ModifyTicketComponent,
     ModifyPriceComponent,
     DeleteProductComponent,
-    UpdateProductComponent,
     ProductsLabelComponent,
     ToastComponent,
   ],
