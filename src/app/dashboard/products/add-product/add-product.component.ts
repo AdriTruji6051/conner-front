@@ -4,10 +4,11 @@ import { ToastComponent } from 'src/app/toast/toast.component';
 import { ProductBrowserComponent } from '../product-browser/product-browser.component';
 
 import {MatChipsModule} from '@angular/material/chips';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import Swal from 'sweetalert2';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-add-product',
@@ -27,6 +28,19 @@ export class AddProductComponent {
     this.productService.getDepartments().subscribe({
       next: (data) => this.departments = data
     })
+  }
+
+  ngOnInit() {
+    this.code.valueChanges
+    .pipe(debounceTime(400))  
+    .subscribe((code) => {
+      if(!this.validateCode()){
+        this.productService.getProductById(code).subscribe({
+          next: () => this.codeUnvaliable = true,
+          error: () => this.codeUnvaliable = false
+        });
+      }
+    });
   }
 
   actualInputId = 1;
@@ -50,10 +64,12 @@ export class AddProductComponent {
     }
    
   }
+
+  codeUnvaliable: boolean = false;
   codeRegex =  /[./]/;
   numberRegex = /^[0-9]+(\.[0-9]+)?/;
 
-  code!: string;
+  code = new FormControl('');
   description!: string;
   saleType: string = 'U';
 
@@ -78,12 +94,12 @@ export class AddProductComponent {
 
   submitProduct(): void{
     const data = {
-      code: this.code,
+      code: this.code.value,
       description: 	this.description,
       saleType:	this.saleType,
       cost:	this.cost,
       salePrice: this.salePrice,
-      department: this.department,
+      department: parseInt(this.department.toString()),
       wholesalePrice:	this.wholesalePrice,
       priority:	0,
       inventory: this.inventory,
@@ -91,15 +107,26 @@ export class AddProductComponent {
       parentCode:	this.parentProduct ? this.parentProduct.code : null,
     }
 
-    console.log(data);
+    this.productService.createProduct(data).subscribe({
+      next:()=> {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Producto guardado!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      },
+      error: ()=>{
+        Swal.fire({
+          icon: "error",
+          title: "Verifique su conexión",
+          text: "No se pudo guardar el producto!",
+        });
+      }
+    })
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Producto guardado!",
-      showConfirmButton: false,
-      timer: 1500
-    });
+
 
   }
 
@@ -113,7 +140,10 @@ export class AddProductComponent {
   }
 
   validateCode() {
-    return this.codeRegex.test(this.code);
+    if(this.code.value){
+      return this.codeRegex.test(this.code.value);
+    }
+    return false
   }
 
   validateNumber(numb : number){
@@ -131,12 +161,12 @@ export class AddProductComponent {
 
   //TOFIX 
   validatePrices(){
-    if(!this.validateNumber(this.cost)) return false;
-    if(!this.validateNumber(this.salePrice)) return false;
-    if(!this.validateNumber(this.profitMargin)) return false;
-    if(!this.validateNumber(this.wholesalePrice)) return false;
-    if(this.salePrice < this.cost) return false;
-    if(this.salePrice < this.wholesalePrice) return false;
+    if(this.validateNumber(this.cost)) return false;
+    if(this.validateNumber(this.salePrice)) return false;
+    if(this.validateNumber(this.profitMargin)) return false;
+    if(this.validateNumber(this.wholesalePrice)) return false;
+    if(this.salePrice > this.cost) return false;
+    if(this.salePrice > this.wholesalePrice) return false;
 
     return true;
   }
@@ -146,8 +176,11 @@ export class AddProductComponent {
 
     modalRef.afterClosed().subscribe(product => {
       if(product){
-        console.log(product)
-
+        this.cost = product.cost;
+        this.salePrice = product.salePrice;
+        this.profitMargin = product.profitMargin;
+        this.wholesalePrice = product.wholesalePrice;
+        
         this.productService.getParentProd(product.code).subscribe({
           next: (data: any) => {
             this.parentProduct = data.parent;
