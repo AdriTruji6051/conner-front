@@ -2,10 +2,10 @@ import {CommonModule, CurrencyPipe} from '@angular/common';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { debounceTime, map, Observable, of, startWith } from 'rxjs';
 import { ProductsService } from 'src/app/services/productsService/products.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { SelectProductComponent } from '../select-product/select-product.component';
 import { ToastComponent } from 'src/app/toast/toast.component';
 
@@ -17,6 +17,8 @@ import { ToastComponent } from 'src/app/toast/toast.component';
   imports: [CurrencyPipe, CommonModule, FormsModule, MatAutocompleteModule, ReactiveFormsModule],
 })
 export class ProductBrowserComponent {
+
+  @Output() productForParent = new EventEmitter<any>();
   //Finded products
   inputSearch = new FormControl('');
   inputCode!: string;
@@ -30,7 +32,6 @@ export class ProductBrowserComponent {
     }
 
   constructor(
-    public dialogRef: MatDialogRef<ProductBrowserComponent>,
     public productsService: ProductsService,
     public modal : MatDialog
   ){
@@ -115,7 +116,7 @@ export class ProductBrowserComponent {
   }
 
   returnProduct(product: any): void{
-    this.dialogRef.close(product);
+    this.productForParent.emit(product);
   }
 
 }

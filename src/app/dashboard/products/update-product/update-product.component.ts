@@ -9,13 +9,14 @@ import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import Swal from 'sweetalert2';
 import { debounceTime } from 'rxjs';
+import { ConfirmUpdateComponent } from './confirm-update/confirm-update.component';
 
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatChipsModule, FormsModule]
+  imports: [CommonModule, ReactiveFormsModule, MatChipsModule, FormsModule, ProductBrowserComponent]
 })
 export class UpdateProductComponent {
   constructor(
@@ -34,12 +35,17 @@ export class UpdateProductComponent {
     .subscribe((code) => {
       if(!this.validateCode()){
         this.productService.getProductById(code).subscribe({
-          next: () => this.codeUnvaliable = true,
+          next: (prod) => {
+            if(prod.code === this.originalProduct.code) this.codeUnvaliable = false
+            else this.codeUnvaliable = true
+          },
           error: () => this.codeUnvaliable = false
         });
       }
     });
   }
+
+
 
   actualInputId = 1;
   @HostListener('document:keydown', ['$event'])
@@ -50,11 +56,11 @@ export class UpdateProductComponent {
         document.getElementById(this.actualInputId.toString())?.focus();
       }else if(event.key === 'F1' || event.key === 'F3' || event.key === 'F4' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10' || event.key === 'F11' || event.key === 'F12'){
         event.preventDefault();
-      }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4 ){
+      }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4){
         event.preventDefault();
         this.actualInputId++;
         document.getElementById(this.actualInputId.toString())?.focus();
-      }else if(event.key === 'ArrowUp' && this.actualInputId != 3 || event.key === 'ArrowLeft' && this.actualInputId != 1 ){
+      }else if(event.key === 'ArrowUp' && this.actualInputId != 3 || event.key === 'ArrowLeft' && this.actualInputId != 1){
         event.preventDefault();
         this.actualInputId--;
         document.getElementById(this.actualInputId.toString())?.focus();
@@ -66,6 +72,9 @@ export class UpdateProductComponent {
   codeUnvaliable: boolean = false;
   codeRegex =  /[./]/;
   numberRegex = /^[0-9]+(\.[0-9]+)?/;
+
+  //Original product INFO
+  originalProduct!: any;
 
   code = new FormControl('');
   description!: string;
@@ -87,8 +96,12 @@ export class UpdateProductComponent {
   childs!: any[];
   departments: any;
 
+  //State
+  showProductBrowser: boolean = false;
+
   submitProduct(): void{
     const data = {
+      originalCode: this.originalProduct.code,
       code: this.code.value,
       description: 	this.description,
       saleType:	this.saleType,
@@ -102,27 +115,19 @@ export class UpdateProductComponent {
       parentCode:	this.parentProduct ? this.parentProduct.code : null,
     }
 
-    this.productService.createProduct(data).subscribe({
-      next:()=> {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Producto guardado!",
-          showConfirmButton: false,
-          timer: 1500
-        });
-      },
-      error: ()=>{
-        Swal.fire({
-          icon: "error",
-          title: "Verifique su conexión",
-          text: "No se pudo guardar el producto!",
-        });
+    const siblings = [...this.childs, this.parentProduct];
+
+    const modalRef = this.modal.open(ConfirmUpdateComponent,{
+      data: {
+        productNew: data,
+        productOld: this.originalProduct,
+        siblings: siblings,
       }
     })
 
+    if(false){
 
-
+    }
   }
 
   selectAllText(event: any): void{
@@ -131,6 +136,7 @@ export class UpdateProductComponent {
   }
 
   resetValues(): void{
+    this.originalProduct = null;
     this.codeUnvaliable = false;
     this.code.setValue('');
     this.description = '';
@@ -183,27 +189,56 @@ export class UpdateProductComponent {
     return true;
   }
 
-  searchParentProduct(): void{
-    const modalRef = this.modal.open(ProductBrowserComponent);
+  loadProduct(product: any){
+    this.originalProduct = product;
+    this.codeUnvaliable = false;
+    this.code.setValue(product.code);
+    this.description = product.description;
+    this.saleType = product.saleType;
+    this.cost = product.cost;
+    this.profitMargin = product.profitMargin;
+    this.salePrice = product.salePrice;
+    this.wholesalePrice = product.wholesalePrice;
+    this.priority = product.priority;
+    this.inventory = product.inventory;
+    this.parentProduct  = product.parentCode;
+    this.department = product.department;
+    this.familyCode = null;
 
-    modalRef.afterClosed().subscribe(product => {
-      if(product){
-        this.cost = product.cost;
-        this.salePrice = product.salePrice;
-        this.profitMargin = product.profitMargin;
-        this.wholesalePrice = product.wholesalePrice;
-        
-        this.productService.getParentProd(product.code).subscribe({
-          next: (data: any) => {
-            this.parentProduct = data.parent;
-            this.childs = data.childs
-          },
-          error: ()=> {
-            this.parentProduct = product;
-            this.childs = [];
-          }
-        })
-      } 
-    });
+    this.productService.getParentProd(product.code).subscribe({
+      next: (data: any) => {
+        this.parentProduct = data.parent;
+        this.childs = data.childs
+      }
+    })
+  }
+
+  searchParentProduct(product: any): void{
+    if(product){
+      this.cost = product.cost;
+      this.salePrice = product.salePrice;
+      this.profitMargin = product.profitMargin;
+      this.wholesalePrice = product.wholesalePrice;
+      this.department = product.department;
+      
+      this.productService.getParentProd(product.code).subscribe({
+        next: (data: any) => {
+          this.parentProduct = data.parent;
+          this.childs = data.childs
+        },
+        error: ()=> {
+          this.parentProduct = product;
+          this.childs = [];
+        }
+      })
+    } 
+    this.showProductBrowser = false;
+  }
+
+  test():void{
+    this.modal.open(ConfirmUpdateComponent,{
+      height: '500px',
+      width: '500px'
+    })
   }
 }

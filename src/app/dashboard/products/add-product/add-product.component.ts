@@ -15,7 +15,7 @@ import { debounceTime } from 'rxjs';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatChipsModule, FormsModule]
+  imports: [CommonModule, ReactiveFormsModule, MatChipsModule, FormsModule, ProductBrowserComponent]
   
 })
 
@@ -52,11 +52,11 @@ export class AddProductComponent {
         document.getElementById(this.actualInputId.toString())?.focus();
       }else if(event.key === 'F1' || event.key === 'F3' || event.key === 'F4' || event.key === 'F5' ||event.key ===  'F6' || event.key === 'F10' || event.key === 'F11' || event.key === 'F12'){
         event.preventDefault();
-      }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4 ){
+      }else if(event.key === 'ArrowDown' && this.actualInputId != 3 || event.key === 'ArrowRight' && this.actualInputId != 4){
         event.preventDefault();
         this.actualInputId++;
         document.getElementById(this.actualInputId.toString())?.focus();
-      }else if(event.key === 'ArrowUp' && this.actualInputId != 3 || event.key === 'ArrowLeft' && this.actualInputId != 1 ){
+      }else if(event.key === 'ArrowUp' && this.actualInputId != 3 || event.key === 'ArrowLeft' && this.actualInputId != 1){
         event.preventDefault();
         this.actualInputId--;
         document.getElementById(this.actualInputId.toString())?.focus();
@@ -89,6 +89,9 @@ export class AddProductComponent {
   childs!: any[];
   departments: any;
 
+  //State
+  showProductBrowser: boolean = false;
+
   submitProduct(): void{
     const data = {
       code: this.code.value,
@@ -113,6 +116,7 @@ export class AddProductComponent {
           showConfirmButton: false,
           timer: 1500
         });
+        this.resetValues()
       },
       error: ()=>{
         Swal.fire({
@@ -122,9 +126,6 @@ export class AddProductComponent {
         });
       }
     })
-
-
-
   }
 
   selectAllText(event: any): void{
@@ -185,28 +186,26 @@ export class AddProductComponent {
     return true;
   }
 
-  searchParentProduct(): void{
-    const modalRef = this.modal.open(ProductBrowserComponent);
-
-    modalRef.afterClosed().subscribe(product => {
-      if(product){
-        this.cost = product.cost;
-        this.salePrice = product.salePrice;
-        this.profitMargin = product.profitMargin;
-        this.wholesalePrice = product.wholesalePrice;
-        
-        this.productService.getParentProd(product.code).subscribe({
-          next: (data: any) => {
-            this.parentProduct = data.parent;
-            this.childs = data.childs
-          },
-          error: ()=> {
-            this.parentProduct = product;
-            this.childs = [];
-          }
-        })
-      } 
-    });
+  searchParentProduct(product: any): void{
+    if(product){
+      this.cost = product.cost;
+      this.salePrice = product.salePrice;
+      this.profitMargin = product.profitMargin;
+      this.wholesalePrice = product.wholesalePrice;
+      this.department = product.department;
+      this.saleType = product.saleType;
+      
+      this.productService.getParentProd(product.code).subscribe({
+        next: (data: any) => {
+          this.parentProduct = data.parent;
+          this.childs = data.childs
+        },
+        error: ()=> {
+          if(this.code !== product.code) this.parentProduct = product;
+          this.childs = [];
+        }
+      })
+    } 
+    this.showProductBrowser = false;
   }
-
 }

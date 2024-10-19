@@ -1,20 +1,33 @@
-
-
-
 <div class="p-4">
-    <h2>Actualizar producto</h2>
-    <div class="py-1 row">
-      <div class="col-lg-6">
-        <h3>Producto padre</h3>
-        <p>¿Qué es el producto padre? <button class="pdv-btn-icon" type="button" (click)="familyInfo()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></button></p>
-        <button class="pdv-btn square-btn" type="button" (click)="searchParentProduct()">Asignar producto padre</button>
+  <h2>Crear nuevo producto</h2>
+  <h2>Actualizar producto</h2>
+  <p>Busque el producto por nombre o código para editar</p>
+  <app-product-browser (productForParent)="loadProduct($event)"></app-product-browser>
+
+  <hr class="px-1">
+
+  <div [ngClass]="{'disabled-div': !originalProduct}">
+    <div class="py-1">
+      <div *ngIf="showProductBrowser">
+        <h3>Seleccione el producto padre</h3>
+        <p>Busqueda por nombre o código</p>
+        <app-product-browser (productForParent)="searchParentProduct($event)"></app-product-browser>
       </div>
-      <div class="col-lg-6" *ngIf="parentProduct">
-        <h3><b>{{parentProduct.description}}</b></h3>
-        <p>Código: <b>{{parentProduct.code}}</b></p>
-        <p>Precio: <b>{{parentProduct.salePrice}}</b></p>
-        <p>Costo: <b>{{parentProduct.cost}}</b></p>
+      <div *ngIf="!showProductBrowser" class="row">
+        <div class="col-lg-6">
+          <h3>Producto padre</h3>
+          <p>¿Qué es el producto padre? <button class="pdv-btn-icon" type="button" (click)="familyInfo()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg></button></p>
+          <button class="pdv-btn square-btn" type="button" (click)="showProductBrowser = true; parentProduct = null; childs = []">Asignar producto padre</button>
+        </div>
+        <div class="col-lg-6" *ngIf="parentProduct">
+          <h3><b>{{parentProduct.description}}</b></h3>
+          <p>Código: <b>{{parentProduct.code}}</b></p>
+          <p>Precio: <b>{{parentProduct.salePrice}}</b></p>
+          <p>Costo: <b>{{parentProduct.cost}}</b></p>
+        </div>
       </div>
+      
+  
     </div>
     <div class="py-1 row">
       <mat-chip-set>
@@ -119,7 +132,8 @@
               id="11" 
               class="pdv-btn square-btn" 
               [disabled]="commonForm.invalid || validateCode() || codeUnvaliable" (click)="submitProduct()"
-              >Agregar producto</button>
+              >Actualizar producto</button>
         </div>
     </form>
   </div>
+</div>
