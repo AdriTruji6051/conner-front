@@ -91,7 +91,8 @@
       <div class="py-1">
           <div>
               <label for="9">En inventario: <small style="color: grey;">Deja en cero si no quieres usar inventario</small></label>
-              <input type="number" id="9" style="max-width: 200px;" [(ngModel)]="inventory" name="inventory" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (focus)="selectAllText($event)" autocomplete="off">
+              <input type="number" id="9" style="max-width: 200px;" [(ngModel)]="inventory" name="inventory" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (focus)="selectAllText($event)" autocomplete="off"><br>
+              <small *ngIf="!validateNumber(inventory)">El formato no es valido!.</small>
           </div>
       </div>
 

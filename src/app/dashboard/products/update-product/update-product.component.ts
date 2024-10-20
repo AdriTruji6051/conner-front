@@ -7,7 +7,6 @@ import {MatChipsModule} from '@angular/material/chips';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/productsService/products.service';
-import Swal from 'sweetalert2';
 import { debounceTime } from 'rxjs';
 import { ConfirmUpdateComponent } from './confirm-update/confirm-update.component';
 
@@ -115,7 +114,8 @@ export class UpdateProductComponent {
       parentCode:	this.parentProduct ? this.parentProduct.code : null,
     }
 
-    const siblings = [...this.childs, this.parentProduct];
+    const siblings = this.childs ? [...this.childs] : [];
+    if(this.parentProduct) siblings.push(this.parentProduct)    
 
     const modalRef = this.modal.open(ConfirmUpdateComponent,{
       data: {
@@ -125,9 +125,11 @@ export class UpdateProductComponent {
       }
     })
 
-    if(false){
-
-    }
+    modalRef.afterClosed().subscribe(haveUpdate => {
+      if(haveUpdate){
+        this.resetValues();
+      }
+    })
   }
 
   selectAllText(event: any): void{
