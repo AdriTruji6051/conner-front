@@ -1,6 +1,11 @@
 table {
     box-shadow: none!important;
 }
+
+.prev-container{
+    overflow: auto;
+    max-height: 100%;
+}
 .main-container{
     display: flex;
     flex-direction: column;

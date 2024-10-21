@@ -126,7 +126,7 @@ svg{
 .pdv-btn-icon, .pdv-btn-icon-bold{
     all: unset;
     border-radius: 9999px;
-    padding: 10px;
+    padding: 5px;
 }
 
 .pdv-btn-icon:hover{
@@ -158,7 +158,28 @@ svg{
     box-shadow: 0 0 5px rgba(8, 14, 19, 0.5);
 }
 
+/* Disabled objects*/
+.disabled-div {
+    pointer-events: none;
+}
+
+.disabled-div::after {
+    content: '';
+    background-color: rgba(255, 255, 255, 0.7);
+    cursor: not-allowed;
+}
+
+.disabled-div * {
+    opacity: 0.6;
+}
+
 /* Forms personalized inputs */
+.button-panel {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    padding-top: 16px;
+}
 
 .input-label {
     flex: 0 0 120px;
@@ -224,6 +245,127 @@ svg{
 .styled-select option {
     padding: 10px;
 }
+
+/* Checkbox */
+.checkbox-wrapper {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+}
+
+.checkbox-wrapper input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-wrapper:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.checkbox-wrapper input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-wrapper input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-wrapper .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-wrapper input:focus ~ .checkmark {
+    box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.3);
+}
+
+/* Toogle */
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .toggle-group {
+    display: flex;
+    padding: 4px;
+  }
+  
+  .toggle-option {
+      position: relative;
+  }
+  
+  .toggle-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .toggle-label {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #555;
+    background-color: transparent;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-input:checked + .toggle-label {
+    background-color: var(--500-color);
+    color: white;
+    box-shadow: 0 2px 5px rgba(108, 92, 231, 0.3);
+  }
+  
+  .toggle-input:focus + .toggle-label {
+    outline: 2px solid var(--500-color);
+    outline-offset: 2px;
+  }
+  
+  .toggle-option:first-child .toggle-label {
+    padding-left: 25px;
+  }
+  
+  .toggle-option:last-child .toggle-label {
+    padding-right: 25px;
+  }
+  
+  .toggle-side-label {
+    margin-top: -12px;
+    font-weight: 500;
+    color: #333;
+  }
 
 @media (max-width: 576px) {
     .pdv-btn {

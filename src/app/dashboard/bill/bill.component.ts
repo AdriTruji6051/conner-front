@@ -22,13 +22,14 @@ import { SubmitBillComponent } from './submit-bill/submit-bill.component';
 import { NewTicketComponent } from './new-ticket/new-ticket.component';
 import { TicketService } from 'src/app/services/ticketService/ticket-service';
 import { ModifyPriceComponent } from './modify-price/modify-price.component';
+import { OpenDrawerComponent } from '../open-drawer/open-drawer.component';
 
 @Component({
   selector: 'app-bill',
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css'],
   standalone: true,
-  imports: [MatTableModule, CurrencyPipe,MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule],
+  imports: [MatTableModule, CurrencyPipe, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule],
 })
 
 export class BillComponent{
@@ -57,6 +58,8 @@ export class BillComponent{
   previousSubTotal!: number;
   previousProdCount!: number;
   previousTotal!: number;
+  previousPrinter!: string; 
+  previousFolio!: number;
 
   //Ticket table
   displayedColumns: string[] = columnsLong;
@@ -381,6 +384,10 @@ export class BillComponent{
     });
   }
 
+  openDrawer(): void{
+    this.modal.open(OpenDrawerComponent);
+  }
+
   grannelProduct(product: any): void{
     const modalRef = this.modal.open(GranelSaleComponent,{
       width: '500px',
@@ -413,9 +420,12 @@ export class BillComponent{
   
       modalRef.afterClosed().subscribe(request => {
         if(request){
-          this.previousTotal = request;
+          this.previousTotal = request.paidWith;
+          this.previousPrinter = request.printerName;
+          this.previousFolio = request.folio;
           this.previousSubTotal = this.activeTicket.products.total();
           this.previousProdCount = this.activeTicket.products.count();
+          
 
           this.salesRecord[this.TicketIndex] = {
             ticketName: 'Ticket',
@@ -515,6 +525,17 @@ export class BillComponent{
   previousProduct(): void{
     const products = this.getProducts();
     if(this.productRowIndex > 0) this.selectProduct(products[this.productRowIndex - 1]);
+  }
+
+  printPreviousTicket(): void{
+    console.log('Hola lola')
+    this.ticketService.printTicketById({
+      printerName: this.previousPrinter,
+      id: this.previousFolio
+    }).subscribe({
+      next: () => alert('Ticket impreso!'),
+      error: () => alert('Problemas al imprimir el ticket!')
+    })
   }
   
 }

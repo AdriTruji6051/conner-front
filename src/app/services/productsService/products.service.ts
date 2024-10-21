@@ -112,7 +112,7 @@ export class ProductsService {
     );
   }
 
-  getParentProd(code : any){
+  getParentProd(code : any): Observable<any>{
     return this.http
     .get(this.apiURL + '/api/get/siblings/product/id/' + code,{
       headers: this.headers
@@ -125,7 +125,7 @@ export class ProductsService {
     )
   }
 
-  getDepartments(){
+  getDepartments(): Observable<any>{
     return this.http
     .get(this.apiURL + '/api/get/all/departments/',{
       headers: this.headers
@@ -138,6 +138,30 @@ export class ProductsService {
     )
   }
 
- 
+  getProductsLabelDay(day: string): Observable<any>{
+    return this.http
+    .get( this.apiURL + '/api/get/modifiedProducts/day/' + decodeURIComponent(day),{
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(() => error);
+      })
+    )
+  }
+
+  printLabels(data: any): Observable<any>{
+    return this.http
+    .post(this.apiURL + '/api/print/labels/', data, {
+      headers: this.headers
+    })    
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(() => error);
+      })
+    )
+  }
 
 }

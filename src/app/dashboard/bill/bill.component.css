@@ -1,4 +1,5 @@
 .main-container{
+    
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -72,6 +73,7 @@
 
 /* Material table */
 .mat-mdc-cell,.mdc-data-table__cell,.cdk-cell,.cdk-column-description,.mat-column-description, .ng-star-inserted {
+    z-index: 0!important;
     padding: 5px!important;
     height: auto!important;
     font-weight: 500!important;

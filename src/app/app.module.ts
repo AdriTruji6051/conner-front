@@ -22,6 +22,7 @@ import { DeleteProductComponent } from './dashboard/products/delete-product/dele
 import { ProductsLabelComponent } from './dashboard/products/products-label/products-label.component';
 import { ToastComponent } from './toast/toast.component';
 import { ProductBrowserComponent } from "./dashboard/products/product-browser/product-browser.component";
+import { OpenDrawerComponent } from './dashboard/open-drawer/open-drawer.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ProductBrowserComponent } from "./dashboard/products/product-browser/pr
     DeleteProductComponent,
     ProductsLabelComponent,
     ToastComponent,
+    OpenDrawerComponent,
   ],
   imports: [
     SelectProductComponent,

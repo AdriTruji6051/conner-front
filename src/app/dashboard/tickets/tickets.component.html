@@ -49,7 +49,7 @@
                     <h3 *ngIf="!ticketRow?.products">
                         Seleccione un ticket para vista previa!
                     </h3>
-                    <div *ngIf="ticketRow?.products">
+                    <div *ngIf="ticketRow?.products" class="prev-container">
                         <p>Fecha: <b>{{ticketRow?.createdAt}}</b></p>
                         <p *ngIf="ticketRow?.notes">Notas: <b>{{ticketRow?.notes}}</b></p>
                         <hr>

@@ -37,7 +37,6 @@ export class ProductBrowserComponent {
   ){
     this.inputSearch.valueChanges.pipe(debounceTime(300)).subscribe({
       next: () =>{
-        console.log('Has changed', this.inputSearch.value)
         const search = this.inputSearch.value
         if(search){
           this.productsService.getProductNames(search).subscribe({
@@ -61,7 +60,7 @@ export class ProductBrowserComponent {
 
   resetInput(): void{
     this.inputSearch.setValue('');
-    this.products = null;
+    this.products = [];
   }
 
   quickSearch(prodCode: any): void{

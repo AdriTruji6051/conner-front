@@ -33,14 +33,6 @@ import Swal from 'sweetalert2';
     </div>
   `,
   styles: [`
-   .button-panel {
-    display: flex;
-    justify-content: flex-end;
-    gap: 16px;
-    padding-top: 16px;
-    border-top: 1px solid #e5e5e5;
-  }
-
   .main-div{
     min-height: 300px;
     overflow-y: auto;

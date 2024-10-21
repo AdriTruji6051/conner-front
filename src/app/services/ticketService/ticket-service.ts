@@ -114,4 +114,17 @@ export class TicketService {
       })
     )
   }
+
+  openDrawer(data: any): Observable<any>{
+    return this.http
+    .post<any>(this.apiURL + '/api/openDrawer/', data, {
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(()=> error);
+      })
+    )
+  }
 }
