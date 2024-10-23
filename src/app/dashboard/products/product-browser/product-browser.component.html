@@ -4,21 +4,24 @@
         type="text"
         class="search-input" 
         placeholder="Busqueda de producto"
+        matInput
         [formControl]="inputSearch"
         [matAutocomplete]="auto"
         (keydown.enter)="searchProduct()"
         (keydown.esc)="blurInput()"
         (blur)="resetInput()"
     >
-     <mat-autocomplete 
+     <mat-autocomplete
+        autoActiveFirstOption
         #auto="matAutocomplete"
      >
         <mat-option
             *ngFor="let product of filteredProducts | async" [value]="product.code"
             (keydown.esc)="blurInput()"
             (click)="quickSearch(product.code)"
+            [ngClass]="{'is-priority':product.priority != null}"
             >
-            {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
+            <b>{{product.description}}</b> | Precio: <b>{{product.salePrice}}</b>
         </mat-option>
     </mat-autocomplete>
 </div>

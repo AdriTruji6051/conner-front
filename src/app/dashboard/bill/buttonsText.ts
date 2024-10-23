@@ -16,7 +16,7 @@ export const btnTextDict = {
     },
     collect: {
       small: '',
-      medium: 'Cobrar',
+      medium: 'Cobrar - F12',
       long: 'Cobrar - F12'
     }
   }

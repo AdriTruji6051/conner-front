@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
 import { SelectProductComponent } from './dashboard/products/select-product/select-product.component';
 import { CommonProductComponent } from './dashboard/bill/common-product/common-product.component';
 import { GranelSaleComponent } from './dashboard/bill/granel-sale/granel-sale.component';
-import { SubmitBillComponent } from './dashboard/bill/submit-bill/submit-bill.component';
 import { NewTicketComponent } from './dashboard/bill/new-ticket/new-ticket.component';
 import { ModifyTicketComponent } from './dashboard/tickets/modify-ticket/modify-ticket.component';
 import { ModifyPriceComponent } from './dashboard/bill/modify-price/modify-price.component';
@@ -32,7 +31,6 @@ import { OpenDrawerComponent } from './dashboard/open-drawer/open-drawer.compone
     NavigationComponent,
     CommonProductComponent,
     GranelSaleComponent,
-    SubmitBillComponent,
     NewTicketComponent,
     ModifyTicketComponent,
     ModifyPriceComponent,

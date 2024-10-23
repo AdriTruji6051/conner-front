@@ -9,10 +9,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatMenuModule} from '@angular/material/menu';
 
+import {
+  MatSnackBar, 
+  MatSnackBarRef, 
+  MatSnackBarModule,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition
+} from '@angular/material/snack-bar';
+
 import { btnTextDict } from './buttonsText';
 import { saleProducts } from './sales-record';
 import { ProductsService } from 'src/app/services/productsService/products.service';
-import Swal from 'sweetalert2';
 import { SelectProductComponent } from '../products/select-product/select-product.component';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonProductComponent } from './common-product/common-product.component';
@@ -23,13 +30,14 @@ import { NewTicketComponent } from './new-ticket/new-ticket.component';
 import { TicketService } from 'src/app/services/ticketService/ticket-service';
 import { ModifyPriceComponent } from './modify-price/modify-price.component';
 import { OpenDrawerComponent } from '../open-drawer/open-drawer.component';
+import { Snackbar } from 'src/app/snack-bars/snackbar.component';
 
 @Component({
   selector: 'app-bill',
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css'],
   standalone: true,
-  imports: [MatTableModule, CurrencyPipe, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule],
+  imports: [MatTableModule, CurrencyPipe, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule, MatSnackBarModule],
 })
 
 export class BillComponent{
@@ -71,6 +79,58 @@ export class BillComponent{
   dataSource = new MatTableDataSource<any>();
   productRow!: any;
   productRowIndex = 0;
+
+  constructor(
+    private productsService: ProductsService,
+    private ticketService: TicketService,
+    private modal : MatDialog,
+    private _snackBar: MatSnackBar
+  ) {
+
+    this.inputSearch.valueChanges.pipe(debounceTime(300)).subscribe({
+      next: () =>{
+        console.log('Has changed', this.inputSearch.value)
+        const search = this.inputSearch.value
+        if(search){
+          this.productsService.getProductNames(search).subscribe({
+            next: (data) =>{
+              this.products = data;
+              this.filteredProducts = this.inputSearch.valueChanges.pipe(
+                startWith(''),
+                map(product => (product ? this._filterProducts(product) : this.products.slice())),
+              );
+            }
+          })
+        }
+          
+      },
+    });
+
+    this.onResize();
+    window.addEventListener('resize', this.onResize.bind(this));
+
+    this.salesRecord = [
+      {
+        ticketName: 'Ticket',
+        total: 0.00,
+        products: new saleProducts()
+      }
+    ]
+
+    this.activeTicket = this.salesRecord[this.TicketIndex];
+
+    this.ticketService.registerLocalPrinters().subscribe({
+      next: () => {
+        this.ticketService.getPrinters().subscribe({
+          next: (data) =>{
+            this.avaliablePrinters = data;
+          }
+        })
+      },
+      error: (err) => console.error(err)
+    })
+    
+  }
 
 
   //Filter products events
@@ -168,58 +228,6 @@ export class BillComponent{
       }
     }
   }
- 
-  constructor(
-    private productsService: ProductsService,
-    private ticketService: TicketService,
-    private modal : MatDialog,
-  ) {
-
-    this.inputSearch.valueChanges.pipe(debounceTime(300)).subscribe({
-      next: () =>{
-        console.log('Has changed', this.inputSearch.value)
-        const search = this.inputSearch.value
-        if(search){
-          this.productsService.getProductNames(search).subscribe({
-            next: (data) =>{
-              this.products = data;
-              this.filteredProducts = this.inputSearch.valueChanges.pipe(
-                startWith(''),
-                map(product => (product ? this._filterProducts(product) : this.products.slice())),
-              );
-            }
-          })
-        }
-          
-      },
-    });
-
-    this.onResize();
-    window.addEventListener('resize', this.onResize.bind(this));
-
-    this.salesRecord = [
-      {
-        ticketName: 'Ticket',
-        total: 0.00,
-        products: new saleProducts()
-      }
-    ]
-
-    this.activeTicket = this.salesRecord[this.TicketIndex];
-
-    this.ticketService.registerLocalPrinters().subscribe({
-      next: () => {
-        this.ticketService.getPrinters().subscribe({
-          next: (data) =>{
-            this.avaliablePrinters = data;
-          }
-        })
-      },
-      error: (err) => console.error(err)
-    })
-    
-  }
-
 
   private onResize(){
     if(window.innerWidth > 1600){
@@ -282,31 +290,27 @@ export class BillComponent{
       this.getProducts();
       
     }else{
-      Swal.fire({
-        title: "¿Desea eliminar el producto de la cuenta?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: "Eliminar!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.activeTicket.products.remove(this.productRow, remove);
+      this.activeTicket.products.remove(this.productRow, remove);
           
-          if(this.productRowIndex === 0){
-            this.productRowIndex--;
-            this.nextProduct();
-          } 
-          else this.previousProduct();
-        }
-      });
+      if(this.productRowIndex === 0){
+        this.productRowIndex--;
+        this.nextProduct();
+      } 
+      else this.previousProduct();
+
+      this.infoBar('Eliminado de la cuenta!', 'info');
     }
   }
 
   wholesale(): void{
-    if(this.activeTicket.products.wholesale) this.activeTicket.products.undoWholesale();
-    else this.activeTicket.products.applyWholesale();
+    if(this.activeTicket.products.wholesale){
+      this.activeTicket.products.undoWholesale();
+      this.infoBar('Mayoreo eliminado!', 'info');
+    }
+    else{
+      this.activeTicket.products.applyWholesale();
+      this.infoBar('Mayoreo aplicado!', 'info');
+    }
     this.getProducts();
   }
 
@@ -332,15 +336,7 @@ export class BillComponent{
       this.inputCode = this.inputSearch.value;
       this.productsService.getProduct(this.inputSearch.value).subscribe({
         next: (data) => findedProducts = data,
-        error: () => {
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "No hay coincidencias con el producto!",
-            showConfirmButton: false,
-            timer: 900
-          });
-        },
+        error: () => this.infoBar('No hay coincidencias con el producto!', 'error'),
         complete: () => this.processFindedProduct(findedProducts)
       });
     }
@@ -437,13 +433,7 @@ export class BillComponent{
 
           this.getProducts();
 
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Venta registrada!",
-            showConfirmButton: false,
-            timer: 1500
-          });
+          this.infoBar('Venta registrada!', 'success');
         }
       });
     }
@@ -536,6 +526,22 @@ export class BillComponent{
       next: () => alert('Ticket impreso!'),
       error: () => alert('Problemas al imprimir el ticket!')
     })
+  }
+
+  durationInSeconds = 3;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  infoBar(message: string, className: 'success' | 'error' | 'info') {
+    this._snackBar.openFromComponent(Snackbar, {
+      duration: this.durationInSeconds * 1000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      data: { 
+        message: message, 
+        class: className 
+      },
+    });
   }
   
 }

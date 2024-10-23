@@ -58,6 +58,20 @@
 html, body { height: 100%; margin: 0;padding: 0;}
 body { margin: 0; }
 
+.is-priority{
+    color: var(--600-color)!important;
+}
+
+.mat-mdc-snack-bar-label{
+    padding: 0!important;
+    margin: 0!important;
+    
+}
+
+.mdc-snackbar__surface {
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
 svg{
     height: calc(1em + 7px);
     width: calc(1em + 7px);

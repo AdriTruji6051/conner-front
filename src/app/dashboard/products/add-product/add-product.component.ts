@@ -78,7 +78,6 @@ export class AddProductComponent {
   salePrice: number = 0.00;
   wholesalePrice: number = 0.00;
 
-  priority:number = 0;
   inventory:number = 0;
 
   parentProduct!: any;
@@ -101,7 +100,6 @@ export class AddProductComponent {
       salePrice: this.salePrice,
       department: parseInt(this.department.toString()),
       wholesalePrice:	this.wholesalePrice,
-      priority:	0,
       inventory: this.inventory,
       profitMargin: this.profitMargin,
       parentCode:	this.parentProduct ? this.parentProduct.code : null,
@@ -142,7 +140,6 @@ export class AddProductComponent {
     this.profitMargin = 20;
     this.salePrice = 0;
     this.wholesalePrice = 0;
-    this.priority = 0;
     this.inventory = 0;
     this.parentProduct  = null;
     this.department = 0;

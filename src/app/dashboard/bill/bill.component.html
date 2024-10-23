@@ -5,7 +5,7 @@
             <input
                 id="search-input"
                 type="text"
-                class="search-input" 
+                class="search-input my-1" 
                 placeholder="Busca por nombre ó código"
                 [formControl]="inputSearch"
                 [matAutocomplete]="auto"
@@ -13,15 +13,17 @@
                 (keydown.esc)="blurInput()"
                 (blur)="resetInput()"
             >
-             <mat-autocomplete 
+             <mat-autocomplete
+                autoActiveFirstOption
                 #auto="matAutocomplete"
              >
                 <mat-option
                     *ngFor="let product of filteredProducts | async" [value]="product.code"
                     (keydown.esc)="blurInput()"
                     (click)="quickSearch(product.code)"
+                    [ngClass]="{'is-priority':product.priority != null}"
                     >
-                    {{product.description}} <b>|</b> Precio: <b>{{product.salePrice}}</b>
+                    <b>{{product.description}}</b> | Precio: <b>{{product.salePrice}}</b>
                 </mat-option>
             </mat-autocomplete>
             <button class="pdv-btn-icon svg-input-search"  (click)="searchProduct()">
@@ -91,17 +93,17 @@
             <div class="total-sale col-lg-3 col-8 util">
                 <p class="fs-1 m-3">Total: <b>{{ total }}</b></p>
             </div>
-            <div class="container-bill col-lg-2 col-4 util">
+            <div class="container-bill col-lg-3 col-4 util">
                 <button class="pdv-btn collect-bill-btn" (click)="checkBill()"><svg xmlns="http://www.w3.org/2000/svg" class="collect-icon mx-2" viewBox="0 -960 960 960"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg> {{ collectBtnText}}</button>
             </div>
-            <div class="container-bill col-lg-4 px-4">
+            <div class="container-bill col-lg-3 px-4" style="border-left: 3px solid var(--300-color);">
                 <p class="fs-4 m-3">Productos: <b>{{productsCount}}</b></p>
                 <p class="fs-4 m-3" *ngIf="apliedDiscount">Descuento: <b>${{apliedDiscount}}</b></p>
             </div>
             <div class="container-bill col-lg-3 px-4">
                 <div *ngIf="previousSubTotal">
                     <h3><b>Ticket previo</b> <button class="pdv-btn-icon" (click)="printPreviousTicket()" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg></button></h3>
-                    <p class="m-1">Total: <b>{{previousSubTotal}}</b> Cambio: <b>{{previousTotal - previousSubTotal}}</b></p>
+                    <p class="m-1">Total: <b>{{previousSubTotal}}</b> Cambio: <b>{{previousTotal - previousSubTotal}}</b></p> 
                     <p class="m-1">Productos: <b>{{previousProdCount}}</b></p>
                 </div>
             </div>
