@@ -91,7 +91,7 @@ export class ConfirmUpdateComponent {
   ){
     this.productNew = data.productNew;
     this.productOld = data.productOld;
-    this.productSiblings = data.siblings;
+    this.productSiblings = data.siblings.filter((sibl) => sibl.code !== this.productNew.code);
   }
 
   removeProduct(product: string) {

@@ -113,7 +113,7 @@ export class UpdateProductComponent {
     }
 
     const siblings = this.childs ? [...this.childs] : [];
-    if(this.parentProduct) siblings.push(this.parentProduct)    
+    if(this.parentProduct && siblings.length === 0) siblings.push(this.parentProduct)    
 
     const modalRef = this.modal.open(ConfirmUpdateComponent,{
       data: {
@@ -189,6 +189,7 @@ export class UpdateProductComponent {
   }
 
   loadProduct(product: any){
+    this.resetValues();
     this.originalProduct = product;
     this.codeUnvaliable = false;
     this.code.setValue(product.code);
@@ -231,12 +232,5 @@ export class UpdateProductComponent {
       })
     } 
     this.showProductBrowser = false;
-  }
-
-  test():void{
-    this.modal.open(ConfirmUpdateComponent,{
-      height: '500px',
-      width: '500px'
-    })
   }
 }
