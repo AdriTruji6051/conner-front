@@ -298,18 +298,18 @@ export class BillComponent{
       } 
       else this.previousProduct();
 
-      this.infoBar('Eliminado de la cuenta!', 'info');
+      this.infoBar('¡Eliminado de la cuenta!', 'warning');
     }
   }
 
   wholesale(): void{
     if(this.activeTicket.products.wholesale){
       this.activeTicket.products.undoWholesale();
-      this.infoBar('Mayoreo eliminado!', 'info');
+      this.infoBar('¡Mayoreo eliminado!', 'warning');
     }
     else{
       this.activeTicket.products.applyWholesale();
-      this.infoBar('Mayoreo aplicado!', 'info');
+      this.infoBar('¡Mayoreo aplicado!', 'info');
     }
     this.getProducts();
   }
@@ -336,7 +336,7 @@ export class BillComponent{
       this.inputCode = this.inputSearch.value;
       this.productsService.getProduct(this.inputSearch.value).subscribe({
         next: (data) => findedProducts = data,
-        error: () => this.infoBar('No hay coincidencias con el producto!', 'error'),
+        error: () => this.infoBar('¡No hay coincidencias con el producto!', 'error'),
         complete: () => this.processFindedProduct(findedProducts)
       });
     }
@@ -433,11 +433,11 @@ export class BillComponent{
 
           this.getProducts();
 
-          this.infoBar('Venta registrada!', 'success');
+          this.infoBar('¡Venta registrada!', 'success');
         }
       });
     }else{
-      this.infoBar('Agregue elementos a la cuenta!', 'error');
+      this.infoBar('¡Agregue elementos a la cuenta!', 'error');
     }
   }
 
@@ -535,7 +535,7 @@ export class BillComponent{
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  infoBar(message: string, className: 'success' | 'error' | 'info') {
+  infoBar(message: string, className: 'success' | 'error' | 'info' | 'warning') {
     this._snackBar.openFromComponent(Snackbar, {
       duration: this.durationInSeconds * 1000,
       horizontalPosition: this.horizontalPosition,

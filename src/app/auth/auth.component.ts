@@ -71,10 +71,10 @@ export class AuthComponent {
     this.authService.login(datos).subscribe((res) =>{
       if(res === 'success'){
         this.router.navigate(['/dashboard']);
-        this.infoBar('Bienvenido de vuelta!', 'success');
+        this.infoBar('¡Bienvenido de vuelta!', 'success');
         this.loggingIsBlock = false;
       }else{
-        this.infoBar('Revise bien sus credenciales!', 'error');
+        this.infoBar('¡Revise bien sus credenciales!', 'error');
         this.loggingIsBlock = false;
       }
     });

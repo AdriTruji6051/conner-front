@@ -6,13 +6,14 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-delete-product',
   template: `
-    <div class="m-2 main-div">
+    <div class="m-2 p-2 main-div">
       <div>
         <h3>Seleccione el producto a eliminar</h3>
         <p>Busqueda por nombre o código</p>
         <app-product-browser (productForParent)="loadProduct($event)"></app-product-browser>
       </div>
-      <div *ngIf="product">
+      <div *ngIf="product" class="mx-1">
+        <hr>
         <h3>Producto: <b>{{product.description}}</b></h3>
         <p>Código: <b>{{product.code}}</b></p>
         <p>Costo: <b>{{product.cost}}</b></p>

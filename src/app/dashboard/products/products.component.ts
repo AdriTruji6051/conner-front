@@ -44,7 +44,6 @@ export class ProductsComponent{
       width: '100%',
       minWidth: '320px',
       maxWidth: '600px',
-      height: '90vh',
     })
   }
 

@@ -162,15 +162,18 @@ svg{
     width: 100%;
     padding: 8px 65px 8px 15px;
     font-size: 16px;
-    border: 1px solid var(--500-color);
     border-radius: 25px;
     outline: none;
     transition: all 0.3s ease;
+    background-color: var(--50-color);
+    border: none;
 }
 
 .search-input:focus {
     box-shadow: 0 0 5px rgba(8, 14, 19, 0.5);
+    background-color: transparent;
 }
+
 
 /* Disabled objects*/
 .disabled-div {

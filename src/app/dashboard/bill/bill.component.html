@@ -26,7 +26,7 @@
                     <b>{{product.description}}</b> | Precio: <b>{{product.salePrice}}</b>
                 </mat-option>
             </mat-autocomplete>
-            <button class="pdv-btn-icon svg-input-search"  (click)="searchProduct()">
+            <button class="pdv-btn-icon svg-input-search" *ngIf="inputSearch.value" (click)="searchProduct()">
                 <svg class="svg-color" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             </button>
         </div>
@@ -35,9 +35,9 @@
                 <option *ngFor="let tickt of salesRecord; let i = index" [value]="i">{{tickt.ticketName}}</option>
                 <option value="CREATE-NEW-TICKET">Crear nuevo ticket</option>
             </select>
-            <button class="pdv-btn" id="search-btn" (click)="wholesale()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
-            <button class="pdv-btn" (click)="removeProduct()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
-            <button class="pdv-btn" (click)="newCommonProduct()"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
+            <button class="pdv-btn" id="search-btn" (click)="wholesale()" [title]="btnTextDict.wholesale.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
+            <button class="pdv-btn" (click)="removeProduct()" [title]="btnTextDict.delete.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
+            <button class="pdv-btn" (click)="newCommonProduct()" [title]="btnTextDict.common.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
             <button class="pdv-btn square-btn outlined-btn" (click)="openDrawer()"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M280-640q-33 0-56.5-23.5T200-720v-80q0-33 23.5-56.5T280-880h400q33 0 56.5 23.5T760-800v80q0 33-23.5 56.5T680-640H280Zm0-80h400v-80H280v80ZM160-80q-33 0-56.5-23.5T80-160v-40h800v40q0 33-23.5 56.5T800-80H160ZM80-240l139-313q10-22 30-34.5t43-12.5h376q23 0 43 12.5t30 34.5l139 313H80Zm260-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Z"/></svg></button>
         </div>
     </div>
@@ -94,11 +94,11 @@
                 <p class="fs-1 m-3">Total: <b>{{ total }}</b></p>
             </div>
             <div class="container-bill col-lg-3 col-4 util">
-                <button class="pdv-btn collect-bill-btn" (click)="checkBill()"><svg xmlns="http://www.w3.org/2000/svg" class="collect-icon mx-2" viewBox="0 -960 960 960"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg> {{ collectBtnText}}</button>
+                <button class="pdv-btn collect-bill-btn" (click)="checkBill()" [title]="btnTextDict.collect.long"><svg xmlns="http://www.w3.org/2000/svg" class="collect-icon mx-2" viewBox="0 -960 960 960"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg> {{ collectBtnText}}</button>
             </div>
-            <div class="container-bill col-lg-3 px-4" style="border-left: 3px solid var(--300-color);">
-                <p class="fs-4 m-3">Productos: <b>{{productsCount}}</b></p>
-                <p class="fs-4 m-3" *ngIf="apliedDiscount">Descuento: <b>${{apliedDiscount}}</b></p>
+            <div class="container-bill col-lg-3 px-4" style="border-left: 3px solid var(--100-color);">
+                <p class="fs-4 my-2">Productos: {{productsCount}} piezas</p>
+                <p class="fs-5" *ngIf="apliedDiscount">Descuento: ${{apliedDiscount}}</p>
             </div>
             <div class="container-bill col-lg-3 px-4">
                 <div *ngIf="previousSubTotal">
