@@ -1,12 +1,12 @@
 export const btnTextDict = {
     submit: {
       small: '',
-      medium: 'Registrar',
-      long: 'Registrar y abrir caja'
+      medium: 'Registrar - F2',
+      long: 'Registrar y abrir caja - F2'
     },
     print: {
       small: '',
-      medium: 'Imprimir',
-      long: 'Imprimir y registrar'
+      medium: 'Imprimir - F1',
+      long: 'Imprimir y registrar - F1'
     },
   }

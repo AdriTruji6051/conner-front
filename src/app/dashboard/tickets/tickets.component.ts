@@ -5,10 +5,11 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { TicketService } from 'src/app/services/ticketService/ticket-service';
 import { columnsLong, columnsMedium, columnsSmall, columnLabel } from './table-columns';
 import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ModifyTicketComponent } from './modify-ticket/modify-ticket.component';
 import { btnTextDict } from './buttonsText';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { Snackbar } from 'src/app/snack-bars/snackbar.component';
 
 
 export interface PeriodicElement {
@@ -34,7 +35,7 @@ export interface ticket {
   templateUrl: './tickets.component.html',
   styleUrls: ['./tickets.component.css'],
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSortModule, FormsModule, MatDialogModule]
+  imports: [CommonModule, MatTableModule, MatSortModule, FormsModule, MatDialogModule, MatSnackBarModule]
 })
 export class TicketsComponent implements AfterViewInit{
   displayedColumns!: any;
@@ -53,6 +54,7 @@ export class TicketsComponent implements AfterViewInit{
   constructor(
     private ticketService : TicketService,
     private modal : MatDialog,
+    private _snackBar: MatSnackBar,
   ){
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
@@ -116,31 +118,11 @@ export class TicketsComponent implements AfterViewInit{
         printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null,
       }
       this.ticketService.printTicketById(data).subscribe({
-        next: (answ) => 
-          {
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Ticket reimpreso!",
-              showConfirmButton: false,
-              timer: 1500 
-            });
-          },
-        error: (err) => {
-          console.error(err);
-          Swal.fire({
-            icon: "error",
-            title: "Error de servidor",
-            text: "El ticket no se pudo imprimir, verifique su conexión!",
-          });
-        },
+        next: () => this.infoBar('Ticket impreso correctamente!', 'success'),
+        error: () => this.infoBar('El ticket no pudo ser impreso!', 'error'),
       })
     }else{
-      Swal.fire({
-        icon: "warning",
-        title: "No ha seleccionado ticket",
-        text: "Aun no ha elegido un ticket, por favor, eliga uno!",
-      });
+      this.infoBar('Aun no ha elegido un ticket, por favor, eliga uno!', 'info');
     }
   }
 
@@ -153,5 +135,21 @@ export class TicketsComponent implements AfterViewInit{
       });
 
     }
+  }
+
+  durationInSeconds = 3;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  infoBar(message: string, className: 'success' | 'error' | 'info') {
+    this._snackBar.openFromComponent(Snackbar, {
+      duration: this.durationInSeconds * 1000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      data: { 
+        message: message, 
+        class: className 
+      },
+    });
   }
 }

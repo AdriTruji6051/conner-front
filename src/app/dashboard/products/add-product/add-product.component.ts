@@ -2,20 +2,20 @@ import { Component, HostListener } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastComponent } from 'src/app/toast/toast.component';
 import { ProductBrowserComponent } from '../product-browser/product-browser.component';
-
 import {MatChipsModule} from '@angular/material/chips';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductsService } from 'src/app/services/productsService/products.service';
-import Swal from 'sweetalert2';
 import { debounceTime } from 'rxjs';
+import { Snackbar } from 'src/app/snack-bars/snackbar.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatChipsModule, FormsModule, ProductBrowserComponent]
+  imports: [CommonModule, ReactiveFormsModule, MatChipsModule, FormsModule, ProductBrowserComponent, MatSnackBarModule]
   
 })
 
@@ -24,6 +24,7 @@ export class AddProductComponent {
     public dialogRef: MatDialogRef<AddProductComponent>,
     private modal : MatDialog,
     private productService: ProductsService,
+    private _snackBar: MatSnackBar,
   ){
     this.productService.getDepartments().subscribe({
       next: (data) => this.departments = data
@@ -107,22 +108,10 @@ export class AddProductComponent {
 
     this.productService.createProduct(data).subscribe({
       next:()=> {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Producto guardado!",
-          showConfirmButton: false,
-          timer: 1500
-        });
+        this.infoBar('Producto guardado', 'success');
         this.resetValues()
       },
-      error: ()=>{
-        Swal.fire({
-          icon: "error",
-          title: "Verifique su conexión",
-          text: "No se pudo guardar el producto!",
-        });
-      }
+      error: ()=> this.infoBar('No se pudo guardar el producto', 'error')
     })
   }
 
@@ -204,5 +193,21 @@ export class AddProductComponent {
       })
     } 
     this.showProductBrowser = false;
+  }
+
+  durationInSeconds = 3;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  infoBar(message: string, className: 'success' | 'error' | 'info') {
+    this._snackBar.openFromComponent(Snackbar, {
+      duration: this.durationInSeconds * 1000,
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      data: { 
+        message: message, 
+        class: className 
+      },
+    });
   }
 }

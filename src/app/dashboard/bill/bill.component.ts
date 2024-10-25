@@ -436,6 +436,8 @@ export class BillComponent{
           this.infoBar('Venta registrada!', 'success');
         }
       });
+    }else{
+      this.infoBar('Agregue elementos a la cuenta!', 'error');
     }
   }
 
@@ -484,6 +486,7 @@ export class BillComponent{
       const products = this.getProducts();
       this.productRow = products[products.length - 1];
       this.productRowIndex = products.length - 1;
+      this.infoBar(`Se ha cambiado a la cuenta: ${this.activeTicket.ticketName}`, 'success');
     }else{
       this.createNewTicket();
     }
@@ -523,8 +526,8 @@ export class BillComponent{
       printerName: this.previousPrinter,
       id: this.previousFolio
     }).subscribe({
-      next: () => alert('Ticket impreso!'),
-      error: () => alert('Problemas al imprimir el ticket!')
+      next: () => this.infoBar(`Ticket °${this.previousFolio}`, 'success'),
+      error: () => this.infoBar(`Problemas al imprimir el ticket`, 'error')
     })
   }
 
