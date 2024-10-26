@@ -31,6 +31,7 @@ import { TicketService } from 'src/app/services/ticketService/ticket-service';
 import { ModifyPriceComponent } from './modify-price/modify-price.component';
 import { OpenDrawerComponent } from '../open-drawer/open-drawer.component';
 import { Snackbar } from 'src/app/snack-bars/snackbar.component';
+import { SalesRecordService } from 'src/app/services/salesRecord/sales-record.service';
 
 @Component({
   selector: 'app-bill',
@@ -58,7 +59,6 @@ export class BillComponent{
   total = 0.00;
   productsCount = 0;
   apliedDiscount = 0;
-  salesRecord!: any;
   TicketIndex: number = 0;
   avaliablePrinters!: string[];
 
@@ -84,12 +84,12 @@ export class BillComponent{
     private productsService: ProductsService,
     private ticketService: TicketService,
     private modal : MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public sales: SalesRecordService,
   ) {
 
     this.inputSearch.valueChanges.pipe(debounceTime(300)).subscribe({
       next: () =>{
-        console.log('Has changed', this.inputSearch.value)
         const search = this.inputSearch.value
         if(search){
           this.productsService.getProductNames(search).subscribe({
@@ -109,15 +109,14 @@ export class BillComponent{
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
 
-    this.salesRecord = [
-      {
-        ticketName: 'Ticket',
-        total: 0.00,
-        products: new saleProducts()
-      }
-    ]
+    this.activeTicket = this.sales.getSaleByIndex();
 
-    this.activeTicket = this.salesRecord[this.TicketIndex];
+    const total = this.activeTicket.products.total();
+    this.productsCount = this.activeTicket.products.count();
+    this.total = total;
+    this.apliedDiscount = this.activeTicket.products.discount;
+    this.activeTicket.total = total;
+    this.dataSource.data = this.activeTicket.products.get();
 
     this.ticketService.registerLocalPrinters().subscribe({
       next: () => {
@@ -131,7 +130,6 @@ export class BillComponent{
     })
     
   }
-
 
   //Filter products events
   private _filterProducts(value: string): any[] {
@@ -181,7 +179,7 @@ export class BillComponent{
 
         case key === 'F5':
           event.preventDefault();
-          if(this.TicketIndex < this.salesRecord.length - 1){
+          if(this.TicketIndex < this.sales.countSales() - 1){
             this.TicketIndex++;
             this.changeTicket(this.TicketIndex);
           }else{
@@ -262,6 +260,8 @@ export class BillComponent{
 
   blurInput(): void{
     document.getElementById('search-input')?.blur();
+    this.filteredProducts = of([]);
+    this.products = null;
   }
 
   resetInput(): void{
@@ -422,14 +422,9 @@ export class BillComponent{
           this.previousSubTotal = this.activeTicket.products.total();
           this.previousProdCount = this.activeTicket.products.count();
           
-
-          this.salesRecord[this.TicketIndex] = {
-            ticketName: 'Ticket',
-            total: 0.00,
-            products: new saleProducts()
-          };
-
-          this.activeTicket = this.salesRecord[this.TicketIndex];
+          this.sales.resetSale(this.TicketIndex);
+          this.TicketIndex = 0;
+          this.activeTicket = this.sales.getSaleByIndex();
 
           this.getProducts();
 
@@ -449,15 +444,9 @@ export class BillComponent{
 
     modalRef.afterClosed().subscribe(name => {
       if(name){
-        this.salesRecord.push(
-          {
-            ticketName: name,
-            total: 0.00,
-            products: new saleProducts(),
-          }
-        )
+        this.sales.addSale(name);
 
-        this.TicketIndex = this.salesRecord.length - 1;
+        this.TicketIndex = this.sales.countSales() - 1;
 
         this.changeTicket(this.TicketIndex);
       };
@@ -482,7 +471,7 @@ export class BillComponent{
   //Table events
   changeTicket(ticketId: any): void{
     if(ticketId!== 'CREATE-NEW-TICKET'){
-      this.activeTicket = this.salesRecord[parseInt(ticketId)]
+      this.activeTicket = this.sales.getSaleByIndex(parseInt(ticketId));
       const products = this.getProducts();
       this.productRow = products[products.length - 1];
       this.productRowIndex = products.length - 1;

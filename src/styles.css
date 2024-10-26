@@ -62,6 +62,11 @@ body { margin: 0; }
     color: var(--600-color)!important;
 }
 
+.mat-mdc-option.mat-mdc-option-active.mdc-list-item {
+    background-color: var(--800-color)!important;
+    color: var(--100-color)!important;
+}
+
 .mat-mdc-snack-bar-label{
     padding: 0!important;
     margin: 0!important;

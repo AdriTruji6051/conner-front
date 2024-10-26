@@ -9,7 +9,7 @@ export const routesData = [
     },
     {
         path: 'ticket',
-        text: 'Tickets del día'
+        text: 'Ventas del día'
     },
 
 ]

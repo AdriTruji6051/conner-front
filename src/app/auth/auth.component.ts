@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Snackbar } from '../snack-bars/snackbar.component';
+import { SalesRecordService } from '../services/salesRecord/sales-record.service';
 
 
 
@@ -41,8 +42,13 @@ export class AuthComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public sales: SalesRecordService,
   ){}
+
+  test(): void{
+    alert(this.sales.getUser());
+  }
 
   loggingIsBlock: boolean = false;
   user = new FormControl('');
