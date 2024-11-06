@@ -5,7 +5,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   selector: 'app-granel-sale',
   template: `
   <div class="m-4 common-container">
-      <form #commonForm="ngForm">      
+      <form #commonForm="ngForm">
+        <h3>Producto: <b>{{product.description}}</b></h3>      
           <div class="form-group number-inputs py-2">
               <div>
                   <label for="number1">Cantidad</label>

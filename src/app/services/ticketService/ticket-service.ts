@@ -28,17 +28,15 @@ export class TicketService {
     if(err.status === 401){
       Swal.fire('Error', 'La sesión ha caducado, favor de iniciar sesión nuevamente!', 'error');
       this.router.navigate(['/auth']);
-    }else if(err.status === 500){
-      Swal.fire('Error', 'La sesión ha caducado, favor de iniciar sesión nuevamente!', 'error');
-      this.router.navigate(['/auth']);
     }else{
       console.error(err);
     }
   }
 
   createTicket(data: any): Observable<any>{
+    console.log(data);
     return this.http
-    .post<any>(this.apiURL + '/api/create/ticket/', data, {
+    .post<any>(this.apiURL + '/api/create/ticket', data, {
       headers: this.headers
     })
     .pipe(
@@ -50,8 +48,9 @@ export class TicketService {
   }
 
   updateTicket(data: any): Observable<any>{
+    console.log(data);
     return this.http
-    .put<any>(this.apiURL + '/api/update/ticket/', data, {
+    .put<any>(this.apiURL + '/api/update/ticket', data, {
       headers: this.headers
     })
     .pipe(
@@ -64,7 +63,7 @@ export class TicketService {
 
   registerLocalPrinters(): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + '/api/init/new/', {
+    .get<any>(this.apiURL + '/api/init/new', {
       headers: this.headers
     })
     .pipe(
@@ -78,7 +77,7 @@ export class TicketService {
 
   getPrinters(): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + '/api/get/printers/', {
+    .get<any>(this.apiURL + '/api/get/printers', {
       headers: this.headers
     })
     .pipe(
@@ -104,7 +103,7 @@ export class TicketService {
 
   printTicketById(data: any): Observable<any>{
     return this.http
-    .post<any>(this.apiURL + '/api/print/ticket/id/', data, {
+    .post<any>(this.apiURL + '/api/print/ticket/id', data, {
       headers: this.headers
     })
     .pipe(
@@ -115,15 +114,41 @@ export class TicketService {
     )
   }
 
-  openDrawer(data: any): Observable<any>{
+  openDrawer(data: string): Observable<any>{
     return this.http
-    .post<any>(this.apiURL + '/api/openDrawer/', data, {
+    .post<any>(this.apiURL + '/api/openDrawer', {printerName: data},{
       headers: this.headers
     })
     .pipe(
       catchError((error : HttpErrorResponse) => {
         this.validateError(error);
         return throwError(()=> error);
+      })
+    )
+  }
+  getProductsLabelDay(day: string): Observable<any>{
+    return this.http
+    .get( this.apiURL + '/api/get/modifiedProducts/day/' + decodeURIComponent(day),{
+      headers: this.headers
+    })
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(() => error);
+      })
+    )
+  }
+
+  printLabels(data: any): Observable<any>{
+    console.log(data);
+    return this.http
+    .post(this.apiURL + '/api/print/labels', data, {
+      headers: this.headers
+    })    
+    .pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(() => error);
       })
     )
   }

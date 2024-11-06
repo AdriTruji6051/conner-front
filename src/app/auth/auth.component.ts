@@ -46,10 +46,6 @@ export class AuthComponent {
     public sales: SalesRecordService,
   ){}
 
-  test(): void{
-    alert(this.sales.getUser());
-  }
-
   loggingIsBlock: boolean = false;
   user = new FormControl('');
   password = new FormControl('');

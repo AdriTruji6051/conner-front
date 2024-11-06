@@ -1,9 +1,12 @@
 .navbar{
-    height: 5rem !important;
     z-index: 1!important;
     box-shadow: 0px 2px 5px -3px rgba(0,0,0,0.58);
     -webkit-box-shadow: 0px 2px 5px -3px rgba(0,0,0,0.58);
     -moz-box-shadow: 0px 2px 5px -3px rgba(0,0,0,0.58);
+    background-color: white!important;
+    height: 3.2rem!important;
+    padding: 3px!important;
+    margin: 0%!important;
 }
 
 .legend {
@@ -13,10 +16,11 @@
 
 .legend img{
     width: auto;
-    height: 4rem;
 }
 
-.navbar{
-    background-color: white!important;
+.navbar * {
+    margin-top: 0%!important;
+    margin-bottom: 0%!important;
+    height: 100%!important;
 }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import { TicketService } from 'src/app/services/ticketService/ticket-service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-products-label',
@@ -65,7 +66,7 @@ export class ProductsLabelComponent {
   printers!: string[];
 
   searchNewDates(): void{
-    this.productsService.getProductsLabelDay(this.date).subscribe({
+    this.ticketService.getProductsLabelDay(this.date).subscribe({
       next: (data) => {
         this.labelsToPrint = data.map(({description, salePrice}: any) => ({description, salePrice}))
         this.productsLabel = this.labelsToPrint;
@@ -104,9 +105,24 @@ export class ProductsLabelComponent {
       printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null,
     }
 
-    this.productsService.printLabels(data).subscribe({
-      next: () => alert('Impresión exitosa de etiquetas!'),
-      error: () => alert('No se pudo imprimir correctamente!...')
+    this.ticketService.printLabels(data).subscribe({
+      next:()=> {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Etiquetas impresas correctamente!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.productsLabel = [];
+      },
+      error: ()=>{
+        Swal.fire({
+          icon: "error",
+          title: "Verifique su conexión",
+          text: "Problemas al imprimir las etiquetas!",
+        });
+      }
     })
   }
 }

@@ -11,14 +11,12 @@ import {MatMenuModule} from '@angular/material/menu';
 
 import {
   MatSnackBar, 
-  MatSnackBarRef, 
   MatSnackBarModule,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition
 } from '@angular/material/snack-bar';
 
 import { btnTextDict } from './buttonsText';
-import { saleProducts } from './sales-record';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import { SelectProductComponent } from '../products/select-product/select-product.component';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -267,6 +265,10 @@ export class BillComponent{
   resetInput(): void{
     this.inputSearch.setValue('');
     this.products = null;
+    setTimeout(()=>{
+      this.filteredProducts = of([]);
+    }, 200);
+
   }
 
   addProduct(product: any, cantity?: any): void{
@@ -512,8 +514,8 @@ export class BillComponent{
   printPreviousTicket(): void{
     console.log('Hola lola')
     this.ticketService.printTicketById({
-      printerName: this.previousPrinter,
-      id: this.previousFolio
+      ID: this.previousFolio,
+      printerName: this.previousPrinter 
     }).subscribe({
       next: () => this.infoBar(`Ticket °${this.previousFolio}`, 'success'),
       error: () => this.infoBar(`Problemas al imprimir el ticket`, 'error')

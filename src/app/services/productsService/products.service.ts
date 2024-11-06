@@ -41,7 +41,7 @@ export class ProductsService {
     })
     .pipe(
       catchError((error: HttpErrorResponse) => {
-        console.error(error)
+        this.validateError(error);
         return throwError(()=> error);
       })
     )
@@ -60,9 +60,9 @@ export class ProductsService {
     )
   }
 
-  getProductById(data: any): Observable<any>{
+  getProductById(id: any): Observable<any>{
     return this.http
-    .get<any>(this.apiURL + '/api/get/product/id/' + data, {
+    .get<any>(this.apiURL + `/api/get/product/id/${encodeURIComponent(id)}`,{
       headers: this.headers
     })
     .pipe(
@@ -75,7 +75,7 @@ export class ProductsService {
 
   createProduct(data: any): Observable<any>{
     return this.http
-    .post<any>(this.apiURL + '/api/create/product/', data, {
+    .post<any>(this.apiURL + '/api/create/product', data, {
       headers: this.headers
     })
     .pipe(
@@ -88,7 +88,7 @@ export class ProductsService {
 
   updateProduct(data: any): Observable<any>{
     return this.http
-    .put<any>(this.apiURL + '/api/update/product/', data, {
+    .put<any>(this.apiURL + '/api/update/product', data, {
       headers: this.headers
     })
     .pipe(
@@ -99,9 +99,9 @@ export class ProductsService {
     )
   }
 
-  deleteProduct(data: any): Observable<any>{
+  deleteProduct(id: any): Observable<any>{
     return this.http
-    .delete(`${this.apiURL + '/api/delete/product/id/' + data}`,{
+    .delete(this.apiURL + `/api/delete/product/id/${id}`,{
       headers: this.headers
     })
     .pipe(
@@ -127,35 +127,9 @@ export class ProductsService {
 
   getDepartments(): Observable<any>{
     return this.http
-    .get(this.apiURL + '/api/get/all/departments/',{
+    .get(this.apiURL + '/api/get/all/departments',{
       headers: this.headers
     })
-    .pipe(
-      catchError((error : HttpErrorResponse) => {
-        this.validateError(error);
-        return throwError(() => error);
-      })
-    )
-  }
-
-  getProductsLabelDay(day: string): Observable<any>{
-    return this.http
-    .get( this.apiURL + '/api/get/modifiedProducts/day/' + decodeURIComponent(day),{
-      headers: this.headers
-    })
-    .pipe(
-      catchError((error : HttpErrorResponse) => {
-        this.validateError(error);
-        return throwError(() => error);
-      })
-    )
-  }
-
-  printLabels(data: any): Observable<any>{
-    return this.http
-    .post(this.apiURL + '/api/print/labels/', data, {
-      headers: this.headers
-    })    
     .pipe(
       catchError((error : HttpErrorResponse) => {
         this.validateError(error);

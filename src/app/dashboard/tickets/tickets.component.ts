@@ -58,8 +58,12 @@ export class TicketsComponent implements AfterViewInit{
   ){
     this.onResize();
     window.addEventListener('resize', this.onResize.bind(this));
+    
+    //Add the local diference in hours
+    const now = new Date();
+    now.setHours(now.getHours() + -now.getTimezoneOffset() / 60);
 
-    this.date = new Date().toISOString().split('T')[0];
+    this.date = now.toISOString().split('T')[0];
     
     this.ticketService.getTicketsByDay(this.date).subscribe({
       next: (data) => this.dataSource.data = data,
@@ -114,7 +118,7 @@ export class TicketsComponent implements AfterViewInit{
   reprintTicket(): void{
     if(this.ticketRow){
       const data = {
-        id: this.ticketRow.ID,
+        ID: this.ticketRow.ID,
         printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null,
       }
       this.ticketService.printTicketById(data).subscribe({
@@ -128,11 +132,17 @@ export class TicketsComponent implements AfterViewInit{
 
   modifyTicket(): void{
     if(this.ticketRow){
-      this.modal.open(ModifyTicketComponent,{
+      const modalRef = this.modal.open(ModifyTicketComponent,{
         width: '80%',
         height: '80%',
         data: { ticket: this.ticketRow}
       });
+
+      modalRef.afterClosed().subscribe(hasUpdated => {
+        if(hasUpdated){
+          this.searchNewDates();
+        }
+      })
 
     }
   }

@@ -47,15 +47,4 @@ export class SalesRecordService {
       }
     )
   }
-
-  private userName!: string;
-
-
-  setUser(name: string){
-    this.userName = name;
-  }
-
-  getUser(): string{
-    return this.userName;
-  }
 }

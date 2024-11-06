@@ -53,7 +53,9 @@
                         <p>Fecha: <b>{{ticketRow?.createdAt}}</b></p>
                         <p *ngIf="ticketRow?.notes">Notas: <b>{{ticketRow?.notes}}</b></p>
                         <hr>
-                        <p *ngFor="let prod of ticketRow?.products" class="d-flex flex-row">{{prod.cantity}}  {{prod.description}} --------------<b class="text-end">{{prod.usedPrice * prod.cantity}}</b></p>
+                        <article class="item" *ngFor="let prod of ticketRow?.products" style="max-width: 550px;">
+                            <p class="description">{{prod.cantity}}  {{prod.description}}</p><p class="import"><b>{{prod.usedPrice * prod.cantity}}</b></p>
+                        </article>
                         <hr>
                         <p>Total: <b>{{ticketRow?.subTotal}}</b></p>
                         <p *ngIf="(ticketRow?.total - ticketRow?.subTotal) > 0">Cambio: <b>{{ticketRow?.total - ticketRow?.subTotal}}</b></p>

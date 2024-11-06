@@ -76,13 +76,14 @@
     padding: 5px!important;
     height: auto!important;
     font-weight: 500!important;
+    font-size: medium;
 }
 
 .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
-    padding: 0!important;
     border-color: var(--200-color);
+    padding: 0px 8px 0px 8px !important;
   }
 
 .mat-mdc-row:hover .mat-mdc-cell {
@@ -97,9 +98,12 @@
     background-color: #FFF3CD;
 }
 
-.bold-text {
-    font-weight: 1000!important;
-    font-size: medium;
+.selected-price{
+    background-color: #c8eac9!important;
+}
+
+.import{
+    background-color: var(--200-color)!important;
 }
 
   

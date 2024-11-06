@@ -53,9 +53,7 @@ export class OpenDrawerComponent {
   }
   
   openDrawer(): void{
-    const data = {
-      printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null,
-    }
+    const data = this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : "";
 
     this.ticketService.openDrawer(data).subscribe({
       next: () => alert('Caja abierta!'),

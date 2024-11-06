@@ -1,39 +1,66 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TicketService } from 'src/app/services/ticketService/ticket-service';
+import { roundNumber } from 'src/app/utils/number-tratment';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modify-ticket',
   template: `
-    <div class="m-3">
+    <div class="p-3 main-body">
       <h4>{{ticket.createdAt}}</h4>
       <h4 *ngIf="ticket.notes">Notas: {{ticket.notes}}</h4>
 
       <hr>
-      <section class="container-fluid">
-        <div class="row" *ngFor="let prod of ticket.products">
-              <div class="col-8"><b>{{prod.description}}</b></div>
-                <div class="col-4">
-                  <input type="number" class="styled-input" [(ngModel)]="prod.cantity">
-                <div>
-                  <small *ngIf="prod.cantity < 0">Ingrese una cantidad valida!.</small>
-                </div>       
-              </div>
-              <hr class="my-3">
-         </div>
-
-        <button type="button" id="3" class="pdv-btn square-btn" (click)="submitNewTicket()">Actualizar ticket</button>
-      </section>
-
+      <div class="table-container p-2">
+        <section>
+        <h3>¿Necesitas agregar productos al ticket?</h3>
+          <app-product-browser (productForParent)="addNewProduct($event)"></app-product-browser>
+          <div *ngFor="let prod of newProducts" class="row my-2 p-1" style="background-color: var(--100-color); border-radius: 9px">
+            <div class="col-8 fs-5" style="margin-top: 10px;"><b>{{prod.description}}</b></div>
+              <div class="col-4">
+                <input type="number" class="styled-input" [(ngModel)]="prod.cantity">
+              <div>
+                <small *ngIf="prod.cantity < 0">Ingrese una cantidad valida!.</small>
+              </div>       
+            </div>
+          </div>
+        </section>
+        <hr>
+        <section>
+          <div class="row" *ngFor="let prod of ticket.products">
+                <div class="col-8"><b>{{prod.description}}</b></div>
+                  <div class="col-4">
+                    <input type="number" class="styled-input" [(ngModel)]="prod.cantity">
+                  <div>
+                    <small *ngIf="prod.cantity < 0">Ingrese una cantidad valida!.</small>
+                  </div>       
+                </div>
+                <hr class="my-3">
+          </div>
+        </section>
+      </div>
+      <button type="button" id="3" class="pdv-btn square-btn" (click)="updateTicket()">Actualizar ticket</button>
+    
     </div>
   `,
-  styles: [
-  ]
+  styles: [`
+    .main-body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .table-container{
+      flex: 1;
+    }
+    
+  `]
 })
 export class ModifyTicketComponent {
   ticket: any = [];
   ticketOriginal!: any;
+  newProducts: any = [];
 
   constructor(
     public dialogRef: MatDialogRef<ModifyTicketComponent>,
@@ -46,7 +73,19 @@ export class ModifyTicketComponent {
     this.ticket = JSON.parse(JSON.stringify(this.ticketOriginal));
   }
 
-  submitNewTicket(): void{
+  addNewProduct(product: any){
+    this.newProducts.push({
+      cantity: 1,
+      code: product.code,
+      cost: product.cost,
+      description: product.description,
+      import: roundNumber(product.salePrice),
+      salePrice: roundNumber(product.salePrice),
+      wholesalePrice: roundNumber(product.wholesalePrice)
+    })
+  }
+
+  updateTicket(): void{
     if(this.isValid()){
 
       this.ticket.discount = 0;
@@ -54,31 +93,36 @@ export class ModifyTicketComponent {
       this.ticket.subTotal = 0;
       this.ticket.articleCount = 0;
 
-      let newProducts = [];
+      let newCantities = [];
 
       for(let i = 0; i < this.ticket.products.length; i++){
 
         if(this.ticket.products[i].cantity > 0){
           const product = this.ticket.products[i];
 
-          if(product.isWholesale > 0) this.ticket.discount += ( product.isWholesale / this.ticketOriginal.products[i].cantity ) * product.cantity;
+          if(product.isWholesale > 0) this.ticket.discount += product.isWholesale * product.cantity;
           if(product.profit > 0) product.isWholesale = ( (product.profit / 100) * product.usedPrice ) * product.cantity;
           if(product.profit > 0) this.ticket.profit += product.isWholesale;
           this.ticket.subTotal += product.usedPrice * product.cantity;
           this.ticket.articleCount += Math.ceil(product.cantity * 100) /100;
 
-          newProducts.push(product);
+          newCantities.push(product);
         } 
       }
 
-      this.ticketOriginal.profit = Math.ceil(this.ticket.profit * 100) / 100;
-      this.ticketOriginal.discount = this.ticket.discount;
-      this.ticketOriginal.subTotal = this.ticket.subTotal;
-      this.ticketOriginal.total = this.ticket.total - this.ticket.subTotal < 0 ? this.ticket.subTotal: this.ticket.total;
-      this.ticketOriginal.articleCount = this.ticket.articleCount;
-      this.ticketOriginal.products = newProducts;
+      this.ticket.subTotal += this.newProducts.reduce((acc: number, prod: { cantity: number; salePrice: number; }) => acc + prod.cantity * prod.salePrice, 0);
 
-      this.ticketService.updateTicket(this.ticketOriginal).subscribe({
+      this.ticket.profit = Math.ceil(this.ticket.profit * 100) / 100;
+      this.ticket.discount = this.ticket.discount;
+      this.ticket.subTotal = roundNumber(this.ticket.subTotal);
+      this.ticket.total = roundNumber(this.ticket.total - this.ticket.subTotal < 0 ? this.ticket.subTotal: this.ticket.total);
+      this.ticket.articleCount = this.ticket.articleCount;
+      this.ticket.products = newCantities;
+      this.ticket.newProducts = this.newProducts;
+      this.ticket.ID = this.ticketOriginal.ID;
+
+      console.log(this.ticket);
+      this.ticketService.updateTicket(this.ticket).subscribe({
         next:() => 
           Swal.fire({ position: "top-end", icon: "success", title: "Ticket actualizado exitosamente!", showConfirmButton: false, timer: 1500 }),
         error: () => {
@@ -86,7 +130,7 @@ export class ModifyTicketComponent {
         }
       })
 
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     }
   }
 
