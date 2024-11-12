@@ -30,6 +30,7 @@ import { ModifyPriceComponent } from './modify-price/modify-price.component';
 import { OpenDrawerComponent } from '../open-drawer/open-drawer.component';
 import { Snackbar } from 'src/app/snack-bars/snackbar.component';
 import { SalesRecordService } from 'src/app/services/salesRecord/sales-record.service';
+import { IaOptionsComponent } from '../conner-ia-options/ia-options/ia-options.component';
 
 @Component({
   selector: 'app-bill',
@@ -520,6 +521,23 @@ export class BillComponent{
       next: () => this.infoBar(`Ticket °${this.previousFolio}`, 'success'),
       error: () => this.infoBar(`Problemas al imprimir el ticket`, 'error')
     })
+  }
+
+  openIaModal(){
+    const modalRef = this.modal.open(IaOptionsComponent,{
+      width: '500px',
+      height: '230px',
+    });
+
+    modalRef.afterClosed().subscribe(name => {
+      if(name){
+        this.sales.addSale(name);
+
+        this.TicketIndex = this.sales.countSales() - 1;
+
+        this.changeTicket(this.TicketIndex);
+      };
+    });
   }
 
   durationInSeconds = 3;

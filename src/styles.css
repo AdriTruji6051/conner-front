@@ -58,6 +58,25 @@
 html, body { height: 100%; margin: 0;padding: 0;}
 body { margin: 0; }
 
+.mdc-snackbar__surface {
+    padding-left: 0!important;
+    padding-right: 0!important;
+    margin-top: 1.5rem!important;
+    margin-bottom: 7.8rem!important;
+}
+
+.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: var(--dynamic-color)!important;
+    --mdc-snackbar-supporting-text-color: rgba(255, 255, 255, 0.87);
+    --mat-snack-bar-button-color: #ff4081;
+    border-radius: 9999px!important;
+}
+
+.mdc-snackbar__label {
+    padding: 0%!important;
+    border-radius: 9999px!important;
+}
+
 .is-priority{
     color: var(--600-color)!important;
 }
@@ -67,16 +86,6 @@ body { margin: 0; }
     color: var(--100-color)!important;
 }
 
-.mat-mdc-snack-bar-label{
-    padding: 0!important;
-    margin: 0!important;
-    
-}
-
-.mdc-snackbar__surface {
-    padding-left: 0!important;
-    padding-right: 0!important;
-}
 svg{
     height: calc(1em + 7px);
     width: calc(1em + 7px);
