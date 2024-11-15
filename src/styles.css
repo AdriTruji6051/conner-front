@@ -61,20 +61,16 @@ body { margin: 0; }
 .mdc-snackbar__surface {
     padding-left: 0!important;
     padding-right: 0!important;
-    margin-top: 1.5rem!important;
-    margin-bottom: 7.8rem!important;
 }
 
 .mat-mdc-snack-bar-container {
     --mdc-snackbar-container-color: var(--dynamic-color)!important;
     --mdc-snackbar-supporting-text-color: rgba(255, 255, 255, 0.87);
-    --mat-snack-bar-button-color: #ff4081;
-    border-radius: 9999px!important;
+    --mat-snack-bar-button-color: transparent!important;
 }
 
 .mdc-snackbar__label {
     padding: 0%!important;
-    border-radius: 9999px!important;
 }
 
 .is-priority{
@@ -101,11 +97,11 @@ svg{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 20px 10px 20px;
+    padding: 5px 20px 5px 20px;
     background-color: var(--500-color);
     color: white;
     border: none;
-    border-radius: 9999px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     font-weight: 400;
@@ -174,7 +170,7 @@ svg{
 
 .search-input {
     width: 100%;
-    padding: 8px 65px 8px 15px;
+    padding: 5px 65px 5px 15px;
     font-size: 16px;
     border-radius: 25px;
     outline: none;

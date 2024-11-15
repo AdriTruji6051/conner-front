@@ -78,6 +78,7 @@ export class UpdateProductComponent {
   code = new FormControl('');
   description!: string;
   saleType: string = 'U';
+  favorite: string = 'F';
 
   cost: number = 0.00;
   profitMargin: number = 20;
@@ -110,6 +111,7 @@ export class UpdateProductComponent {
       inventory: this.inventory,
       profitMargin: this.profitMargin,
       parentCode:	this.parentProduct ? this.parentProduct.code : null,
+      priority: this.favorite == 'Y' ? 1 : null,
     }
 
     const siblings = this.childs ? [...this.childs] : [];
@@ -150,6 +152,7 @@ export class UpdateProductComponent {
     this.department = 0;
     this.familyCode = null;
     this.childs = [];
+    this.favorite = 'F'
   }
 
   calculatePrice(): void{
@@ -203,6 +206,7 @@ export class UpdateProductComponent {
     this.parentProduct  = product.parentCode;
     this.department = product.department;
     this.familyCode = null;
+    this.favorite = product.priority ? 'Y' : 'F';
 
     this.productService.getParentProd(product.code).subscribe({
       next: (data: any) => {

@@ -25,7 +25,7 @@ export class ProductsComponent{
     this.modal.open(AddProductComponent,{
       width: '100%',
       minWidth: '320px',
-      maxWidth: '600px',
+      maxWidth: '1200px',
       height: '90vh',
     })
   }
@@ -34,7 +34,7 @@ export class ProductsComponent{
     this.modal.open(UpdateProductComponent,{
       width: '100%',
       minWidth: '320px',
-      maxWidth: '600px',
+      maxWidth: '1200px',
       height: '90vh',
     })
   }
@@ -43,7 +43,7 @@ export class ProductsComponent{
     this.modal.open(DeleteProductComponent,{
       width: '100%',
       minWidth: '320px',
-      maxWidth: '600px',
+      maxWidth: '1200px',
     })
   }
 
@@ -51,7 +51,7 @@ export class ProductsComponent{
     this.modal.open(ProductsLabelComponent,{
       width: '100%',
       minWidth: '420px',
-      maxWidth: '600px',
+      maxWidth: '1200px',
     })
   }
 

@@ -1,11 +1,11 @@
 <div class="main-container">
     <!-- UTILITIES PANEL -->
-    <div class="row p-2 m-2 utilities">
-        <div class="col-lg-6">
+    <div class="row p-2 m-2 utilities my-1">
+        <div class="col-lg-6 my-1"  style="height: 35px;">
             <input
                 id="search-input"
                 type="text"
-                class="search-input my-1" 
+                class="search-input" 
                 placeholder="Busca por nombre ó código"
                 [formControl]="inputSearch"
                 [matAutocomplete]="auto"
@@ -20,24 +20,25 @@
                 <mat-option
                     *ngFor="let product of filteredProducts | async" [value]="product.code"
                     (keydown.esc)="blurInput()"
-                    (click)="quickSearch(product.code)"
                     [ngClass]="{'is-priority':product.priority != null}"
-                    >
-                    <b>{{product.description}}</b> | Precio: <b>{{product.salePrice}}</b>
+                    (click)="quickSearch(product.code)"
+                    class="item"
+                >
+                    <b >{{product.description}}</b> | Precio: <b>{{product.salePrice}} </b>
                 </mat-option>
             </mat-autocomplete>
             <button class="pdv-btn-icon svg-input-search" *ngIf="inputSearch.value" (click)="searchProduct()">
                 <svg class="svg-color" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             </button>
         </div>
-        <div class="d-flex flex-row justify-content-center gap-3 p-1 col-lg-6" style="height: 50px;">
+        <div class="d-flex flex-row justify-content-center gap-3 col-lg-6 my-1" style="height: 35px;">
             <select class="styled-select" [(ngModel)] = "TicketIndex" (ngModelChange)="changeTicket($event)">
                 <option *ngFor="let tickt of sales.getAllSales(); let i = index" [value]="i">{{tickt.ticketName}}</option>
                 <option value="CREATE-NEW-TICKET">Crear nuevo ticket</option>
             </select>
-            <button class="pdv-btn" id="search-btn" (click)="wholesale()" [title]="btnTextDict.wholesale.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
-            <button class="pdv-btn" (click)="removeProduct()" [title]="btnTextDict.delete.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
-            <button class="pdv-btn" (click)="newCommonProduct()" [title]="btnTextDict.common.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-2" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
+            <button class="pdv-btn" id="search-btn" (click)="wholesale()" [title]="btnTextDict.wholesale.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
+            <button class="pdv-btn" (click)="removeProduct()" [title]="btnTextDict.delete.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
+            <button class="pdv-btn" (click)="newCommonProduct()" [title]="btnTextDict.common.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
             <button class="pdv-btn square-btn outlined-btn" (click)="openDrawer()"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M280-640q-33 0-56.5-23.5T200-720v-80q0-33 23.5-56.5T280-880h400q33 0 56.5 23.5T760-800v80q0 33-23.5 56.5T680-640H280Zm0-80h400v-80H280v80ZM160-80q-33 0-56.5-23.5T80-160v-40h800v40q0 33-23.5 56.5T800-80H160ZM80-240l139-313q10-22 30-34.5t43-12.5h376q23 0 43 12.5t30 34.5l139 313H80Zm260-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Z"/></svg></button>
         </div>
     </div>
@@ -89,7 +90,7 @@
 
     <!-- CONTROL PANEL FOR CHECKING -->
     <div class="control-panel row">
-        <div class="d-flex flex-row-reverse p-4 control-panel-utils">
+        <div class="d-flex flex-row-reverse px-4 py-3 control-panel-utils">
             <div class="total-sale col-lg-3 col-8 util">
                 <p class="fs-1 m-3">Total: <b>{{ total }}</b></p>
             </div>
@@ -113,6 +114,6 @@
 </div>
 
 <button class="fixed-button" aria-label="Add item" (click)="openIaModal()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-120v-80h320v-284q0-117-81.5-198.5T480-764q-117 0-198.5 81.5T200-484v244h-40q-33 0-56.5-23.5T80-320v-80q0-21 10.5-39.5T120-469l3-53q8-68 39.5-126t79-101q47.5-43 109-67T480-840q68 0 129 24t109 66.5Q766-707 797-649t40 126l3 52q19 9 29.5 27t10.5 38v92q0 20-10.5 38T840-249v49q0 33-23.5 56.5T760-120H440Zm-80-280q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400Zm-359-62q-7-106 64-182t177-76q89 0 156.5 56.5T720-519q-91-1-167.5-49T435-698q-16 80-67.5 142.5T241-462Z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M160-120v-200q0-33 23.5-56.5T240-400h480q33 0 56.5 23.5T800-320v200H160Zm200-320q-83 0-141.5-58.5T160-640q0-83 58.5-141.5T360-840h240q83 0 141.5 58.5T800-640q0 83-58.5 141.5T600-440H360ZM240-200h480v-120H240v120Zm120-320h240q50 0 85-35t35-85q0-50-35-85t-85-35H360q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0-80q17 0 28.5-11.5T400-640q0-17-11.5-28.5T360-680q-17 0-28.5 11.5T320-640q0 17 11.5 28.5T360-600Zm240 0q17 0 28.5-11.5T640-640q0-17-11.5-28.5T600-680q-17 0-28.5 11.5T560-640q0 17 11.5 28.5T600-600ZM480-200Zm0-440Z"/></svg>
 </button>
 

@@ -91,6 +91,10 @@ export class saleProducts{
         }
     }
 
+    getCodes(): any{
+        return this.products.map(prod => prod.code);
+    }
+
     get(): any{
         return this.products;
     }

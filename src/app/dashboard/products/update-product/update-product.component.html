@@ -1,5 +1,4 @@
 <div class="p-4">
-  <h2>Crear nuevo producto</h2>
   <h2>Actualizar producto</h2>
   <p>Busque el producto por nombre o código para editar</p>
   <app-product-browser (productForParent)="loadProduct($event)"></app-product-browser>
@@ -80,25 +79,47 @@
             </div>
         </div>
   
-        <div class="toggle-container py-1">
-        <span class="toggle-side-label">Tipo de venta:</span>
-        <div class="toggle-group">
-            <div class="toggle-option">
-                <input type="radio" id="7" name="saleType" [(ngModel)]="saleType" class="toggle-input" value="U">
-                <label for="7" class="toggle-label">Unidad (pz)</label>
+
+        <div class="row">
+          <div class="col-lg-6 py-1">
+            <div class="toggle-container">
+              <span class="toggle-side-label">Tipo de venta:</span>
+              <div class="toggle-group">
+                  <div class="toggle-option">
+                      <input type="radio" id="7" name="saleType" [(ngModel)]="saleType" class="toggle-input" value="U">
+                      <label for="7" class="toggle-label">Unidad (pz)</label>
+                  </div>
+                  <div class="toggle-option">
+                      <input type="radio" id="8" name="saleType" [(ngModel)]="saleType" class="toggle-input" value="D">
+                      <label for="8" class="toggle-label">Granel (kg)</label>
+                  </div>
+              </div>
             </div>
-            <div class="toggle-option">
-                <input type="radio" id="8" name="saleType" [(ngModel)]="saleType" class="toggle-input" value="D">
-                <label for="8" class="toggle-label">Granel (kg)</label>
+          </div>
+
+          <div class="col-lg-6 py-1">
+            <div class="toggle-container">
+              <span class="toggle-side-label">Agregar a favoritos:</span>
+              <div class="toggle-group">
+                  <div class="toggle-option">
+                      <input type="radio" id="9" name="favorite" [(ngModel)]="favorite" class="toggle-input" value="Y">
+                      <label for="9" class="toggle-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" ><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Z"/></svg></label>
+                  </div>
+                  <div class="toggle-option">
+                      <input type="radio" id="10" name="favorite" [(ngModel)]="favorite" class="toggle-input" value="F">
+                      <label for="10" class="toggle-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"/></svg></label>
+                  </div>
+              </div>
             </div>
+          </div>
+
         </div>
-    </div>
   
         <hr>
         <div class="py-1">
             <div>
                 <label for="9">En inventario: <small style="color: grey;">Deja en cero si no quieres usar inventario</small></label>
-                <input type="number" id="9" style="max-width: 200px;" [(ngModel)]="inventory" name="inventory" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (focus)="selectAllText($event)" autocomplete="off">
+                <input type="number" id="11" style="max-width: 200px;" [(ngModel)]="inventory" name="inventory" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" (focus)="selectAllText($event)" autocomplete="off">
                 <small *ngIf="!validateNumber(inventory)">El formato no es valido!.</small>
             </div>
         </div>
@@ -106,17 +127,11 @@
         <hr>
         <div class="form-grup py-1">
           <div>
-            <label for="10">Departamento:</label>
-            <select id="10" class="styled-select" style="padding: 5px; width: 200px;" [(ngModel)]="department" name="department">
+            <label for="12">Departamento:</label>
+            <select id="13" class="styled-select" style="padding: 5px; width: 200px;" [(ngModel)]="department" name="department">
               <option *ngFor="let dept of departments" [value]="dept.code">{{dept.description}}</option>
             </select>
           </div>
-          <!-- <div>
-            <label for="11">Familia:</label>
-            <select id="11" class="styled-select" [(ngModel)]="familyCode" name="familyCode">
-                <option *ngFor="let dept of departments; let i = index" [value]="i">{{dept.description}}</option>
-            </select>
-          </div> -->
         </div>
   
         <div *ngIf="commonForm.invalid">
@@ -130,7 +145,7 @@
             <button 
               type="button"
               [ngClass]="{'disabled-btn': commonForm.invalid || validateCode() || codeUnvaliable}"
-              id="11" 
+              id="14" 
               class="pdv-btn square-btn" 
               [disabled]="commonForm.invalid || validateCode() || codeUnvaliable" (click)="submitProduct()"
               >Actualizar producto</button>

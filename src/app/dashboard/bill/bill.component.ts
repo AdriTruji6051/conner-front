@@ -96,7 +96,7 @@ export class BillComponent{
               this.products = data;
               this.filteredProducts = this.inputSearch.valueChanges.pipe(
                 startWith(''),
-                map(product => (product ? this._filterProducts(product) : this.products.slice())),
+                map(() => (this.products)),
               );
             }
           })
@@ -128,13 +128,6 @@ export class BillComponent{
       error: (err) => console.error(err)
     })
     
-  }
-
-  //Filter products events
-  private _filterProducts(value: string): any[] {
-    const filterValue = value.toLowerCase();
-
-    return this.products.filter((product: { description: string; }) => product.description.toLowerCase().includes(filterValue));
   }
 
   //Screen events
@@ -525,8 +518,10 @@ export class BillComponent{
 
   openIaModal(){
     const modalRef = this.modal.open(IaOptionsComponent,{
-      width: '500px',
-      height: '230px',
+      minWidth: '300px',
+      minHeight: '300px',
+      maxWidth: '400px',
+      data: {ticket: this.activeTicket}
     });
 
     modalRef.afterClosed().subscribe(name => {
@@ -554,6 +549,10 @@ export class BillComponent{
         class: className 
       },
     });
+  }
+
+  test(){
+    alert('Ola');
   }
   
 }

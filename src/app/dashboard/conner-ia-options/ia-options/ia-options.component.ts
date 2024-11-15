@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { IaDataScienceService } from 'src/app/services/ia-dataScience/ia-data-science.service';
 
 @Component({
   selector: 'app-ia-options',
@@ -14,9 +16,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
       <hr>
       <button class="pdv-btn square-btn outlined-btn" (click)="predictProducts()">Recomiendame productos que se llevan con esta cuenta!</button>
     </div>
-    <div *ngIf="!optionsEnabled">
-      <h3>🤖 Pensando en terminos de IA... </h3>
-      <mat-spinner></mat-spinner>
+    <div *ngIf="consequentProducts.length > 0">
+      <h3>Tus clientes podrian estar interesados en los siguientes productos 🧾😉</h3>
+      <p *ngFor="let prod of consequentProducts">{{prod.description}}</p>
+    </div>
+    <div *ngIf="consequentProducts.length < 1 && connerHasCalled">
+      <h2>Woops... 🫨</h2>
+      <h3>Parece que no hay ninguna coincidencia con tu venta actual 😔</h3>
     </div>
   </div>
 
@@ -28,8 +34,19 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 })
 export class IaOptionsComponent {
   optionsEnabled: boolean = true;
+  consequentProducts: any[] = [];
+  connerHasCalled: boolean = false;
+
+  constructor(
+    public dialogRef: MatDialogRef<IaOptionsComponent>,
+    private iaService: IaDataScienceService,
+    @Inject(MAT_DIALOG_DATA) public data : {ticket : any},){}
 
   predictProducts(){
     this.optionsEnabled = false;
+    this.iaService.consequentProducts(this.data.ticket.products.getCodes()).subscribe({
+      next: (data) => this.consequentProducts = data,
+      complete: () => this.connerHasCalled = true
+    })
   }
 }
