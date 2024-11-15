@@ -16,6 +16,8 @@ import {
   MatSnackBarVerticalPosition
 } from '@angular/material/snack-bar';
 
+import {MatChipsModule} from '@angular/material/chips';
+
 import { btnTextDict } from './buttonsText';
 import { ProductsService } from 'src/app/services/productsService/products.service';
 import { SelectProductComponent } from '../products/select-product/select-product.component';
@@ -31,13 +33,14 @@ import { OpenDrawerComponent } from '../open-drawer/open-drawer.component';
 import { Snackbar } from 'src/app/snack-bars/snackbar.component';
 import { SalesRecordService } from 'src/app/services/salesRecord/sales-record.service';
 import { IaOptionsComponent } from '../conner-ia-options/ia-options/ia-options.component';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-bill',
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css'],
   standalone: true,
-  imports: [MatTableModule, CurrencyPipe, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule, MatSnackBarModule],
+  imports: [MatTableModule, CurrencyPipe, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule, MatSnackBarModule, MatChipsModule],
 })
 
 export class BillComponent{
@@ -46,6 +49,7 @@ export class BillComponent{
   commontArtBtnText! :string;
   wholesaleBtnText! :string;
   collectBtnText!: string;
+  newTicketText!: string;
 
   //Finded products
   inputSearch = new FormControl('');
@@ -60,6 +64,7 @@ export class BillComponent{
   apliedDiscount = 0;
   TicketIndex: number = 0;
   avaliablePrinters!: string[];
+  deletedTicketId!: number;
 
   //Previous ticket
   previousSubTotal!: number;
@@ -225,6 +230,7 @@ export class BillComponent{
       this.commontArtBtnText = this.btnTextDict.common.long;
       this.wholesaleBtnText = this.btnTextDict.wholesale.long;
       this.collectBtnText = this.btnTextDict.collect.long;
+      this.newTicketText = this.btnTextDict.newTicket.long;
       this.displayedColumns = columnsLong;
       this.displayedColumnsWithOptions = [...columnsLong, 'options'];
     }
@@ -233,12 +239,14 @@ export class BillComponent{
       this.commontArtBtnText = this.btnTextDict.common.medium;
       this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
       this.collectBtnText = this.btnTextDict.collect.medium;
+      this.newTicketText = this.btnTextDict.newTicket.medium;
     }
     else if(window.innerWidth <= 1200 && window.innerWidth >= 668){
       this.deleteProdBtnText = this.btnTextDict.delete.medium;
       this.commontArtBtnText = this.btnTextDict.common.medium;
       this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
       this.collectBtnText = this.btnTextDict.collect.medium;
+      this.newTicketText = this.btnTextDict.newTicket.medium;
       this.displayedColumnsWithOptions = [...columnsMedium, 'options'];
     }
     else{
@@ -246,6 +254,7 @@ export class BillComponent{
       this.commontArtBtnText = this.btnTextDict.common.small;
       this.wholesaleBtnText = this.btnTextDict.wholesale.small;
       this.collectBtnText = this.btnTextDict.collect.small;
+      this.newTicketText = this.btnTextDict.newTicket.small;
       this.displayedColumnsWithOptions = [...columnsSmall, 'options'];
     }
   }
@@ -449,6 +458,11 @@ export class BillComponent{
     });
   }
 
+  deleteTicket(){
+    this.sales.deleteSale(this.deletedTicketId);
+    this.changeTicket(0);
+  }
+
   modifyProductPrice(product: any): void{
     const modalRef = this.modal.open(ModifyPriceComponent,{
       width: '500px',
@@ -465,9 +479,10 @@ export class BillComponent{
   }
 
   //Table events
-  changeTicket(ticketId: any): void{
-    if(ticketId!== 'CREATE-NEW-TICKET'){
-      this.activeTicket = this.sales.getSaleByIndex(parseInt(ticketId));
+  changeTicket(ticketId: number): void{
+    this.TicketIndex = ticketId;
+    if(ticketId > -1){
+      this.activeTicket = this.sales.getSaleByIndex(ticketId);
       const products = this.getProducts();
       this.productRow = products[products.length - 1];
       this.productRowIndex = products.length - 1;
@@ -551,8 +566,11 @@ export class BillComponent{
     });
   }
 
-  test(){
-    alert('Ola');
+  test(receipt: number){
+    console.log(receipt);
+    this.deletedTicketId = receipt;
   }
+
+
   
 }

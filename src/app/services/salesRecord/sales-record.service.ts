@@ -5,7 +5,7 @@ import { saleProducts } from './sales-record';
   providedIn: 'root'
 })
 export class SalesRecordService {
-  private salesRecord!: any;
+  private salesRecord: any = [];
 
   constructor() {
     this.salesRecord = [
@@ -29,6 +29,16 @@ export class SalesRecordService {
     return this.salesRecord.length;
   }
 
+  addSale(name: string): void{
+    this.salesRecord.push(
+      {
+        ticketName: name,
+        total: 0.00,
+        products: new saleProducts(),
+      }
+    )
+  }
+
   resetSale(index: number): void{
     const name = this.salesRecord[index].ticketName;
     this.salesRecord[index] = {
@@ -38,14 +48,12 @@ export class SalesRecordService {
     };
   }
 
-  addSale(name: string): void{
-    this.salesRecord.push(
-      {
-        ticketName: name,
-        total: 0.00,
-        products: new saleProducts(),
-      }
-    )
+  deleteSale(index: number): void{
+    if(this.salesRecord.length > 1){
+      this.salesRecord.splice(index, 1);
+      console.log('Eliminado!....')
+      console.log(this.salesRecord)
+    }
   }
 
 }

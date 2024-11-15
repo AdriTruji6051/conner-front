@@ -18,5 +18,10 @@ export const btnTextDict = {
       small: '',
       medium: 'Cobrar - F12',
       long: 'Cobrar - F12'
+    },
+    newTicket: {
+      small: '',
+      medium: 'Ticket',
+      long: 'Ticket'
     }
   }

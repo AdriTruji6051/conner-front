@@ -5,10 +5,8 @@
 }
 
 .utilities{
-    box-shadow: 0px 0px 23px -10px rgba(0,0,0,0.3);
-    -webkit-box-shadow: 0px 0px 23px -10px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0px 0px 23px -10px rgba(0,0,0,0.3);
     border-radius: 18px;
+    border: 1px solid #D9D9D9;
 }
 
 .svg-color{
@@ -34,11 +32,9 @@
 }
 
 .control-panel{
-    box-shadow: 0px -1px 6px -1px rgba(0,0,0,0.34);
-    -webkit-box-shadow: 0px -1px 6px -1px rgba(0,0,0,0.34);
-    -moz-box-shadow: 0px -1px 6px -1px rgba(0,0,0,0.34);
     margin: 0;
     padding: 0;
+    border: 1px solid #D9D9D9;
 }
 
 .control-panel-utils{
@@ -133,4 +129,9 @@
 
 .fixed-button:focus {
     outline: none;
+}
+
+
+.active-chip{
+    background-color: var(--200-color)!important;
 }

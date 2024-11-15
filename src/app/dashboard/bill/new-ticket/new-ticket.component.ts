@@ -7,7 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
     <div class="m-4 common-container">
     <form (ngSubmit)="createTicket()" #commonForm="ngForm">
         <div class="form-group py-2" >
-            <label for="1">Nombre del producto</label>
+            <label for="1">Nombre del nuevo ticket</label>
             <input type="text" id="1" [(ngModel)]="ticketName" name="description" class="styled-input" placeholder="Ex. Ticket 4" (focus)="selectAllText($event)" autocomplete="off" required minlength="3">
         </div>
     
