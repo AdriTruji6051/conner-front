@@ -22,6 +22,6 @@ export const btnTextDict = {
     newTicket: {
       small: '',
       medium: 'Ticket',
-      long: 'Ticket'
+      long: 'Ticket - F6'
     }
   }

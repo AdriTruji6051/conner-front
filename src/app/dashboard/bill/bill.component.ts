@@ -176,13 +176,7 @@ export class BillComponent{
 
         case key === 'F5':
           event.preventDefault();
-          if(this.TicketIndex < this.sales.countSales() - 1){
-            this.TicketIndex++;
-            this.changeTicket(this.TicketIndex);
-          }else{
-            this.TicketIndex = 0;
-            this.changeTicket(this.TicketIndex);
-          }
+          this.nextTicket();
           break;
 
         case key === 'F6':
@@ -489,6 +483,16 @@ export class BillComponent{
       this.infoBar(`Se ha cambiado a la cuenta: ${this.activeTicket.ticketName}`, 'success');
     }else{
       this.createNewTicket();
+    }
+  }
+
+  nextTicket(): void{
+    if(this.TicketIndex < this.sales.countSales() - 1){
+      this.TicketIndex++;
+      this.changeTicket(this.TicketIndex);
+    }else{
+      this.TicketIndex = 0;
+      this.changeTicket(this.TicketIndex);
     }
   }
 
