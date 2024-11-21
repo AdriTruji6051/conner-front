@@ -45,4 +45,16 @@ export class IaDataScienceService {
     )
   }
 
+  asociationRules(): Observable<any>{
+    return this.http.
+    get(this.apiURL + '/api/ia/asociation/rules', {
+      headers: this.headers
+    }).pipe(
+      catchError((error : HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(()=> error);
+      })
+    )
+  }
+
 }

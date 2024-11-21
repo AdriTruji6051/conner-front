@@ -22,6 +22,8 @@ import { ProductsLabelComponent } from './dashboard/products/products-label/prod
 import { ToastComponent } from './toast/toast.component';
 import { ProductBrowserComponent } from "./dashboard/products/product-browser/product-browser.component";
 import { OpenDrawerComponent } from './dashboard/open-drawer/open-drawer.component';
+import { AdvancedOptionsComponent } from './advanced-options/advanced-options.component';
+import { ConnerAIDashboardComponent } from './advanced-options/conner-ai-dashboard/conner-ai-dashboard.component';
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import { OpenDrawerComponent } from './dashboard/open-drawer/open-drawer.compone
     ProductsLabelComponent,
     ToastComponent,
     OpenDrawerComponent,
+    AdvancedOptionsComponent,
+    ConnerAIDashboardComponent,
   ],
   imports: [
     SelectProductComponent,

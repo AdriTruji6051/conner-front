@@ -70,9 +70,10 @@ export class ModifyPriceComponent {
   }
 
   applyNewPrice(): void{
-    this.product.salePrice = this.newPrice;
-    this.product.wholesalePrice = this.newPrice;
-    this.dialogRef.close(this.product);
+    if (this.product.salePrice > this.newPrice){
+      this.product.wholesalePrice = this.newPrice;
+      this.dialogRef.close(this.product);
+    }
   }
 
   selectAllText(event: any): void{

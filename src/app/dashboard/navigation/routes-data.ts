@@ -11,5 +11,9 @@ export const routesData = [
         path: 'ticket',
         text: 'Ventas del día'
     },
+    {
+        path: 'advanced',
+        text: 'Administración'
+    },
 
 ]

@@ -18,7 +18,7 @@ import { IaDataScienceService } from 'src/app/services/ia-dataScience/ia-data-sc
     </div>
     <div *ngIf="consequentProducts.length > 0">
       <h3>Tus clientes podrian estar interesados en los siguientes productos 🧾😉</h3>
-      <p *ngFor="let prod of consequentProducts">{{prod.description}}</p>
+      <p *ngFor="let prod of consequentProducts" style="font-weight: 700;"><b>{{prod.description}}</b></p>
     </div>
     <div *ngIf="consequentProducts.length < 1 && connerHasCalled">
       <h2>Woops... 🫨</h2>

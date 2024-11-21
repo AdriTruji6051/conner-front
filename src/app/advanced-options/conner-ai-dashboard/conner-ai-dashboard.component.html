@@ -1,0 +1,25 @@
+<h1>Reglas de asociación</h1>
+
+<table>
+    <thead>
+      <tr>
+        <th>Si llevan esto</th>
+        <th>Les podria interesar esto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rule of asociation_rules">
+        <td>
+            <div *ngFor="let r of rule[0]">
+                {{r.description}}
+            </div>
+        </td>
+        <td>
+            <div *ngFor="let c of rule[1]">
+                {{c.description}}
+            </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
