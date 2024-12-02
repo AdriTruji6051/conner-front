@@ -8,7 +8,6 @@ import { Snackbar } from '../snack-bars/snackbar.component';
 import { SalesRecordService } from '../services/salesRecord/sales-record.service';
 
 
-
 @Component({
   selector: 'app-auth',
   template: `

@@ -33,14 +33,14 @@ import { OpenDrawerComponent } from '../open-drawer/open-drawer.component';
 import { Snackbar } from 'src/app/snack-bars/snackbar.component';
 import { SalesRecordService } from 'src/app/services/salesRecord/sales-record.service';
 import { IaOptionsComponent } from '../conner-ia-options/ia-options/ia-options.component';
-import { tick } from '@angular/core/testing';
+import { QuickSaleComponent } from './quick-sale/quick-sale.component';
 
 @Component({
   selector: 'app-bill',
   templateUrl: './bill.component.html',
   styleUrls: ['./bill.component.css'],
   standalone: true,
-  imports: [MatTableModule, CurrencyPipe, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule, MatSnackBarModule, MatChipsModule],
+  imports: [MatTableModule, MatDialogModule, CommonModule, FormsModule, MatMenuModule, MatAutocompleteModule, ReactiveFormsModule, MatSnackBarModule, MatChipsModule],
 })
 
 export class BillComponent{
@@ -50,6 +50,8 @@ export class BillComponent{
   wholesaleBtnText! :string;
   collectBtnText!: string;
   newTicketText!: string;
+  quickSaleText!: string;
+  openDrawerText!: string;
 
   //Finded products
   inputSearch = new FormControl('');
@@ -78,6 +80,8 @@ export class BillComponent{
   displayedColumnsWithOptions: string[] = [...columnsLong, 'options'];
   
   columnLabel: any = columnLabel;
+
+  displayLargeSearcgInput: boolean = false;
 
   //Products data
   dataSource = new MatTableDataSource<any>();
@@ -170,7 +174,7 @@ export class BillComponent{
           this.removeProduct();
           break;
 
-        case key === 'F1' || key === 'F3' || key === 'F4' || key === 'F7':
+        case key === 'F1' || key === 'F3' || key === 'F4':
           event.preventDefault();
           break;
 
@@ -182,6 +186,11 @@ export class BillComponent{
         case key === 'F6':
           event.preventDefault();
           this.createNewTicket();
+          break;
+
+        case key === 'F7':
+          event.preventDefault();
+          this.quickSale();
           break;
 
         case key === 'F10':
@@ -218,38 +227,41 @@ export class BillComponent{
     }
   }
 
+  private changeTextsandTable(text:'long' | 'medium' | 'small', table:'long' | 'medium' | 'small'){
+    this.deleteProdBtnText = this.btnTextDict.delete[text];
+    this.commontArtBtnText = this.btnTextDict.common[text];
+    this.wholesaleBtnText = this.btnTextDict.wholesale[text];
+    this.collectBtnText = this.btnTextDict.collect[text];
+    this.newTicketText = this.btnTextDict.newTicket[text];
+    this.quickSaleText = this.btnTextDict.quickSale[text];
+    this.openDrawerText = this.btnTextDict.openDrawer[text];
+
+    switch (table){
+      case 'long':
+        this.displayedColumnsWithOptions = [...columnsLong, 'options'];
+        break
+      case 'medium':
+        this.displayedColumnsWithOptions = [...columnsMedium, 'options'];
+        break
+      case 'small':
+        this.displayedColumnsWithOptions = [...columnsSmall, 'options'];
+        break
+    }
+ 
+  }
+
   private onResize(){
     if(window.innerWidth > 1600){
-      this.deleteProdBtnText = this.btnTextDict.delete.long;
-      this.commontArtBtnText = this.btnTextDict.common.long;
-      this.wholesaleBtnText = this.btnTextDict.wholesale.long;
-      this.collectBtnText = this.btnTextDict.collect.long;
-      this.newTicketText = this.btnTextDict.newTicket.long;
-      this.displayedColumns = columnsLong;
-      this.displayedColumnsWithOptions = [...columnsLong, 'options'];
+      this.changeTextsandTable('long', 'long');
     }
     else if(window.innerWidth <= 1600 && window.innerWidth > 1200){ 
-      this.deleteProdBtnText = this.btnTextDict.delete.medium;
-      this.commontArtBtnText = this.btnTextDict.common.medium;
-      this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
-      this.collectBtnText = this.btnTextDict.collect.medium;
-      this.newTicketText = this.btnTextDict.newTicket.medium;
+      this.changeTextsandTable('medium', 'long');
     }
     else if(window.innerWidth <= 1200 && window.innerWidth >= 668){
-      this.deleteProdBtnText = this.btnTextDict.delete.medium;
-      this.commontArtBtnText = this.btnTextDict.common.medium;
-      this.wholesaleBtnText = this.btnTextDict.wholesale.medium;
-      this.collectBtnText = this.btnTextDict.collect.medium;
-      this.newTicketText = this.btnTextDict.newTicket.medium;
-      this.displayedColumnsWithOptions = [...columnsMedium, 'options'];
+      this.changeTextsandTable('medium', 'medium');
     }
     else{
-      this.deleteProdBtnText = this.btnTextDict.delete.small;
-      this.commontArtBtnText = this.btnTextDict.common.small;
-      this.wholesaleBtnText = this.btnTextDict.wholesale.small;
-      this.collectBtnText = this.btnTextDict.collect.small;
-      this.newTicketText = this.btnTextDict.newTicket.small;
-      this.displayedColumnsWithOptions = [...columnsSmall, 'options'];
+      this.changeTextsandTable('small', 'small');
     }
   }
 
@@ -257,6 +269,7 @@ export class BillComponent{
     document.getElementById('search-input')?.blur();
     this.filteredProducts = of([]);
     this.products = null;
+    this.display_large_search(false);
   }
 
   resetInput(): void{
@@ -265,7 +278,7 @@ export class BillComponent{
     setTimeout(()=>{
       this.filteredProducts = of([]);
     }, 200);
-
+    this.display_large_search(false);
   }
 
   addProduct(product: any, cantity?: any): void{
@@ -381,6 +394,28 @@ export class BillComponent{
 
   openDrawer(): void{
     this.modal.open(OpenDrawerComponent);
+  }
+
+  quickSale(): void{
+    const modalRef = this.modal.open(QuickSaleComponent);
+
+    modalRef.afterClosed().subscribe(request => {
+      if(request){
+        this.previousTotal = request.paidWith;
+        this.previousPrinter = request.printerName;
+        this.previousFolio = request.folio;
+        this.previousSubTotal = this.activeTicket.products.total();
+        this.previousProdCount = this.activeTicket.products.count();
+        
+        this.sales.resetSale(this.TicketIndex);
+        this.TicketIndex = 0;
+        this.activeTicket = this.sales.getSaleByIndex();
+
+        this.getProducts();
+
+        this.infoBar('¡Venta registrada!', 'success');
+      }
+    });
   }
 
   grannelProduct(product: any): void{
@@ -571,8 +606,29 @@ export class BillComponent{
   }
 
   test(receipt: number){
-    console.log(receipt);
-    this.deletedTicketId = receipt;
+    //todo
+    if(window.innerWidth > 992){
+      this.displayLargeSearcgInput = true;
+    }
+  }
+
+  display_large_search(set: boolean){
+    if(window.innerWidth > 992){
+      if(set){
+        this.displayLargeSearcgInput = true;
+        
+        this.deleteProdBtnText = this.btnTextDict.delete['small'];
+        this.commontArtBtnText = this.btnTextDict.common['small'];
+        this.wholesaleBtnText = this.btnTextDict.wholesale['small'];
+        this.newTicketText = this.btnTextDict.newTicket['small'];
+        this.quickSaleText = this.btnTextDict.quickSale['small'];
+        this.openDrawerText = this.btnTextDict.openDrawer['small'];
+      }else{
+        this.displayLargeSearcgInput = false;
+        this.onResize();
+      }
+    }
+
   }
 
 

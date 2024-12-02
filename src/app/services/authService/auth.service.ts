@@ -27,6 +27,7 @@ export class AuthService {
             const user = {
               user: data.username,
               token: res.body.token,
+              role: res.body.role,
             };
             sessionStorage.setItem('user', JSON.stringify(user));
           }
@@ -44,6 +45,13 @@ export class AuthService {
   isLoggedIn(): boolean{
     if (sessionStorage.getItem('user')) return true
     else return false;
+  }
+
+  isAdmin(): boolean{
+    if(this.isLoggedIn())
+      if(this.user.role == 'admin') return true
+    
+    return false;    
   }
 
 }

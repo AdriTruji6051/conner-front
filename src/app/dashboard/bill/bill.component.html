@@ -1,7 +1,7 @@
 <div class="main-container">
     <!-- UTILITIES PANEL -->
     <div class="row p-2 m-2 utilities my-1">
-        <div class="col-lg-5 my-1"  style="height: 35px;">
+        <div [ngClass]="{'col-lg-3 my-1': !displayLargeSearcgInput, 'col-lg-8 my-1': displayLargeSearcgInput }"  style="height: 35px;">
             <input
                 id="search-input"
                 type="text"
@@ -12,6 +12,7 @@
                 (keydown.enter)="searchProduct()"
                 (keydown.esc)="blurInput()"
                 (blur)="resetInput()"
+                (focus)="display_large_search(true)"
             >
              <mat-autocomplete
                 autoActiveFirstOption
@@ -27,16 +28,14 @@
                     <b >{{product.description}}</b> | Precio: <b>{{product.salePrice}} </b>
                 </mat-option>
             </mat-autocomplete>
-            <button class="pdv-btn-icon svg-input-search" *ngIf="inputSearch.value" (click)="searchProduct()">
-                <svg class="svg-color" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-            </button>
         </div>
-        <div class="d-flex flex-row justify-content-center gap-3 col-lg-7 my-1" style="height: 35px;">
-            <button class="pdv-btn square-btn outlined-btn" (click)="changeTicket(-1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>{{newTicketText}}</button>
-            <button class="pdv-btn" id="search-btn" (click)="wholesale()" [title]="btnTextDict.wholesale.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
-            <button class="pdv-btn" (click)="removeProduct()" [title]="btnTextDict.delete.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
-            <button class="pdv-btn" (click)="newCommonProduct()" [title]="btnTextDict.common.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
-            <button class="pdv-btn square-btn outlined-btn" (click)="openDrawer()"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M280-640q-33 0-56.5-23.5T200-720v-80q0-33 23.5-56.5T280-880h400q33 0 56.5 23.5T760-800v80q0 33-23.5 56.5T680-640H280Zm0-80h400v-80H280v80ZM160-80q-33 0-56.5-23.5T80-160v-40h800v40q0 33-23.5 56.5T800-80H160ZM80-240l139-313q10-22 30-34.5t43-12.5h376q23 0 43 12.5t30 34.5l139 313H80Zm260-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Z"/></svg></button>
+        <div class="d-flex flex-row justify-content-center gap-3 my-1" [ngClass]="{'col-lg-9 my-1': !displayLargeSearcgInput, 'col-lg-4 my-1': displayLargeSearcgInput }" style="height: 35px;">
+            <button class="pdv-btn square-btn outlined-btn pdv-btn-small" (click)="changeTicket(-1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>{{newTicketText}}</button>
+            <button class="pdv-btn pdv-btn-small" id="search-btn" (click)="wholesale()" [title]="btnTextDict.wholesale.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg> {{ wholesaleBtnText }} </button>
+            <button class="pdv-btn pdv-btn-small" (click)="removeProduct()" [title]="btnTextDict.delete.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>  {{ deleteProdBtnText }} </button>
+            <button class="pdv-btn pdv-btn-small" (click)="newCommonProduct()" [title]="btnTextDict.common.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h360v80H200v560h560v-360h80v360q0 33-23.5 56.5T760-120H200Zm120-160v-80h320v80H320Zm0-120v-80h320v80H320Zm0-120v-80h320v80H320Zm360-80v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg> {{ commontArtBtnText }} </button>
+            <button class="pdv-btn pdv-btn-small" (click)="quickSale()" [title]="btnTextDict.quickSale.long"><svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="m40-240 20-80h220l-20 80H40Zm80-160 20-80h260l-20 80H120Zm623 240 20-160 29-240 10-79-59 479ZM240-80q-33 0-56.5-23.5T160-160h583l59-479H692l-11 85q-2 17-15 26.5t-30 7.5q-17-2-26.5-14.5T602-564l9-75H452l-11 84q-2 17-15 27t-30 8q-17-2-27-15t-8-30l9-74H220q4-34 26-57.5t54-23.5h80q8-75 51.5-117.5T550-880q64 0 106.5 47.5T698-720h102q36 1 60 28t19 63l-60 480q-4 30-26.5 49.5T740-80H240Zm220-640h159q1-33-22.5-56.5T540-800q-35 0-55.5 21.5T460-720Z"/></svg> {{ quickSaleText }} </button>
+            <button class="pdv-btn square-btn outlined-btn pdv-btn-small" [title]="btnTextDict.openDrawer.long" (click)="openDrawer()"> <svg xmlns="http://www.w3.org/2000/svg" class="mx-1" viewBox="0 -960 960 960"><path d="M280-640q-33 0-56.5-23.5T200-720v-80q0-33 23.5-56.5T280-880h400q33 0 56.5 23.5T760-800v80q0 33-23.5 56.5T680-640H280Zm0-80h400v-80H280v80ZM160-80q-33 0-56.5-23.5T80-160v-40h800v40q0 33-23.5 56.5T800-80H160ZM80-240l139-313q10-22 30-34.5t43-12.5h376q23 0 43 12.5t30 34.5l139 313H80Zm260-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 160h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-80h40q8 0 14-6t6-14q0-8-6-14t-14-6h-40q-8 0-14 6t-6 14q0 8 6 14t14 6Z"/></svg> {{openDrawerText}}</button>
         </div>
     </div>
     <!-- END UTILITES PANEL -->

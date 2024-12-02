@@ -114,6 +114,11 @@ svg{
     color: white;
 }
 
+.pdv-btn-small{
+    font-size: small;
+    padding: 1px 10px 1px 10px;
+}
+
 .square-btn {
     border-radius: 12px;
 }

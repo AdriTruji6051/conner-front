@@ -24,7 +24,15 @@ import { ProductBrowserComponent } from "./dashboard/products/product-browser/pr
 import { OpenDrawerComponent } from './dashboard/open-drawer/open-drawer.component';
 import { AdvancedOptionsComponent } from './advanced-options/advanced-options.component';
 import { ConnerAIDashboardComponent } from './advanced-options/conner-ai-dashboard/conner-ai-dashboard.component';
+import { QuickSaleComponent } from './dashboard/bill/quick-sale/quick-sale.component';
 
+
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import { LineChartComponent } from './advanced-options/statistics/line-chart/line-chart.component';
+
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [
@@ -42,6 +50,8 @@ import { ConnerAIDashboardComponent } from './advanced-options/conner-ai-dashboa
     OpenDrawerComponent,
     AdvancedOptionsComponent,
     ConnerAIDashboardComponent,
+    QuickSaleComponent,
+    LineChartComponent,
   ],
   imports: [
     SelectProductComponent,
@@ -53,7 +63,9 @@ import { ConnerAIDashboardComponent } from './advanced-options/conner-ai-dashboa
     FormsModule,
     ProductBrowserComponent
 ],
-  providers: [],
+providers: [
+  { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
