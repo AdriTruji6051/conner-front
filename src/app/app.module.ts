@@ -30,7 +30,6 @@ import { QuickSaleComponent } from './dashboard/bill/quick-sale/quick-sale.compo
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
-import { LineChartComponent } from './advanced-options/statistics/line-chart/line-chart.component';
 
 registerLocaleData(localeEs);
 
@@ -51,7 +50,6 @@ registerLocaleData(localeEs);
     AdvancedOptionsComponent,
     ConnerAIDashboardComponent,
     QuickSaleComponent,
-    LineChartComponent,
   ],
   imports: [
     SelectProductComponent,

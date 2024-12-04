@@ -1,16 +1,45 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, Injectable } from '@angular/core';
 import { MatTabsModule} from '@angular/material/tabs';
 import { StatisticService } from 'src/app/services/statisticService/statistic.service';
-import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatNativeDateModule} from '@angular/material/core';
 import { MatCardModule} from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { roundNumber } from 'src/app/utils/number-tratment';
 
 import { Chart, registerables } from 'chart.js';
-import { format, parse } from "@formkit/tempo"
+import { format } from "@formkit/tempo"
+
+import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
+import {
+  MatDateRangeSelectionStrategy,
+  DateRange,
+  MAT_DATE_RANGE_SELECTION_STRATEGY,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+
+@Injectable()
+export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
+  constructor(private _dateAdapter: DateAdapter<D>) {}
+
+  selectionFinished(date: D | null): DateRange<D> {
+    return this._createSevenDayRange(date);
+  }
+
+  createPreview(activeDate: D | null): DateRange<D> {
+    return this._createSevenDayRange(activeDate);
+  }
+
+  private _createSevenDayRange(date: D | null): DateRange<D> {
+    if (date) {
+      const start = this._dateAdapter.addCalendarDays(date, -3);
+      const end = this._dateAdapter.addCalendarDays(date, 3);
+      return new DateRange<D>(start, end);
+    }
+
+    return new DateRange<D>(null, null);
+  }
+}
 
 
 @Component({
@@ -19,6 +48,12 @@ import { format, parse } from "@formkit/tempo"
   styleUrls: ['./statistics.component.css'],
   standalone: true,
   imports: [MatTabsModule,MatInputModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatCardModule, FormsModule],
+  providers: [
+    {
+      provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+      useClass: FiveDayRangeSelectionStrategy,
+    },
+  ],
 
 })
 export class StatisticsComponent implements AfterViewInit{
