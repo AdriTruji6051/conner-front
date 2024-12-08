@@ -73,7 +73,8 @@ export class QuickSaleComponent {
   isSubmiting!: boolean;
 
   submitTicket(): void{
-    if(this.isSubmiting || this.quickSaleCantity < 1) return
+    setTimeout(() => {
+      if(this.isSubmiting || this.quickSaleCantity < 1) return
     this.isSubmiting = true;
 
     const cost = this.quickSaleCantity - (this.quickSaleCantity * 10 / 100)
@@ -103,15 +104,16 @@ export class QuickSaleComponent {
         this.dialogRef.close({
           paidWith: this.quickSaleCantity,
           folio: data.folio,
-          printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
+          printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null,
         });
-        this.isSubmiting = false;
       },
       error: () => {
         this.dialogRef.close();
         this.isSubmiting = false;
       } 
     })
+    }, 300);
+    
     
   }
 

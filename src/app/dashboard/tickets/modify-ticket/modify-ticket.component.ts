@@ -111,6 +111,7 @@ export class ModifyTicketComponent {
       }
 
       this.ticket.subTotal += this.newProducts.reduce((acc: number, prod: { cantity: number; salePrice: number; }) => acc + prod.cantity * prod.salePrice, 0);
+      this.ticket.articleCount += roundNumber(this.newProducts.reduce((acc: number, prod: { cantity: number;}) => acc + prod.cantity, 0));
 
       this.ticket.profit = Math.ceil(this.ticket.profit * 100) / 100;
       this.ticket.discount = this.ticket.discount;

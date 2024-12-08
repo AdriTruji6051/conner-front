@@ -30,6 +30,7 @@ import { QuickSaleComponent } from './dashboard/bill/quick-sale/quick-sale.compo
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { ModifyCantityComponent } from './dashboard/bill/modify-cantity/modify-cantity.component';
 
 registerLocaleData(localeEs);
 
@@ -50,6 +51,7 @@ registerLocaleData(localeEs);
     AdvancedOptionsComponent,
     ConnerAIDashboardComponent,
     QuickSaleComponent,
+    ModifyCantityComponent,
   ],
   imports: [
     SelectProductComponent,

@@ -155,37 +155,40 @@ export class SubmitBillComponent {
   }
 
   submitTicket(willPrint: boolean = true): void{
-    if(this.isSubmiting) return
-    this.isSubmiting = true;
+    setTimeout(() => {
+      if(this.isSubmiting) return
+      this.isSubmiting = true;
 
-    if(this.paidWith >= this.ticket.total){
-      const sumbitData: any = {
-        products: this.ticket.products,
-        total: this.ticket.total,
-        paidWith: this.paidWith,
-        notes: this.notes ? this.notes : '',
-        willPrint: willPrint,
-        wholesale: this.ticket.wholesale,
-        productsCount: this.ticket.productsCount,
-        printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
+      if(this.paidWith >= this.ticket.total){
+        const sumbitData: any = {
+          products: this.ticket.products,
+          total: this.ticket.total,
+          paidWith: this.paidWith,
+          notes: this.notes ? this.notes : '',
+          willPrint: willPrint,
+          wholesale: this.ticket.wholesale,
+          productsCount: this.ticket.productsCount,
+          printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
+        }
+    
+        this.ticketService.createTicket(sumbitData).subscribe({
+          next: (data) => {
+            this.dialogRef.close({
+              paidWith: this.paidWith,
+              folio: data.folio,
+              printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
+            });
+          },
+          error: () => {
+            this.infoBar('El ticket no se pudo guardar, verifique su conexión!', 'error')
+            this.dialogRef.close();
+            this.isSubmiting = false;
+          } 
+        })
       }
-  
-      this.ticketService.createTicket(sumbitData).subscribe({
-        next: (data) => {
-          this.dialogRef.close({
-            paidWith: this.paidWith,
-            folio: data.folio,
-            printerName: this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : null
-          });
-          this.isSubmiting = false;
-        },
-        error: () => {
-          this.infoBar('El ticket no se pudo guardar, verifique su conexión!', 'error')
-          this.dialogRef.close();
-          this.isSubmiting = false;
-        } 
-      })
-    }
+    }, 200);
+
+    
   }
 
   selectAllText(event: any): void{

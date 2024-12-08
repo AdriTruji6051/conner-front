@@ -34,6 +34,7 @@ import { Snackbar } from 'src/app/snack-bars/snackbar.component';
 import { SalesRecordService } from 'src/app/services/salesRecord/sales-record.service';
 import { IaOptionsComponent } from '../conner-ia-options/ia-options/ia-options.component';
 import { QuickSaleComponent } from './quick-sale/quick-sale.component';
+import { ModifyCantityComponent } from './modify-cantity/modify-cantity.component';
 
 @Component({
   selector: 'app-bill',
@@ -218,6 +219,7 @@ export class BillComponent{
           event.preventDefault();
           document.getElementById('search-input')?.focus()
           document.getElementById('search-input')?.click();
+
           if(regex.test(key)){
             var value = this.inputSearch.value;
             this.inputSearch.setValue(value += key);
@@ -404,12 +406,8 @@ export class BillComponent{
         this.previousTotal = request.paidWith;
         this.previousPrinter = request.printerName;
         this.previousFolio = request.folio;
-        this.previousSubTotal = this.activeTicket.products.total();
-        this.previousProdCount = this.activeTicket.products.count();
-        
-        this.sales.resetSale(this.TicketIndex);
-        this.TicketIndex = 0;
-        this.activeTicket = this.sales.getSaleByIndex();
+        this.previousSubTotal = request.paidWith;
+        this.previousProdCount = 1;
 
         this.getProducts();
 
@@ -496,6 +494,21 @@ export class BillComponent{
     const modalRef = this.modal.open(ModifyPriceComponent,{
       width: '500px',
       height: '350px',
+      data: {
+        product: product
+      }
+    });
+
+    modalRef.afterClosed().subscribe(newProd => {
+      this.activeTicket.products.update(newProd);
+      this.getProducts();
+    });
+  }
+
+  modifyProductCantity(product: any): void{
+    const modalRef = this.modal.open(ModifyCantityComponent,{
+      width: '450px',
+      height: '300px',
       data: {
         product: product
       }

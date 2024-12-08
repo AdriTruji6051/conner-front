@@ -109,9 +109,9 @@ export class StatisticsComponent implements AfterViewInit{
     this.dayWorkloadHours = [];
 
     values.workload.forEach((element: {
-        hour: string; articles: number; 
+        hour: string; workload: number; 
       }) => {
-        this.dayWorkloadCantity.push(element.articles);
+        this.dayWorkloadCantity.push(element.workload);
         this.dayWorkloadHours.push(element.hour);
       });
     
@@ -150,7 +150,7 @@ export class StatisticsComponent implements AfterViewInit{
         labels: this.dayWorkloadHours, // Etiquetas del eje X
         datasets: [
           {
-            label: 'Ventas del día',
+            label: 'Tickets por hora',
             data: this.dayWorkloadCantity, // Datos
             borderColor: 'rgba(22, 104, 179, 1)', // Color de la línea
             backgroundColor: 'rgba(22, 104, 179, 0.2)', // Color de relleno bajo la línea
@@ -180,7 +180,7 @@ export class StatisticsComponent implements AfterViewInit{
           y: {
             title: {
               display: true,
-              text: 'Cantidad de trabajo (Tickets emitidos)',
+              text: 'Tickets emitidos',
             },
             beginAtZero: true,
           },
