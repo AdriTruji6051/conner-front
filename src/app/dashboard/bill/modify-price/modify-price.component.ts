@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
           <div class="form-group py-2">
               <div>
                   <h3>Descripción: <b>{{product.description}}</b></h3>
-                  <h3>Precio del producto: <b>{{product.salePrice}}</b></h3>
+                  <h3>Precio del producto: <b>{{wholesalePrice}}</b></h3>
                   <input type="number" id="1" [(ngModel)]="newPrice" name="cantity" class="styled-input" min="0" pattern="^[0-9]+(\.[0-9]+)?" value="1.00" (focus)="selectAllText($event)" autocomplete="off" required>
                   <label for="number1">Costo del producto: {{product.cost}}</label>
               </div>
@@ -18,10 +18,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
           <div *ngIf="newPrice < product.cost">
               <small>Los precios no son validos!.</small>
           </div>
+
       
           <div class="button-panel">
-              <button type="button" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || newPrice < product.cost" (click)="applyNewPrice()">Confirmar</button>
               <button type="button" class="pdv-btn square-btn outlined-btn" (click)="dialogRef.close()">Cerrar</button>
+              <button type="button" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || newPrice < product.cost" (click)="applyNewPrice()">Confirmar</button>
           </div>
       </form>
   </div>
@@ -53,13 +54,15 @@ export class ModifyPriceComponent {
   product!: any;
   actualInputId = 1;
   newPrice!: number;
+  wholesalePrice!: number;
 
   constructor(
     public dialogRef: MatDialogRef<ModifyPriceComponent>,
     @Inject (MAT_DIALOG_DATA) public data :{ product: any }
   ){
+    this.wholesalePrice = data.product.wholesalePrice ? data.product.wholesalePrice : data.product.salePrice;
     this.product = data.product;
-    this.newPrice = this.product.salePrice;
+    this.newPrice = this.wholesalePrice;
   }
 
   @HostListener('document:keydown', ['$event'])

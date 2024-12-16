@@ -72,6 +72,9 @@ export class StatisticsComponent implements AfterViewInit{
   readable: any;
   date: any;
 
+  weekFirst: any;
+  weekLast: any;
+
   constructor(private statistics: StatisticService){
     const now = new Date();
     now.setHours(now.getHours() + -now.getTimezoneOffset() / 60);
@@ -125,6 +128,17 @@ export class StatisticsComponent implements AfterViewInit{
     const yyyymmdd = this.dateFormater(selectedDate);
     this.date = yyyymmdd;
     this.getDayValues();
+  }
+
+  setFirstDate(event: any): void{
+    this.weekFirst = this.dateFormater(event.value);
+  }
+
+  setSecondDateAndFetch(event: any): void{
+    this.weekLast = this.dateFormater(event.value);
+    setTimeout(()=>{
+      alert(`Ahora busca! ${this.weekFirst} y ${this.weekLast}`);
+    }, 1500);
   }
 
   private dateFormater(fecha: Date): string {

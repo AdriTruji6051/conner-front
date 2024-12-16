@@ -16,8 +16,8 @@ import { FormsModule } from '@angular/forms';
     <form #commonForm="ngForm">
         <h1>Registrar venta</h1>
         <hr>
-        <h2>Total del ticket: <b>$ {{totalTicket}}</b></h2>
-        <h2>Cambio: <b>$ {{paidWith - totalTicket >= 0 ? paidWith - totalTicket : 0.00 }}</b></h2>
+        <h1>Total del ticket: <b>$ {{totalTicket}}</b></h1>
+        <h1>Cambio: <b>$ {{paidWith - totalTicket >= 0 ? paidWith - totalTicket : 0.00 }}</b></h1>
     
         <div class="form-group number-inputs py-2">
             <div>

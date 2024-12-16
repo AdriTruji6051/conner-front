@@ -1,58 +1,68 @@
 
 <div >
-    <mat-tab-group mat-align-tabs="center" class="m-3">
-        <mat-tab label="Día" style="z-index: 0; overflow-y: auto;">
-            <div class="row container-fluid">
-                <div class="col-lg-6 my-4 d-flex flex-column justify-content-center align-items-center">
-    
-                    
-                    <div class="card card-light">
-                        <div class="card-content">
-                            <h1>Resumen del <span class="value-large">{{readable}}</span> </h1>
-                            <mat-form-field style="opacity: 0!important; width: 0px!important; height: 0px!important;">
-                                <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                            <button class="pdv-btn" style="width: 100%;" mat-raised-button (click)="picker.open()">Seleccionar otra fecha</button>
-                        </div>
-                        
-                    </div>
-    
-                    <div class="card card-dark">
-                        <div class="card-content">
-                            <h2 class="info-title">Ventas registradas: <span class="value">{{dayTicketsCount}}</span></h2>
-                            <p class="info-value">Promedio de venta: <span class="value">${{dayAverageTicket}}</span></p>
-                            <p class="info-value">Precio promedio de producto vendido: <span class="value">${{dayAverageArticlePrice}}</span></p>
-                            <p class="info-value">Total de articulos vendidos: <span class="value">{{dayArticlesCount}}</span></p>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="card card-dark">
-                        <div class="card-content">
-                            <h2 class="info-title">Total de ganancias: <span class="value">${{dayTotalProfit}}</span></h2>
-                            <p class="info-value">Total vendido: <span class="value">${{dayTotalSale}}</span></p>
-                            <p class="info-value">Total de descuentos aplicados: <span class="value">${{dayTotalDiscounts}}</span></p>  
-                        </div>
-                        
-                    </div>
+    <div class="row container-fluid">
+        <div class="col-lg-6 my-4 d-flex flex-column justify-content-center align-items-center">
 
+            
+            <div class="card card-light">
+                <div class="card-content">
+                    <h1>Resumen del <span class="value-large">{{readable}}</span> </h1>
+                    <mat-form-field style="opacity: 0!important; width: 0px!important; height: 0px!important;">
+                        <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" style="opacity: 0!important; width: 0px!important; height: 0px!important; margin: 0!important; padding: 0!important;">
+                        <mat-datepicker touchUi #picker></mat-datepicker>
+                    </mat-form-field>
+                    <button class="pdv-btn" style="width: 100%;" mat-raised-button (click)="picker.open()">Mostrar dia</button>
+                    <mat-form-field style="opacity: 0!important; width: 0px!important; height: 0px!important;">
+                        <mat-date-range-input [rangePicker]="pickerWeek">
+                            <input matStartDate (dateChange)="setFirstDate($event)">
+                            <input matEndDate (dateChange)="setSecondDateAndFetch($event)">
+                        </mat-date-range-input>
+                        <mat-date-range-picker touchUi #pickerWeek></mat-date-range-picker>
+                        
+                        </mat-form-field>
+                    <button class="pdv-btn" style="width: 100%;" mat-raised-button (click)="pickerWeek.open()">Mostrar semana</button>
                 </div>
-                <div class="col-lg-6 my-4">
-                    <div style="display: block; width: 80%; margin: auto;">
-                        <canvas id="lineChart"></canvas>
-                      </div>
-                </div>
-
-                <div class="col-lg-6 my-4">
-                    <div style="display: block; width: 80%; margin: auto;">
-                        <canvas id="productsChart"></canvas>
-                      </div>
-                </div>
+                
             </div>
+
+            <div class="card card-dark">
+                <div class="card-content">
+                    <h2 class="info-title">Ventas registradas: <span class="value">{{dayTicketsCount}}</span></h2>
+                    <p class="info-value">Promedio de venta: <span class="value">${{dayAverageTicket}}</span></p>
+                    <p class="info-value">Precio promedio de producto vendido: <span class="value">${{dayAverageArticlePrice}}</span></p>
+                    <p class="info-value">Total de articulos vendidos: <span class="value">{{dayArticlesCount}}</span></p>
+                </div>
+                
+            </div>
+            
+            <div class="card card-dark">
+                <div class="card-content">
+                    <h2 class="info-title">Total de ganancias: <span class="value">${{dayTotalProfit}}</span></h2>
+                    <p class="info-value">Total vendido: <span class="value">${{dayTotalSale}}</span></p>
+                    <p class="info-value">Total de descuentos aplicados: <span class="value">${{dayTotalDiscounts}}</span></p>  
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="col-lg-6 my-4">
+            <div style="display: block; width: 80%; margin: auto;">
+                <canvas id="lineChart"></canvas>
+              </div>
+        </div>
+
+        <div class="col-lg-6 my-4">
+            <div style="display: block; width: 80%; margin: auto;">
+                <canvas id="productsChart"></canvas>
+              </div>
+        </div>
+    </div>
+    <!-- <mat-tab-group mat-align-tabs="center" class="m-3">
+        <mat-tab label="Día" style="z-index: 0; overflow-y: auto;">
+            
     
         </mat-tab>
-        <!-- <mat-tab label="Semana">
+        <mat-tab label="Semana">
               <mat-form-field style="opacity: 0!important; width: 0px!important; height: 0px!important;">
                 <mat-date-range-input [rangePicker]="pickerWeek">
                     <input matStartDate (dateChange)="onDateChange($event)">
@@ -66,6 +76,6 @@
         </mat-tab>
         <mat-tab label="Mes">
 
-        </mat-tab> -->
-      </mat-tab-group>
+        </mat-tab>
+      </mat-tab-group> -->
 </div>

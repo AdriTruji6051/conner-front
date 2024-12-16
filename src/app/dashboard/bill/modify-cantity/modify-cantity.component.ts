@@ -19,8 +19,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
           </div>
       
           <div class="button-panel">
-              <button type="button" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || newCantity < 1" (click)="applyNewCantity()">Confirmar</button>
               <button type="button" class="pdv-btn square-btn outlined-btn" (click)="dialogRef.close()">Cerrar</button>
+              <button type="button" id="3" class="pdv-btn square-btn" [disabled]="commonForm.invalid || newCantity < 1" (click)="applyNewCantity()">Confirmar</button>
           </div>
       </form>
   </div>

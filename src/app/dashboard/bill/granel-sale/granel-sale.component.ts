@@ -48,7 +48,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
     .button-panel {
       display: flex;
-      justify-content: flex-end;
+      flex-direction: row-reverse;
+      justify-content: flex-start;
       gap: 16px;
       padding-top: 16px;
       border-top: 1px solid #e5e5e5;
