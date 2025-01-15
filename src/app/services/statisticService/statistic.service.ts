@@ -46,4 +46,17 @@ export class StatisticService {
       })
     )
   }
+
+  range_statistics(start_date: string, end_date: string): Observable<any>{
+    return this.http.get(
+      this.apiURL + `/statistics/tickets/range/${encodeURI(start_date)}/${encodeURI(end_date)}`, {
+        headers: this.headers
+      }
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.validateError(error);
+        return throwError(()=> error);
+      })
+    )
+  }
 }

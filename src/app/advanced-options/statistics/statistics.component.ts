@@ -18,28 +18,28 @@ import {
   MatDatepickerModule,
 } from '@angular/material/datepicker';
 
-@Injectable()
-export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
-  constructor(private _dateAdapter: DateAdapter<D>) {}
+// @Injectable()
+// export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionStrategy<D> {
+//   constructor(private _dateAdapter: DateAdapter<D>) {}
 
-  selectionFinished(date: D | null): DateRange<D> {
-    return this._createSevenDayRange(date);
-  }
+//   selectionFinished(date: D | null): DateRange<D> {
+//     return this._createSevenDayRange(date);
+//   }
 
-  createPreview(activeDate: D | null): DateRange<D> {
-    return this._createSevenDayRange(activeDate);
-  }
+//   createPreview(activeDate: D | null): DateRange<D> {
+//     return this._createSevenDayRange(activeDate);
+//   }
 
-  private _createSevenDayRange(date: D | null): DateRange<D> {
-    if (date) {
-      const start = this._dateAdapter.addCalendarDays(date, -3);
-      const end = this._dateAdapter.addCalendarDays(date, 3);
-      return new DateRange<D>(start, end);
-    }
+//   private _createSevenDayRange(date: D | null): DateRange<D> {
+//     if (date) {
+//       const start = this._dateAdapter.addCalendarDays(date, -3);
+//       const end = this._dateAdapter.addCalendarDays(date, 3);
+//       return new DateRange<D>(start, end);
+//     }
 
-    return new DateRange<D>(null, null);
-  }
-}
+//     return new DateRange<D>(null, null);
+//   }
+// }
 
 
 @Component({
@@ -48,12 +48,15 @@ export class FiveDayRangeSelectionStrategy<D> implements MatDateRangeSelectionSt
   styleUrls: ['./statistics.component.css'],
   standalone: true,
   imports: [MatTabsModule,MatInputModule, MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatCardModule, FormsModule],
-  providers: [
-    {
-      provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
-      useClass: FiveDayRangeSelectionStrategy,
-    },
-  ],
+
+  //Use only if I want to change the valid range
+
+  // providers: [
+  //   {
+  //     provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+  //     useClass: FiveDayRangeSelectionStrategy,
+  //   },
+  // ],
 
 })
 export class StatisticsComponent implements AfterViewInit{
@@ -92,12 +95,12 @@ export class StatisticsComponent implements AfterViewInit{
 
   getDayValues(){
     this.statistics.day_statistics(this.date).subscribe({
-      next: (data) => this.setDayValues(data),
+      next: (data) => this.setValues(data),
       error: () => console.log('NOT FOUND')
     })
   }
 
-  setDayValues(values: any){
+  setValues(values: any){
     console.log(values);
     
     this.dayTicketsCount = roundNumber(values.count);
@@ -136,9 +139,16 @@ export class StatisticsComponent implements AfterViewInit{
 
   setSecondDateAndFetch(event: any): void{
     this.weekLast = this.dateFormater(event.value);
+    
     setTimeout(()=>{
-      alert(`Ahora busca! ${this.weekFirst} y ${this.weekLast}`);
-    }, 1500);
+      this.readable = format(this.weekFirst, "full")
+      this.readable += ' al ' + format(this.weekLast, "full")
+
+      this.statistics.range_statistics(this.weekFirst, this.weekLast).subscribe({
+        next: (data) =>  this.setValues(data),
+        error: () => console.log('NOT FOUND')
+      })
+    }, 200);
   }
 
   private dateFormater(fecha: Date): string {
