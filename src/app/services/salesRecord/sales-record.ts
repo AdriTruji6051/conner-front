@@ -24,6 +24,8 @@ export class saleProducts{
     }
 
     add(product: any, cantity: number = 1): any{
+        console.log(product);
+        
         for(let prod of this.products){
             if(prod.code === product.code){
                 prod.cantity += cantity;

@@ -56,8 +56,8 @@ export class OpenDrawerComponent {
     const data = this.printers[this.selectedPrinter] ? this.printers[this.selectedPrinter] : "";
 
     this.ticketService.openDrawer(data).subscribe({
-      next: () => alert('Caja abierta!'),
-      error: () => alert('Problemas al abrir la caja!')
+      next: () => this.dialogRef.close(),
+      error: () => console.log('Problemas al abrir la caja!')
     })
   }
 }

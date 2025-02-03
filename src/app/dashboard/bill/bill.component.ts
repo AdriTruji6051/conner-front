@@ -193,6 +193,11 @@ export class BillComponent{
           event.preventDefault();
           this.quickSale();
           break;
+        
+        case key === 'F8':
+          event.preventDefault();
+          this.openDrawer();
+          break;
 
         case key === 'F10':
           document.getElementById('search-input')?.focus();

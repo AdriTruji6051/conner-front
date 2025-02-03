@@ -46,7 +46,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   `]
 })
 export class NewTicketComponent {
-  ticketName!: string;
+  ticketName: string = 'Nuevo';
 
   constructor(
     public dialogRef: MatDialogRef<NewTicketComponent>,

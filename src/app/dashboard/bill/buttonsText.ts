@@ -31,7 +31,7 @@ export const btnTextDict = {
     },
     openDrawer: {
       small: '',
-      medium: 'Cajón',
-      long: 'Abrir cajón'
+      medium: 'Cajón F8',
+      long: 'Abrir cajón - F8'
     }
   }
