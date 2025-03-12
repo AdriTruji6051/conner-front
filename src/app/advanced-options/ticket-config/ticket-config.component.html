@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="ticket m-4 col-6">
+            <div class="ticket-header">
+                <p *ngFor="let head of headers">{{head.Text}}</p>
+            </div>
+            
+            <div class="ticket-item">
+                <span>Producto A</span>
+                <span>$10.00</span>
+            </div>
+            <div class="ticket-item">
+                <span>Producto B</span>
+                <span>$15.50</span>
+            </div>
+            <div class="ticket-item">
+                <span>Producto C</span>
+                <span>$7.30</span>
+            </div>
+        
+            <div class="ticket-total">
+                Total: $32.80
+            </div>
+        
+            <div class="ticket-footer">
+                <p *ngFor="let foot of footers">{{foot.Text}}</p>
+            </div>
+        </div>
+        <div class="col-6 m-4">
+            <h3>Cabecera</h3>
+            <div *ngFor="let head of headers; let i = index">
+                <div class="inputs-panel">
+                    <input class="styled-input" type="text" [(ngModel)]="head.Text"> 
+                    <button class="pdv-btn mx-1" (click)="removeHeader(i)">Delete</button> 
+                    <button class="pdv-btn mx-1" (click)="swapElements(headers, i, i + -1)">↑</button>
+                    <button class="pdv-btn mx-1" (click)="swapElements(headers, i, i + +1)">↓</button>
+                </div>
+            </div>
+            <button class="pdv-btn my-1" (click)="addHeader()">Agregar cabecera</button>
+
+            <h3>Pie de ticket</h3>
+            <div *ngFor="let foot of footers; let i = index">
+                <div class="inputs-panel">
+                    <input class="styled-input" type="text" [(ngModel)]="foot.Text"> 
+                    <button class="pdv-btn mx-1" (click)="removeFooter(i)">Delete</button>
+                    <button class="pdv-btn mx-1" (click)="swapElements(footers, i, i + -1)">↑</button>
+                    <button class="pdv-btn mx-1" (click)="swapElements(footers, i, i + +1)">↓</button>
+                </div>
+            </div>
+            <button class="pdv-btn my-1" (click)="addFooter()">Agregar pie de ticket</button>
+        </div> 
+    </div>    
+</div>
+
+

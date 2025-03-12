@@ -32,6 +32,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { ModifyCantityComponent } from './dashboard/bill/modify-cantity/modify-cantity.component';
 import { ConfigsComponent } from './advanced-options/configs/configs.component';
+import { TicketConfigComponent } from './advanced-options/ticket-config/ticket-config.component';
 
 registerLocaleData(localeEs);
 
@@ -54,6 +55,7 @@ registerLocaleData(localeEs);
     QuickSaleComponent,
     ModifyCantityComponent,
     ConfigsComponent,
+    TicketConfigComponent,
   ],
   imports: [
     SelectProductComponent,

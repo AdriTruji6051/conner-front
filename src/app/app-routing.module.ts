@@ -10,6 +10,7 @@ import { AdvancedOptionsComponent } from './advanced-options/advanced-options.co
 import { ConnerAIDashboardComponent } from './advanced-options/conner-ai-dashboard/conner-ai-dashboard.component';
 import { AdminGuard } from './guards/admin.guard';
 import { StatisticsComponent } from './advanced-options/statistics/statistics.component';
+import { TicketConfigComponent } from './advanced-options/ticket-config/ticket-config.component';
 
 
 
@@ -38,9 +39,10 @@ const routes: Routes = [
       {path: 'bill', component: BillComponent},
       {path: 'products', component: ProductsComponent},
       {path: 'ticket', component: TicketsComponent},
-      {path: 'advanced', component: StatisticsComponent /*AdvancedOptionsComponent*/ },
+      {path: 'advanced', component: AdvancedOptionsComponent /*StatisticsComponent*/ },
       {path: 'advanced/conner', component: ConnerAIDashboardComponent},
       {path: 'advanced/statistics', component: StatisticsComponent},
+      {path: 'advanced/ticket-config', component: TicketConfigComponent},
     ],
     canActivate: [AdminGuard]
   },

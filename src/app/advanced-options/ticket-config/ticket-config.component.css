@@ -1,0 +1,52 @@
+body {
+    font-family: 'Consolas', monospace;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.ticket {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+.ticket-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.ticket-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.ticket-item span {
+    font-size: 14px;
+}
+
+.ticket-total {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.ticket-footer {
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.inputs-panel {
+    display: flex;
+    gap: 16px;
+    padding-top: 16px;
+}
